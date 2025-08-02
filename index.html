@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portail Agile & Transformation Digitale</title>
+  
+  <!-- Intégration de Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Intégration de Font Awesome pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Intégration de la bibliothèque AOS pour les animations au défilement -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
+  <style>
+    /* Variables CSS pour un thème cohérent */
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-bg: #f4f7f6;
+      --dark-bg: #1c2833;
+      --scrum-orange: #ff7f2a;
+      --agile-blue: #4d8af0;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      font-family: 'Poppins', sans-serif;
+      color: var(--primary-color);
+      overflow-x: hidden; /* Empêche le défilement horizontal */
+    }
+    
+    /* Importation de la police Google Fonts 'Poppins' */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    .navbar {
+      background-color: var(--primary-color);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-brand:hover, .nav-link:hover {
+      color: var(--secondary-color) !important;
+    }
+    
+    .hero {
+      background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://placehold.co/1920x1080/2c3e50/ffffff?text=Transformation+Digitale') center/cover no-repeat;
+      color: #fff;
+      padding: 10rem 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      text-align: center;
+      color: var(--primary-color);
+    }
+    
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Style pour le bouton interactif */
+    .btn-quiz {
+      background-color: var(--agile-blue);
+      color: white;
+      border-radius: 50px;
+      padding: 0.75rem 2rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-quiz:hover {
+      background-color: var(--accent-color);
+    }
+
+    .card-body {
+      text-align: center;
+    }
+    
+    .interactive-content {
+      display: none; /* Cache le contenu interactif par défaut */
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        color: var(--dark-bg);
+        background-color: #e7f1ff;
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+    
+    /* Animation pour l'ouverture des sections interactives */
+    .interactive-content.show {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    footer {
+      background-color: var(--dark-bg);
+      color: #fff;
+      padding: 2rem 0;
+      text-align: center;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <!-- Barre de navigation -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Portail Agile</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#gestion-de-projet">Gestion de Projet</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#amoa">AMOA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#transformation-digitale">Transformation Digitale</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#agilite">Agilité</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#ia-data">IA & Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#conduite-du-changement">Changement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#gouvernance">Gouvernance</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Section d'introduction (Héro) -->
+  <header class="hero d-flex align-items-center">
+    <div class="container" data-aos="fade-up">
+      <h1 class="display-3 fw-bold">Révolutionner votre monde avec l'Agilité</h1>
+      <p class="mt-4 lead">
+        Explorez les fondamentaux de la transformation digitale et maîtrisez les compétences clés pour réussir dans l'ère numérique.
+      </p>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <main>
+    <!-- Section Gestion de Projet -->
+    <section id="gestion-de-projet" class="py-5 bg-white">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">1. Gestion de Projet</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-right">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-tasks card-icon"></i>
+                <h5 class="card-title fw-bold">Méthodologies et Outils</h5>
+                <p class="card-text">
+                  Découvrez les différentes approches pour mener un projet à bien, des méthodes traditionnelles aux cadres agiles comme Scrum et Kanban.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('gestion-de-projet-content')">En savoir plus</button>
+                <div id="gestion-de-projet-content" class="interactive-content">
+                  <p>La gestion de projet est l'application de processus, de méthodes, de compétences, de connaissances et d'expériences pour atteindre des objectifs de projet. Les outils comme Jira, Trello ou Asana sont essentiels pour la collaboration.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section AMOA -->
+    <section id="amoa" class="py-5">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">2. AMOA</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-left">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-handshake card-icon"></i>
+                <h5 class="card-title fw-bold">Assistance à la Maîtrise d'Ouvrage</h5>
+                <p class="card-text">
+                  L'AMOA est le lien entre les besoins métiers et l'équipe technique. Découvrez comment faciliter la communication et assurer la qualité.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('amoa-content')">En savoir plus</button>
+                <div id="amoa-content" class="interactive-content">
+                  <p>Le rôle de l'AMOA est de s'assurer que la solution développée par l'équipe technique répond bien aux besoins exprimés par le client (la maîtrise d'ouvrage). L'AMOA peut rédiger les spécifications fonctionnelles et valider la solution finale.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Transformation Digitale -->
+    <section id="transformation-digitale" class="py-5 bg-white">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">3. Transformation Digitale</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-right">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-globe card-icon"></i>
+                <h5 class="card-title fw-bold">Le grand bouleversement</h5>
+                <p class="card-text">
+                  Comprenez les enjeux et les piliers de la transformation digitale : culture, processus, technologie et expérience client.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('td-content')">En savoir plus</button>
+                <div id="td-content" class="interactive-content">
+                  <p>La transformation digitale ne se résume pas à l'adoption de nouvelles technologies. C'est un processus profond de changement qui impacte la culture d'entreprise, les modèles opérationnels et la manière d'interagir avec les clients et les partenaires.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Agilité -->
+    <section id="agilite" class="py-5">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">4. Agilité</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-left">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-rocket card-icon"></i>
+                <h5 class="card-title fw-bold">S'adapter en permanence</h5>
+                <p class="card-text">
+                  Découvrez les principes et les valeurs du Manifeste Agile, et comment les mettre en pratique au quotidien pour des équipes performantes.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('agilite-content')">En savoir plus</button>
+                <div id="agilite-content" class="interactive-content">
+                  <p>L'agilité est un état d'esprit qui privilégie la collaboration, la livraison de valeur rapide et l'adaptation au changement. Scrum et Kanban sont les frameworks les plus populaires pour l'implémenter.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section IA & Data -->
+    <section id="ia-data" class="py-5 bg-white">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">5. IA & Data</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-right">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-brain card-icon"></i>
+                <h5 class="card-title fw-bold">L'intelligence au service de l'entreprise</h5>
+                <p class="card-text">
+                  Explorez le rôle de l'intelligence artificielle et l'importance des données dans la prise de décision et l'innovation.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('ia-data-content')">En savoir plus</button>
+                <div id="ia-data-content" class="interactive-content">
+                  <p>Les données sont le nouveau pétrole. L'IA permet d'analyser ces données pour en extraire de la valeur, automatiser des tâches et créer des expériences client personnalisées. Les disciplines comme le Machine Learning et le Deep Learning sont au cœur de cette révolution.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Conduite du Changement -->
+    <section id="conduite-du-changement" class="py-5">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">6. Conduite du Changement</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-left">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-users-gear card-icon"></i>
+                <h5 class="card-title fw-bold">Accompagner l'humain</h5>
+                <p class="card-text">
+                  La transformation digitale repose avant tout sur l'adhésion des équipes. Apprenez les techniques pour accompagner les collaborateurs.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('cdc-content')">En savoir plus</button>
+                <div id="cdc-content" class="interactive-content">
+                  <p>La conduite du changement est essentielle pour garantir le succès d'un projet. Elle vise à anticiper les résistances, à former les équipes et à communiquer efficacement pour que chacun s'approprie les nouvelles méthodes et outils.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Gouvernance -->
+    <section id="gouvernance" class="py-5 bg-white">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">7. Gouvernance</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-8" data-aos="fade-right">
+            <div class="card p-4">
+              <div class="card-body">
+                <i class="fas fa-shield-alt card-icon"></i>
+                <h5 class="card-title fw-bold">Stratégie et pilotage</h5>
+                <p class="card-text">
+                  Comprenez l'importance d'une gouvernance solide pour aligner la stratégie digitale avec les objectifs de l'entreprise.
+                </p>
+                <button class="btn btn-quiz" onclick="toggleContent('gouvernance-content')">En savoir plus</button>
+                <div id="gouvernance-content" class="interactive-content">
+                  <p>La gouvernance permet de définir les rôles et les responsabilités, de mettre en place des indicateurs de performance (KPIs) et de s'assurer que les initiatives digitales contribuent à la création de valeur pour l'entreprise.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Portail de la Transformation Digitale. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Intégration de Bootstrap JS et Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+  <!-- Intégration de la bibliothèque AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <script>
+    // Initialisation d'AOS au chargement de la page
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+    
+    // Fonction pour gérer le contenu interactif
+    function toggleContent(id) {
+        const element = document.getElementById(id);
+        const isVisible = element.style.display === 'block';
+        element.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) {
+            // Smooth scroll to the element if it becomes visible
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+  </script>
+
+</body>
+</html>
