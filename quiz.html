@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Compétences Transformation Digitale</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --digital-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--digital-blue);
+            background-color: #f5f9ff;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+
+        .competence-badge {
+            background-color: var(--digital-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-laptop-code" style="color:var(--digital-blue);"></i> Quiz Transformation Digitale</h1>
+                <p>Évaluez vos compétences clés pour réussir la transformation digitale</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 20</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Chargement de la question...</h2>
+                    <div id="options-container">
+                        <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const quizData = {
+            questions: [
+                // AXE 1 – GESTION DE PROJET
+                {
+                    question: "Quel est l'objectif principal d'un Business Case dans un projet digital ? <span class='competence-badge'>Gestion de Projet</span>",
+                    options: [
+                        "Décrire en détail les spécifications techniques du projet",
+                        "Justifier les investissements en calculant le ROI et les gains attendus",
+                        "Planifier le calendrier détaillé du projet",
+                        "Documenter les risques potentiels du projet"
+                    ],
+                    correctAnswer: "Justifier les investissements en calculant le ROI et les gains attendus",
+                    explanation: "Le Business Case est un document stratégique qui justifie le projet en évaluant les coûts, bénéfices et ROI. Il est essentiel pour obtenir l'approbation des parties prenantes."
+                },
+                {
+                    question: "Quelle méthode est la plus adaptée pour structurer un projet complexe en sous-éléments ? <span class='competence-badge'>Gestion de Projet</span>",
+                    options: ["Diagramme de Gantt", "Matrice RACI", "WBS (Work Breakdown Structure)", "Kanban Board"],
+                    correctAnswer: "WBS (Work Breakdown Structure)",
+                    explanation: "La WBS (Structure de Découpage du Projet) permet de décomposer un projet en éléments plus petits et plus gérables, organisés hiérarchiquement."
+                },
+                // AXE 2 – AMOA
+                {
+                    question: "Quel est l'objectif principal d'un atelier de cadrage en AMOA ? <span class='competence-badge'>AMOA</span>",
+                    options: [
+                        "Rédiger les spécifications techniques détaillées",
+                        "Identifier et hiérarchiser les besoins métiers",
+                        "Développer un prototype fonctionnel",
+                        "Évaluer la performance des développeurs"
+                    ],
+                    correctAnswer: "Identifier et hiérarchiser les besoins métiers",
+                    explanation: "L'atelier de cadrage permet de comprendre et prioriser les besoins des utilisateurs finaux, souvent à travers des techniques comme le design thinking."
+                },
+                {
+                    question: "Quel standard est couramment utilisé pour la modélisation des processus métiers ? <span class='competence-badge'>AMOA</span>",
+                    options: ["BPMN 2.0", "UML", "SQL", "JSON"],
+                    correctAnswer: "BPMN 2.0",
+                    explanation: "BPMN (Business Process Model and Notation) est le standard pour modéliser les processus métiers, avec des éléments comme les swimlanes et les gateways."
+                },
+                // AXE 3 – TRANSFORMATION DIGITALE
+                {
+                    question: "Quel outil permet de visualiser l'alignement stratégique d'un projet digital avec les objectifs d'entreprise ? <span class='competence-badge'>Transformation Digitale</span>",
+                    options: ["Balanced Scorecard", "Matrice SWOT", "Diagramme de Gantt", "Burndown Chart"],
+                    correctAnswer: "Balanced Scorecard",
+                    explanation: "Le Balanced Scorecard permet de traduire la stratégie en objectifs mesurables, souvent organisés en quatre perspectives : financière, client, processus internes, apprentissage."
+                },
+                {
+                    question: "Quel framework permet d'évaluer la maturité digitale d'une organisation ? <span class='competence-badge'>Transformation Digitale</span>",
+                    options: ["CMMI Digital", "ITIL", "Scrum", "Lean Six Sigma"],
+                    correctAnswer: "CMMI Digital",
+                    explanation: "CMMI Digital est un modèle de maturité spécifiquement conçu pour évaluer les capacités digitales d'une organisation sur plusieurs dimensions."
+                },
+                // AXE 4 – AGILITÉ & MÉTHODES LEAN
+                {
+                    question: "Quel principe caractérise le mieux la gestion de backlog en Agile ? <span class='competence-badge'>Agilité</span>",
+                    options: [
+                        "Planification rigide des fonctionnalités 6 mois à l'avance",
+                        "Priorisation constante basée sur la valeur métier",
+                        "Développement complet des spécifications avant tout codage",
+                        "Validation unique en fin de projet"
+                    ],
+                    correctAnswer: "Priorisation constante basée sur la valeur métier",
+                    explanation: "En Agile, le backlog est vivant et constamment repriorisé en fonction de la valeur métier, des retours utilisateurs et de l'évolution des besoins."
+                },
+                {
+                    question: "Quel est l'objectif principal d'une rétrospective Scrum ? <span class='competence-badge'>Agilité</span>",
+                    options: [
+                        "Démontrer les nouvelles fonctionnalités aux parties prenantes",
+                        "Inspecter le déroulement du Sprint et identifier des améliorations",
+                        "Planifier en détail les tâches techniques du prochain Sprint",
+                        "Évaluer individuellement les performances des développeurs"
+                    ],
+                    correctAnswer: "Inspecter le déroulement du Sprint et identifier des améliorations",
+                    explanation: "La rétrospective est un moment clé pour l'amélioration continue, où l'équipe réfléchit à son fonctionnement et identifie des actions d'amélioration."
+                },
+                // AXE 5 – IA & DATA
+                {
+                    question: "Qu'est-ce que le 'Prompt Engineering' dans le contexte de l'IA générative ? <span class='competence-badge'>IA & Data</span>",
+                    options: [
+                        "La programmation des algorithmes d'apprentissage automatique",
+                        "La création de modèles de deep learning",
+                        "L'art de formuler des requêtes efficaces pour les modèles de langage",
+                        "Le nettoyage des jeux de données d'entraînement"
+                    ],
+                    correctAnswer: "L'art de formuler des requêtes efficaces pour les modèles de langage",
+                    explanation: "Le Prompt Engineering consiste à structurer des requêtes (prompts) pour obtenir les meilleurs résultats des modèles comme ChatGPT, en incluant contexte, contraintes et format attendu."
+                },
+                {
+                    question: "Quel outil est principalement utilisé pour l'exploration et le nettoyage de données ? <span class='competence-badge'>IA & Data</span>",
+                    options: ["TensorFlow", "Pandas (Python)", "Docker", "Kubernetes"],
+                    correctAnswer: "Pandas (Python)",
+                    explanation: "La bibliothèque Pandas en Python est l'outil de référence pour manipuler et nettoyer des données, avec des structures comme les DataFrames et des fonctions pour gérer les valeurs manquantes ou les outliers."
+                },
+                // AXE 6 – CONDUITE DU CHANGEMENT
+                {
+                    question: "Quel outil permet de cartographier les parties prenantes selon leur pouvoir et intérêt ? <span class='competence-badge'>Conduite du Changement</span>",
+                    options: ["Matrice Power/Interest", "Diagramme de Gantt", "Burndown Chart", "User Story Map"],
+                    correctAnswer: "Matrice Power/Interest",
+                    explanation: "La matrice Power/Interest classe les parties prenantes selon leur niveau d'influence (power) et leur degré d'intérêt dans le projet, permettant d'adapter la stratégie de communication."
+                },
+                {
+                    question: "Quelle est la principale caractéristique d'un bon 'Change Agent' ? <span class='competence-badge'>Conduite du Changement</span>",
+                    options: [
+                        "Expertise technique approfondie",
+                        "Capacité à influencer et mobiliser les équipes",
+                        "Maîtrise des outils de reporting",
+                        "Expérience en développement logiciel"
+                    ],
+                    correctAnswer: "Capacité à influencer et mobiliser les équipes",
+                    explanation: "Un Change Agent efficace combine une compréhension du changement avec des compétences relationnelles pour faciliter l'adoption par les utilisateurs."
+                },
+                // AXE 7 – GOUVERNANCE, ÉTHIQUE, CONFORMITÉ
+                {
+                    question: "Quel framework est couramment utilisé pour la gouvernance des systèmes d'information ? <span class='competence-badge'>Gouvernance</span>",
+                    options: ["COBIT", "Scrum", "Kanban", "Lean Startup"],
+                    correctAnswer: "COBIT",
+                    explanation: "COBIT (Control Objectives for Information and Related Technologies) est un framework complet pour la gouvernance et le management du SI, alignant les objectifs métiers et IT."
+                },
+                {
+                    question: "Quel aspect est le plus critique dans une stratégie de cybersécurité ? <span class='competence-badge'>Gouvernance</span>",
+                    options: [
+                        "La vitesse de développement des applications",
+                        "La sensibilisation continue des utilisateurs",
+                        "Le nombre de fonctionnalités livrées",
+                        "La taille de l'équipe de développement"
+                    ],
+                    correctAnswer: "La sensibilisation continue des utilisateurs",
+                    explanation: "La majorité des incidents de sécurité proviennent d'erreurs humaines. Une sensibilisation régulière est donc un pilier essentiel de toute stratégie de cybersécurité."
+                },
+                // Questions supplémentaires pour couvrir tous les axes
+                {
+                    question: "Quel indicateur mesure l'efficacité d'une équipe Agile dans la livraison de valeur ? <span class='competence-badge'>Agilité</span>",
+                    options: ["La vélocité", "Le nombre de réunions", "La taille de l'équipe", "Le budget dépensé"],
+                    correctAnswer: "La vélocité",
+                    explanation: "La vélocité mesure la quantité de travail qu'une équipe peut accomplir dans un Sprint, généralement en points de story. C'est un indicateur de capacité pour la planification."
+                },
+                {
+                    question: "Quel principe RGPD est essentiel lors de la mise en œuvre de solutions d'IA ? <span class='competence-badge'>IA & Data</span>",
+                    options: [
+                        "Minimisation des données",
+                        "Rapidité de traitement",
+                        "Complexité algorithmique",
+                        "Nombre de fonctionnalités"
+                    ],
+                    correctAnswer: "Minimisation des données",
+                    explanation: "Le principe de minimisation des données (article 5 RGPD) stipule qu'on ne doit collecter et traiter que les données strictement nécessaires à la finalité déclarée."
+                },
+                {
+                    question: "Quel outil est adapté pour piloter un portefeuille de projets digitaux ? <span class='competence-badge'>Transformation Digitale</span>",
+                    options: ["Jira Portfolio", "Microsoft Word", "Adobe Photoshop", "Google Analytics"],
+                    correctAnswer: "Jira Portfolio",
+                    explanation: "Jira Portfolio permet de visualiser et gérer plusieurs projets Agile, avec des fonctionnalités de planification, de priorisation et de suivi des dépendances."
+                },
+                {
+                    question: "Quelle pratique permet de capitaliser sur les apprentissages d'un projet ? <span class='competence-badge'>Gouvernance</span>",
+                    options: [
+                        "Réunion de post-mortem",
+                        "Daily Scrum",
+                        "Sprint Planning",
+                        "Revue de code"
+                    ],
+                    correctAnswer: "Réunion de post-mortem",
+                    explanation: "Le post-mortem de projet est une analyse rétrospective structurée pour identifier les succès, les échecs et les leçons apprises, afin d'améliorer les futurs projets."
+                },
+                {
+                    question: "Quel élément est essentiel dans une feuille de route digitale ? <span class='competence-badge'>Transformation Digitale</span>",
+                    options: [
+                        "La liste détaillée des bugs techniques",
+                        "La vision stratégique sur 1-3 ans avec priorités claires",
+                        "Le CV des développeurs",
+                        "Le budget marketing"
+                    ],
+                    correctAnswer: "La vision stratégique sur 1-3 ans avec priorités claires",
+                    explanation: "Une feuille de route digitale efficace articule la vision stratégique, les initiatives clés et leur séquencement, tout en restant adaptable aux changements."
+                }
+            ]
+        };
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.innerHTML = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.innerHTML = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Bravo, c'est la bonne réponse !";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication :";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            let scoreColor;
+            let recommendationsHtml;
+
+            if (percentage >= 80) {
+                scoreColor = 'var(--success-color)';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent !</h5><p>Vous avez une maîtrise avancée des compétences clés de la transformation digitale. Poursuivez votre développement avec des certifications ou des projets complexes.</p>';
+            } else if (percentage >= 50) {
+                scoreColor = 'var(--digital-blue)';
+                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Bon potentiel !</h5><p>Vous avez de solides bases mais certaines compétences méritent d\'être approfondies. Ciblez vos axes de progression en fonction de vos projets.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> À développer !</h5><p>Consolidez vos connaissances fondamentales. Identifiez 2-3 axes prioritaires pour votre montée en compétence.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>
