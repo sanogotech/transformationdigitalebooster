@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Compétences Transformation Digitale</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --digital-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--digital-blue);
+            background-color: #f5f9ff;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+
+        .competence-badge {
+            background-color: var(--digital-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-laptop-code" style="color:var(--digital-blue);"></i> Quiz Transformation Digitale</h1>
+                <p>Évaluez vos compétences clés pour réussir la transformation digitale</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 20</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Chargement de la question...</h2>
+                    <div id="options-container">
+                        <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+       const quizData = {
+    questions: [
+        // AXE 1 – GESTION DE PROJET (15 questions)
+        {
+            question: "Quel est l'objectif principal d'un Business Case dans un projet digital ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "Décrire en détail les spécifications techniques",
+                "Justifier les investissements avec ROI et gains attendus",
+                "Planifier le calendrier détaillé du projet",
+                "Documenter les risques potentiels"
+            ],
+            correctAnswer: "Justifier les investissements avec ROI et gains attendus",
+            explanation: "Le Business Case justifie le projet en quantifiant les bénéfices attendus (ROI, NPV) et en alignant le projet sur la stratégie d'entreprise."
+        },
+        {
+            question: "Quelle méthode permet de décomposer un projet complexe en éléments gérables ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Diagramme de Gantt", "Matrice RACI", "WBS (Work Breakdown Structure)", "Kanban Board"],
+            correctAnswer: "WBS (Work Breakdown Structure)",
+            explanation: "La WBS structure hiérarchiquement le travail en livrables et sous-livrables, facilitant l'estimation et l'allocation des ressources."
+        },
+        {
+            question: "Quelle technique permet d'intégrer des marges de sécurité dans un planning ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["PERT", "Chaîne critique", "Agile", "Waterfall"],
+            correctAnswer: "Chaîne critique",
+            explanation: "La méthode Chaîne Critique (Critical Chain) ajoute des tampons stratégiques plutôt que des marges individuelles, optimisant l'ensemble du planning."
+        },
+        {
+            question: "Quelle différence clé entre CAPEX et OPEX dans un budget IT ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "CAPEX pour les logiciels, OPEX pour le hardware",
+                "CAPEX est un investissement, OPEX un coût récurrent",
+                "CAPEX concerne le cloud, OPEX le on-premise",
+                "Aucune différence, termes synonymes"
+            ],
+            correctAnswer: "CAPEX est un investissement, OPEX un coût récurrent",
+            explanation: "CAPEX (Capital Expenditure) est un actif amortissable (serveurs, licences perpétuelles). OPEX (Operational Expenditure) couvre les coûts courants (abonnements cloud, maintenance)."
+        },
+        {
+            question: "Quel KPI mesure l'efficacité de la livraison d'un projet ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Taux de disponibilité", "On-Time Delivery", "Satisfaction client", "Nombre de réunions"],
+            correctAnswer: "On-Time Delivery",
+            explanation: "Le taux de livraison dans les temps (On-Time Delivery) reflète la capacité à respecter les engagements, crucial pour la crédibilité de l'IT."
+        },
+        {
+            question: "Comment classer un risque avec probabilité 30% et impact 500K€ ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Faible (150K€)", "Moyen (150K€)", "Élevé (150K€)", "Critique (150K€)"],
+            correctAnswer: "Moyen (150K€)",
+            explanation: "Le niveau de risque = Probabilité × Impact (0.3 × 500K = 150K€). Dans une matrice standard, c'est généralement un risque moyen."
+        },
+        {
+            question: "Quel élément est essentiel dans une fiche de cadrage ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "Liste des participants aux réunions",
+                "Objectifs SMART et gouvernance",
+                "CV des développeurs",
+                "Code source du POC"
+            ],
+            correctAnswer: "Objectifs SMART et gouvernance",
+            explanation: "Une fiche de cadrage valide doit contenir les objectifs (Spécifiques, Mesurables, Acceptables, Réalistes, Temporels) et la gouvernance (rôles, instances de décision)."
+        },
+        {
+            question: "Quelle méthode est adaptée pour un projet avec exigences stables ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Waterfall", "Scrum", "Kanban", "Lean Startup"],
+            correctAnswer: "Waterfall",
+            explanation: "Le cycle en V (Waterfall) convient quand les exigences sont stables et bien définies, avec des phases séquentielles claires."
+        },
+        {
+            question: "Quel outil permet de visualiser l'avancement sur un calendrier ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Diagramme de Gantt", "Matrice RAID", "Burndown Chart", "Value Stream Mapping"],
+            correctAnswer: "Diagramme de Gantt",
+            explanation: "Le Gantt montre les tâches dans le temps, leurs dépendances et l'avancement, idéal pour les projets prédictifs."
+        },
+        {
+            question: "Quelle pratique réduit les risques de dérive budgétaire ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "Revues mensuelles CAPEX/OPEX",
+                "Daily stand-up meetings",
+                "Rétrospectives agiles",
+                "Tests unitaires automatisés"
+            ],
+            correctAnswer: "Revues mensuelles CAPEX/OPEX",
+            explanation: "Des revues financières régulières permettent de détecter les écarts tôt et d'ajuster les dépenses avant qu'elles ne deviennent incontrôlables."
+        },
+        {
+            question: "Qu'est-ce qu'un RAID log en gestion de projet ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "Un outil de sauvegarde informatique",
+                "Un registre des Risques, Assumptions, Issues, Dependencies",
+                "Une méthode de calcul du ROI",
+                "Un diagramme de flux de données"
+            ],
+            correctAnswer: "Un registre des Risques, Assumptions, Issues, Dependencies",
+            explanation: "Le RAID log centralise les éléments critiques : Risques (potentiels), Assumptions (hypothèses), Issues (problèmes actuels), Dependencies (dépendances)."
+        },
+        {
+            question: "Quelle technique permet d'évaluer la durée d'un projet incertain ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Planning Poker", "PERT (Optimiste+Pessimiste+Probable)", "Vélocité agile", "Cycle Time"],
+            correctAnswer: "PERT (Optimiste+Pessimiste+Probable)",
+            explanation: "La technique PERT calcule une durée estimée = (Optimiste + 4×Probable + Pessimiste)/6, utile pour les projets complexes."
+        },
+        {
+            question: "Quel indicateur surveiller pour éviter l'épuisement de l'équipe ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Taux d'occupation > 90%", "Heures supplémentaires", "Burnout index", "Tous ces éléments"],
+            correctAnswer: "Tous ces éléments",
+            explanation: "Un taux d'occupation élevé, des heures supplémentaires systématiques et des signes de burnout sont des alertes à surveiller activement."
+        },
+        {
+            question: "Quelle clause contractuelle protège contre les dépassements de budget ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: ["Forfait", "Régie", "T&M (Time and Material)", "Capé"],
+            correctAnswer: "Forfait",
+            explanation: "Un contrat forfaitaire fixe le prix à l'avance, transférant le risque financier au prestataire (mais nécessite un périmètre très stable)."
+        },
+        {
+            question: "Quel bénéfice principal des jalons (milestones) ? <span class='competence-badge'>Gestion de Projet</span>",
+            options: [
+                "Points de contrôle pour valider la direction",
+                "Obligation légale pour les projets IT",
+                "Augmenter la charge administrative",
+                "Remplacer les réunions de suivi"
+            ],
+            correctAnswer: "Points de contrôle pour valider la direction",
+            explanation: "Les jalons marquent des étapes clés permettant de valider les livrables intermédiaires et réorienter si nécessaire avant d'aller plus loin."
+        },
+
+        // AXE 2 – AMOA (15 questions)
+        {
+            question: "Quel est l'objectif principal d'un atelier de cadrage ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Rédiger le cahier des charges technique",
+                "Recueillir et prioriser les besoins métiers",
+                "Estimer précisément le budget",
+                "Désigner l'équipe de développement"
+            ],
+            correctAnswer: "Recueillir et prioriser les besoins métiers",
+            explanation: "L'atelier de cadrage permet de comprendre les attentes métiers via des techniques comme le design thinking ou les user journeys."
+        },
+        {
+            question: "Quel standard utilise-t-on pour modéliser les processus métiers ? <span class='competence-badge'>AMOA</span>",
+            options: ["BPMN 2.0", "UML", "SQL", "XML"],
+            correctAnswer: "BPMN 2.0",
+            explanation: "BPMN (Business Process Model and Notation) est le standard avec éléments comme les pools, lanes, événements, activités et gateways."
+        },
+        {
+            question: "Qu'est-ce qu'une spécification fonctionnelle générale (SFG) ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Un document qui décrit le code source",
+                "La description des fonctionnalités attendues du point de vue utilisateur",
+                "Le planning du projet",
+                "La liste des serveurs à déployer"
+            ],
+            correctAnswer: "La description des fonctionnalités attendues du point de vue utilisateur",
+            explanation: "La SFG (ou Spécifications des Exigences Fonctionnelles) décrit ce que le système doit faire, sans entrer dans les détails techniques."
+        },
+        {
+            question: "Quel rôle joue l'AMOA dans la phase de recette ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Développer le code",
+                "Rédiger le plan de test et valider la conformité aux besoins",
+                "Gérer l'infrastructure technique",
+                "Communiquer la roadmap aux sponsors"
+            ],
+            correctAnswer: "Rédiger le plan de test et valider la conformité aux besoins",
+            explanation: "L'AMOA est responsable de la recette fonctionnelle, s'assurant que le livrable correspond bien aux spécifications et aux attentes métiers."
+        },
+        {
+            question: "Quel outil est utilisé pour classer les exigences par ordre d'importance ? <span class='competence-badge'>AMOA</span>",
+            options: ["Matrice de traçabilité", "Diagramme de Gantt", "Scorecard", "Matrice MoSCoW"],
+            correctAnswer: "Matrice MoSCoW",
+            explanation: "La méthode MoSCoW classe les exigences en Must have, Should have, Could have et Won't have, permettant une priorisation claire."
+        },
+        {
+            question: "Comment identifier les parties prenantes d'un projet ? <span class='competence-badge'>AMOA</span>",
+            options: ["En interrogeant l'équipe technique", "Via une matrice RACI", "Uniquement les managers", "En faisant un sondage client"],
+            correctAnswer: "Via une matrice RACI",
+            explanation: "La matrice RACI (Responsible, Accountable, Consulted, Informed) définit clairement les rôles et responsabilités pour chaque livrable ou tâche, incluant toutes les parties prenantes."
+        },
+        {
+            question: "Quelle technique aide à visualiser l'expérience utilisateur de bout en bout ? <span class='competence-badge'>AMOA</span>",
+            options: ["User Story", "Product Backlog", "User Journey Map", "Daily Scrum"],
+            correctAnswer: "User Journey Map",
+            explanation: "La User Journey Map cartographie le parcours d'un utilisateur, ses interactions, ses émotions et ses points de friction avec un produit ou service."
+        },
+        {
+            question: "Qu'est-ce que l'urbanisation du SI ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "La migration vers le cloud public",
+                "La gestion des infrastructures réseaux",
+                "L'alignement des applications sur la stratégie d'entreprise",
+                "Le déploiement de serveurs en ville"
+            ],
+            correctAnswer: "L'alignement des applications sur la stratégie d'entreprise",
+            explanation: "L'urbanisation du SI organise et aligne le système d'information en 'quartiers' cohérents, réduisant la complexité et les coûts."
+        },
+        {
+            question: "Quel est le risque principal d'un cahier des charges trop détaillé ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Un manque de clarté pour les développeurs",
+                "Un coût de rédaction trop élevé",
+                "Un manque de flexibilité pour s'adapter aux changements",
+                "Une mauvaise qualité de la solution finale"
+            ],
+            correctAnswer: "Un manque de flexibilité pour s'adapter aux changements",
+            explanation: "Un cahier des charges trop rigide peut empêcher le projet de s'adapter aux nouvelles opportunités ou contraintes, entraînant une solution obsolète à sa livraison."
+        },
+        {
+            question: "À quoi sert une matrice de traçabilité des exigences ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "À suivre le planning du projet",
+                "À vérifier que chaque exigence est couverte par un test et un livrable",
+                "À calculer le ROI",
+                "À définir la gouvernance"
+            ],
+            correctAnswer: "À vérifier que chaque exigence est couverte par un test et un livrable",
+            explanation: "Elle assure que chaque exigence fonctionnelle est bien prise en compte, implémentée et testée de bout en bout."
+        },
+        {
+            question: "Quel est le rôle du 'Product Owner' dans le processus AMOA ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Développer le produit",
+                "Être le porte-parole du client et gérer le backlog produit",
+                "Faciliter les réunions d'équipe",
+                "Assurer la qualité technique"
+            ],
+            correctAnswer: "Être le porte-parole du client et gérer le backlog produit",
+            explanation: "Le Product Owner est l'interface entre les métiers et l'équipe de développement, responsable de la vision du produit et de la priorisation du backlog."
+        },
+        {
+            question: "Qu'est-ce qu'un prototype ou un 'mock-up' ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Un document juridique",
+                "Une maquette visuelle de la future interface utilisateur",
+                "Un rapport d'audit technique",
+                "Un budget prévisionnel"
+            ],
+            correctAnswer: "Une maquette visuelle de la future interface utilisateur",
+            explanation: "Il permet de valider le design, l'ergonomie et le parcours utilisateur avant le développement, réduisant les risques d'erreurs et d'incompréhension."
+        },
+        {
+            question: "Quel est l'un des pièges courants dans la rédaction des spécifications ? <span class='competence-badge'>AMOA</span>",
+            options: [
+                "Utiliser un langage trop simple",
+                "Confondre les spécifications fonctionnelles et techniques",
+                "Manquer de détails",
+                "Ne pas impliquer l'équipe de développement"
+            ],
+            correctAnswer: "Confondre les spécifications fonctionnelles et techniques",
+            explanation: "L'AMOA doit se concentrer sur le 'quoi' (besoins métiers) et non sur le 'comment' (choix techniques), qui est du ressort de la maîtrise d'œuvre."
+        },
+        {
+            question: "Quelle approche favorise une meilleure qualité des exigences ? <span class='competence-badge'>AMOA</span>",
+            options: ["Recueillir tous les besoins en une seule fois", "Écrire les user stories en équipe", "Faire un cahier des charges de 200 pages", "Attendre la fin du projet pour les valider"],
+            correctAnswer: "Écrire les user stories en équipe",
+            explanation: "Le travail collaboratif sur les user stories (avec le format 'En tant que [rôle], je veux [action] afin de [bénéfice]') garantit une meilleure compréhension partagée."
+        },
+        {
+            question: "Quelle méthode de validation permet de s'assurer de la viabilité d'un concept ? <span class='competence-badge'>AMOA</span>",
+            options: ["Proof of Concept (PoC)", "Full-scale deployment", "Analyse de rentabilité", "Roadmap stratégique"],
+            correctAnswer: "Proof of Concept (PoC)",
+            explanation: "Le PoC permet de vérifier techniquement et fonctionnellement la faisabilité d'une idée, avec des coûts et des risques limités."
+        },
+
+        // AXE 3 – TRANSFORMATION DIGITALE (15 questions)
+        {
+            question: "Quel outil aligne les projets IT avec la stratégie d'entreprise ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: ["Balanced Scorecard", "Matrice SWOT", "Gantt Chart", "Burndown Chart"],
+            correctAnswer: "Balanced Scorecard",
+            explanation: "Le Balanced Scorecard traduit la vision stratégique en objectifs mesurables selon 4 perspectives : financière, client, processus, apprentissage."
+        },
+        {
+            question: "Quelle est la première étape d'une transformation digitale réussie ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Acheter des nouvelles technologies",
+                "Auditer la maturité digitale et le besoin client",
+                "Recruter des développeurs",
+                "Lancer une campagne de communication"
+            ],
+            correctAnswer: "Auditer la maturité digitale et le besoin client",
+            explanation: "Une transformation commence par un diagnostic précis des forces et faiblesses internes, et une compréhension des attentes externes."
+        },
+        {
+            question: "Qu'est-ce qu'une 'roadmap digitale' ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Un guide touristique numérique",
+                "Une vision et un plan d'action pour la digitalisation sur plusieurs années",
+                "Un planning détaillé sur 3 mois",
+                "La liste des outils logiciels utilisés"
+            ],
+            correctAnswer: "Une vision et un plan d'action pour la digitalisation sur plusieurs années",
+            explanation: "La roadmap présente la vision stratégique, les grandes étapes, les initiatives et les dépendances sur le long terme."
+        },
+        {
+            question: "Quel indicateur de valeur est essentiel pour un projet de e-commerce ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: ["Taux de rebond", "Taux de conversion", "Coût par clic", "Nombre de pages vues"],
+            correctAnswer: "Taux de conversion",
+            explanation: "Le taux de conversion (achats/visites) mesure l'efficacité du site à transformer un visiteur en client, un KPI métier clé."
+        },
+        {
+            question: "Quel risque principal est lié à la dette technique ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Absence de documentation",
+                "Coûts de maintenance et d'évolution croissants",
+                "Mauvaise expérience utilisateur",
+                "Non-conformité RGPD"
+            ],
+            correctAnswer: "Coûts de maintenance et d'évolution croissants",
+            explanation: "La dette technique (code mal structuré, archaïque) rend l'ajout de nouvelles fonctionnalités plus long et plus coûteux."
+        },
+        {
+            question: "Qu'est-ce que la 'servitisation' ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Un service de livraison",
+                "La transformation d'un produit en un service",
+                "L'optimisation des services cloud",
+                "La numérisation d'un service existant"
+            ],
+            correctAnswer: "La transformation d'un produit en un service",
+            explanation: "Exemple : Michelin qui ne vend plus des pneus mais un service au kilomètre parcouru, grâce aux capteurs et à la donnée."
+        },
+        {
+            question: "Quel rôle joue l'architecture cible dans une transformation digitale ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Elle définit les objectifs business",
+                "Elle décrit l'état idéal du SI pour soutenir la stratégie",
+                "Elle gère les ressources humaines",
+                "Elle mesure la performance financière"
+            ],
+            correctAnswer: "Elle décrit l'état idéal du SI pour soutenir la stratégie",
+            explanation: "L'architecture cible est le plan directeur des systèmes, applications et données nécessaires pour atteindre les objectifs métiers."
+        },
+        {
+            question: "Quelle stratégie digitale vise à offrir une expérience client fluide sur tous les canaux ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: ["Multi-canal", "Omni-canal", "Canal unique", "Phygital"],
+            correctAnswer: "Omni-canal",
+            explanation: "L'omnicanal intègre tous les canaux (physiques et numériques) pour que l'expérience utilisateur soit cohérente et sans couture."
+        },
+        {
+            question: "Quel est un indicateur clé de la maturité digitale d'une organisation ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "L'âge moyen des employés",
+                "Le nombre de serveurs",
+                "La proportion de processus métiers automatisés",
+                "Le nombre de téléphones de fonction"
+            ],
+            correctAnswer: "La proportion de processus métiers automatisés",
+            explanation: "Une organisation mature a automatisé une grande partie de ses tâches répétitives pour libérer du temps pour des activités à plus forte valeur ajoutée."
+        },
+        {
+            question: "Comment évaluer le succès d'une transformation digitale ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Par le nombre de réunions",
+                "Par le ROI et l'impact sur l'expérience client et l'efficacité opérationnelle",
+                "Par le nombre de technologies déployées",
+                "Par la taille de l'équipe IT"
+            ],
+            correctAnswer: "Par le ROI et l'impact sur l'expérience client et l'efficacité opérationnelle",
+            explanation: "Le succès se mesure par les bénéfices business tangibles, pas par le simple déploiement technologique."
+        },
+        {
+            question: "Qu'est-ce qu'une 'plateforme digitale' ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Un serveur physique",
+                "Un modèle d'affaire créant de la valeur entre plusieurs parties prenantes",
+                "Une application mobile",
+                "Une base de données"
+            ],
+            correctAnswer: "Un modèle d'affaire créant de la valeur entre plusieurs parties prenantes",
+            explanation: "Les plateformes (type Uber, Airbnb) mettent en relation producteurs et consommateurs, créant un écosystème de valeur."
+        },
+        {
+            question: "Quel est le principal défi de la gestion de portefeuille de projets digitaux ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Sélectionner les projets les plus rentables et les aligner sur la stratégie",
+                "Avoir trop d'idées de projets",
+                "Manquer de budget",
+                "Ne pas trouver les bons prestataires"
+            ],
+            correctAnswer: "Sélectionner les projets les plus rentables et les aligner sur la stratégie",
+            explanation: "Il faut s'assurer que les projets choisis apportent la meilleure valeur pour l'organisation et ses clients, avec les ressources limitées."
+        },
+        {
+            question: "Quelle stratégie digitale vise à dématérialiser les processus existants sans les optimiser ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: ["Désintermédiation", "Numérisation", "Transformation", "Disruption"],
+            correctAnswer: "Numérisation",
+            explanation: "La numérisation consiste à passer du papier au numérique. La transformation va plus loin en repensant le processus pour l'optimiser (ex. : e-banking)."
+        },
+        {
+            question: "Qu'est-ce qu'un 'Modèle d'affaire disruptif' ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Une offre de services de consulting",
+                "Une innovation qui bouleverse un marché existant",
+                "Un projet risqué",
+                "Un modèle avec des coûts élevés"
+            ],
+            correctAnswer: "Une innovation qui bouleverse un marché existant",
+            explanation: "La disruption (ex. : Netflix pour les vidéoclubs) change les règles du jeu en offrant une proposition de valeur différente, souvent moins chère et plus accessible."
+        },
+        {
+            question: "Quel est le rôle du 'Chief Digital Officer' (CDO) ? <span class='competence-badge'>Transfo Digitale</span>",
+            options: [
+                "Gérer les serveurs et les réseaux",
+                "Piloter la stratégie de transformation digitale de l'entreprise",
+                "Développer les applications mobiles",
+                "Vendre des produits en ligne"
+            ],
+            correctAnswer: "Piloter la stratégie de transformation digitale de l'entreprise",
+            explanation: "Le CDO est responsable de la vision et de la mise en œuvre de la transformation digitale, incluant l'expérience client, l'innovation et l'évolution des processus."
+        },
+
+        // AXE 4 – AGILITÉ & MÉTHODES LEAN (15 questions)
+        {
+            question: "Quel principe guide la priorisation du backlog ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Valeur métier et risque",
+                "Ordre d'arrivée des demandes",
+                "Complexité technique",
+                "Préférences de l'équipe"
+            ],
+            correctAnswer: "Valeur métier et risque",
+            explanation: "Le Product Owner priorise en maximisant la valeur livrée et en réduisant les risques, pas selon des critères techniques ou chronologiques."
+        },
+        {
+            question: "Quelle est la durée typique d'un Sprint en Scrum ? <span class='competence-badge'>Agilité</span>",
+            options: ["1 jour", "2 à 4 semaines", "6 mois", "Indéfinie"],
+            correctAnswer: "2 à 4 semaines",
+            explanation: "Un Sprint est un 'timebox' (une durée fixe) de 2 à 4 semaines, durant lequel une incrémentation de produit est livrée."
+        },
+        {
+            question: "Qui est responsable de la suppression des obstacles pour l'équipe de développement ? <span class='competence-badge'>Agilité</span>",
+            options: ["Le Product Owner", "Le Scrum Master", "Le Manager", "L'équipe de développement elle-même"],
+            correctAnswer: "Le Scrum Master",
+            explanation: "Le Scrum Master est le 'servant-leader' de l'équipe, il s'assure que les obstacles (impediments) qui ralentissent le travail sont levés."
+        },
+        {
+            question: "Quel artefact permet de suivre l'avancement d'un Sprint ? <span class='competence-badge'>Agilité</span>",
+            options: ["Le Product Backlog", "Le Sprint Backlog", "Le Burndown Chart", "La Démo"],
+            correctAnswer: "Le Burndown Chart",
+            explanation: "Le Burndown Chart représente la quantité de travail restant à faire dans un sprint et aide l'équipe à s'assurer qu'elle est sur la bonne voie."
+        },
+        {
+            question: "Quelle cérémonie permet de s'améliorer en continu ? <span class='competence-badge'>Agilité</span>",
+            options: ["La Rétrospective", "Le Daily Stand-up", "Le Sprint Planning", "La Revue de Sprint"],
+            correctAnswer: "La Rétrospective",
+            explanation: "La Rétrospective a lieu à la fin du Sprint et permet à l'équipe de réfléchir à ce qui a bien fonctionné, ce qui peut être amélioré et d'adapter ses pratiques."
+        },
+        {
+            question: "Qu'est-ce que la 'Vélocité' en Scrum ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "La vitesse de connexion internet",
+                "La quantité de travail accompli par l'équipe durant un Sprint",
+                "La rapidité à écrire le code",
+                "Le temps de réponse de l'application"
+            ],
+            correctAnswer: "La quantité de travail accompli par l'équipe durant un Sprint",
+            explanation: "La vélocité est une métrique qui permet à l'équipe d'estimer sa capacité à réaliser du travail et d'ajuster la planification des futurs Sprints."
+        },
+        {
+            question: "Quel est l'objectif principal d'un 'Daily Scrum' ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Faire un rapport au manager",
+                "Coordonner le travail de la journée et identifier les obstacles",
+                "Prioriser le backlog",
+                "Présenter le travail réalisé"
+            ],
+            correctAnswer: "Coordonner le travail de la journée et identifier les obstacles",
+            explanation: "C'est une courte réunion quotidienne où les membres de l'équipe partagent leur avancement et les problèmes qu'ils rencontrent pour s'auto-organiser."
+        },
+        {
+            question: "Qu'est-ce que le 'Story Mapping' ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Une carte mentale des fonctionnalités",
+                "Une technique pour visualiser l'ensemble du parcours utilisateur et prioriser les fonctionnalités",
+                "Un outil de géolocalisation",
+                "Une méthode d'estimation du temps"
+            ],
+            correctAnswer: "Une technique pour visualiser l'ensemble du parcours utilisateur et prioriser les fonctionnalités",
+            explanation: "Le Story Mapping aide à créer une vue d'ensemble du produit, de ses fonctionnalités et du parcours utilisateur, facilitant la priorisation et la construction d'une roadmap."
+        },
+        {
+            question: "Quelle méthode agile est centrée sur le flux de travail et la limitation des tâches en cours ? <span class='competence-badge'>Agilité</span>",
+            options: ["Scrum", "Kanban", "Extreme Programming (XP)", "SAFe"],
+            correctAnswer: "Kanban",
+            explanation: "Kanban utilise un tableau visuel pour représenter le flux de travail et met l'accent sur la limitation du travail en cours (WIP) pour améliorer l'efficacité."
+        },
+        {
+            question: "Qu'est-ce que 'SAFe' (Scaled Agile Framework) ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Un outil de gestion de projet",
+                "Une méthode pour un projet unique",
+                "Un framework pour adapter l'agilité à l'échelle de grandes organisations",
+                "Une certification agile"
+            ],
+            correctAnswer: "Un framework pour adapter l'agilité à l'échelle de grandes organisations",
+            explanation: "SAFe fournit une structure pour la coordination entre plusieurs équipes agiles, les portefeuilles de projets et la stratégie d'entreprise."
+        },
+        {
+            question: "Quel est le but principal de 'DevOps' ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Automatiser les tests",
+                "Rapprocher les équipes de développement (Dev) et d'opérations (Ops)",
+                "Ne pas avoir de documentation",
+                "Utiliser des outils cloud"
+            ],
+            correctAnswer: "Rapprocher les équipes de développement (Dev) et d'opérations (Ops)",
+            explanation: "DevOps vise à améliorer la collaboration et la communication entre ces équipes pour accélérer la livraison de logiciels de haute qualité."
+        },
+        {
+            question: "Quel principe de l'agilité est souvent mis en échec par un management rigide ? <span class='competence-badge'>Agilité</span>",
+            options: ["Livraison rapide", "Auto-organisation de l'équipe", "Qualité technique", "Documentation exhaustive"],
+            correctAnswer: "Auto-organisation de l'équipe",
+            explanation: "L'agilité repose sur la confiance et l'autonomie des équipes pour s'organiser. Un management trop directif peut tuer cette dynamique."
+        },
+        {
+            question: "Quel est l'un des 'Artefacts' de Scrum ? <span class='competence-badge'>Agilité</span>",
+            options: ["Le planning", "La liste des risques", "Le Product Backlog", "Le budget prévisionnel"],
+            correctAnswer: "Le Product Backlog",
+            explanation: "Le Product Backlog est une liste ordonnée des fonctionnalités, corrections et améliorations nécessaires au produit."
+        },
+        {
+            question: "Quelle métrique est souvent utilisée pour mesurer la qualité des livrables agiles ? <span class='competence-badge'>Agilité</span>",
+            options: ["Délai de mise en production", "Nombre de bugs par fonctionnalité", "Complexité cyclomatique", "Temps de réunion"],
+            correctAnswer: "Nombre de bugs par fonctionnalité",
+            explanation: "La surveillance de la qualité via le nombre de bugs, la couverture de test ou les erreurs en production est un indicateur clé de la maturité agile."
+        },
+        {
+            question: "Qu'est-ce que le 'Release Planning' ? <span class='competence-badge'>Agilité</span>",
+            options: [
+                "Un plan de déploiement en production",
+                "Un plan pour la sortie d'une version majeure du produit",
+                "Le planning d'un sprint",
+                "La liste des fonctionnalités"
+            ],
+            correctAnswer: "Un plan pour la sortie d'une version majeure du produit",
+            explanation: "Le Release Planning définit les fonctionnalités qui seront incluses dans la prochaine version du produit et la date de livraison prévue."
+        },
+
+        // AXE 5 – IA & DATA (15 questions)
+        {
+            question: "Qu'est-ce que le 'Prompt Engineering' pour ChatGPT ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Programmer l'IA en Python",
+                "Structurer des requêtes pour des résultats optimaux",
+                "Nettoyer des jeux de données",
+                "Déployer des modèles en production"
+            ],
+            correctAnswer: "Structurer des requêtes pour des résultats optimaux",
+            explanation: "C'est l'art de formuler des prompts clairs avec contexte, contraintes et format attendu pour obtenir les meilleures réponses des LLMs."
+        },
+        {
+            question: "Quelle étape précède le développement d'un modèle de Machine Learning ? <span class='competence-badge'>IA & Data</span>",
+            options: ["Le déploiement en production", "L'entraînement du modèle", "Le nettoyage et la préparation des données", "La communication des résultats"],
+            correctAnswer: "Le nettoyage et la préparation des données",
+            explanation: "La qualité du modèle de Machine Learning dépend directement de la qualité des données d'entrée. C'est l'étape la plus longue et cruciale."
+        },
+        {
+            question: "Quel est le but d'un 'Data Lake' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Stocker des données structurées pour le reporting",
+                "Stocker toutes les données brutes, quel que soit leur format",
+                "Gérer les données de production",
+                "Créer des graphiques"
+            ],
+            correctAnswer: "Stocker toutes les données brutes, quel que soit leur format",
+            explanation: "Un Data Lake stocke les données brutes (structurées, semi-structurées, non-structurées) à grande échelle pour une utilisation ultérieure par des modèles IA."
+        },
+        {
+            question: "Quel est le risque principal lié au 'biais algorithmique' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Un temps de calcul trop long",
+                "Des résultats qui reflètent et amplifient les préjugés existants dans les données",
+                "Un modèle trop complexe",
+                "Un manque de données"
+            ],
+            correctAnswer: "Des résultats qui reflètent et amplifient les préjugés existants dans les données",
+            explanation: "Si les données d'entraînement sont biaisées, le modèle reproduira ce biais, ce qui peut mener à des décisions injustes ou discriminatoires."
+        },
+        {
+            question: "Qu'est-ce que la 'Data Governance' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "La gouvernance des réseaux",
+                "La gestion des serveurs",
+                "L'ensemble des règles et processus pour assurer la qualité et la sécurité des données",
+                "La sécurité des mots de passe"
+            ],
+            correctAnswer: "L'ensemble des règles et processus pour assurer la qualité et la sécurité des données",
+            explanation: "La Data Governance définit qui peut accéder à quelles données, comment elles sont utilisées, et comment leur qualité est assurée."
+        },
+        {
+            question: "Quel est le principe clé de la conformité au RGPD ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "L'anonymisation de toutes les données",
+                "Le consentement éclairé et le droit à l'oubli pour les données personnelles",
+                "Le stockage des données en Europe",
+                "L'utilisation de l'IA"
+            ],
+            correctAnswer: "Le consentement éclairé et le droit à l'oubli pour les données personnelles",
+            explanation: "Le RGPD (Règlement Général sur la Protection des Données) donne aux individus le contrôle sur leurs données personnelles et impose des obligations aux entreprises."
+        },
+        {
+            question: "Qu'est-ce que le 'Data Storytelling' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Raconter des histoires aux données",
+                "Transformer les données en récits clairs et visuels pour convaincre un public",
+                "Faire des blagues sur les données",
+                "Faire des bases de données"
+            ],
+            correctAnswer: "Transformer les données en récits clairs et visuels pour convaincre un public",
+            explanation: "Le Data Storytelling est une compétence clé pour le Data Scientist et le Business Analyst pour rendre les analyses compréhensibles et impactantes."
+        },
+        {
+            question: "Qu'est-ce que le 'MLOps' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "La gestion des modèles de Machine Learning en production",
+                "Un algorithme de machine learning",
+                "Un outil de visualisation de données",
+                "Un langage de programmation"
+            ],
+            correctAnswer: "La gestion des modèles de Machine Learning en production",
+            explanation: "MLOps applique les principes de DevOps (intégration continue, déploiement continu) aux modèles de Machine Learning pour les gérer de manière industrielle."
+        },
+        {
+            question: "Quel est l'objectif d'une 'matrice de confusion' pour un modèle de classification ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Mesurer le temps de calcul",
+                "Évaluer la performance du modèle en comparant les prédictions aux résultats réels",
+                "Mélanger les données",
+                "Identifier les erreurs de saisie"
+            ],
+            correctAnswer: "Évaluer la performance du modèle en comparant les prédictions aux résultats réels",
+            explanation: "La matrice de confusion est une table qui permet de visualiser la performance d'un algorithme de classification sur un ensemble de test."
+        },
+        {
+            question: "Quel est le rôle du 'Data Analyst' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Développer des algorithmes complexes",
+                "Collecter, nettoyer et interpréter les données pour en tirer des insights",
+                "Déployer les infrastructures cloud",
+                "Gérer les serveurs"
+            ],
+            correctAnswer: "Collecter, nettoyer et interpréter les données pour en tirer des insights",
+            explanation: "Le Data Analyst est le pont entre la donnée et le métier, il est capable de poser les bonnes questions et de trouver les réponses dans les données."
+        },
+        {
+            question: "Qu'est-ce que le 'Feature Engineering' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Une branche de l'ingénierie logicielle",
+                "La création de nouvelles variables pertinentes à partir de données brutes pour améliorer un modèle",
+                "La conception des interfaces graphiques",
+                "La gestion des serveurs"
+            ],
+            correctAnswer: "La création de nouvelles variables pertinentes à partir de données brutes pour améliorer un modèle",
+            explanation: "C'est une étape cruciale du Machine Learning où l'on construit de nouvelles fonctionnalités (features) pour aider le modèle à mieux apprendre."
+        },
+        {
+            question: "Quel type d'IA est le plus adapté pour détecter une fraude ? <span class='competence-badge'>IA & Data</span>",
+            options: ["Traitement du langage naturel (NLP)", "Vision par ordinateur", "Apprentissage supervisé", "Apprentissage non supervisé"],
+            correctAnswer: "Apprentissage supervisé",
+            explanation: "L'apprentissage supervisé est idéal, car le modèle est entraîné sur des données historiques (des transactions marquées comme 'fraude' ou 'non-fraude')."
+        },
+        {
+            question: "Quel est l'objectif du 'Data Warehouse' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Stocker des données en temps réel",
+                "Centraliser et stocker les données historiques pour l'analyse et le reporting",
+                "Héberger des applications web",
+                "Gérer le cycle de vie des modèles"
+            ],
+            correctAnswer: "Centraliser et stocker les données historiques pour l'analyse et le reporting",
+            explanation: "Contrairement au Data Lake, le Data Warehouse stocke des données structurées et nettoyées, optimisées pour la consultation et le Business Intelligence."
+        },
+        {
+            question: "Quelle est une bonne pratique pour l'éthique de l'IA ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Rendre les algorithmes plus complexes",
+                "Assurer la transparence et l'explicabilité des décisions prises par l'IA",
+                "Utiliser des données de qualité médiocre",
+                "Ignorer les biais potentiels"
+            ],
+            correctAnswer: "Assurer la transparence et l'explicabilité des décisions prises par l'IA",
+            explanation: "Le droit à l'explicabilité (explainability) est essentiel pour que les utilisateurs puissent comprendre pourquoi une IA a pris une certaine décision."
+        },
+        {
+            question: "Qu'est-ce que le 'Transfer Learning' ? <span class='competence-badge'>IA & Data</span>",
+            options: [
+                "Transférer des données entre bases",
+                "Réutiliser un modèle pré-entraîné sur un nouveau jeu de données plus petit",
+                "Envoyer un modèle par e-mail",
+                "Transférer des responsabilités d'équipe"
+            ],
+            correctAnswer: "Réutiliser un modèle pré-entraîné sur un nouveau jeu de données plus petit",
+            explanation: "C'est une technique puissante qui économise du temps et des ressources en s'appuyant sur les connaissances déjà acquises par un modèle sur un problème similaire."
+        },
+
+        // AXE 6 – CONDUITE DU CHANGEMENT (15 questions)
+        {
+            question: "Comment classer un stakeholder hostile au projet ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Fort pouvoir / faible intérêt",
+                "Fort pouvoir / fort intérêt",
+                "Faible pouvoir / fort intérêt",
+                "Faible pouvoir / faible intérêt"
+            ],
+            correctAnswer: "Fort pouvoir / fort intérêt",
+            explanation: "Un acteur hostile avec pouvoir doit être managé activement (quadrant haut-droit de la matrice Power/Interest)."
+        },
+        {
+            question: "Quel est l'objectif principal de la 'stratégie d'adoption' ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Faire des présentations sur le projet",
+                "Assurer que les utilisateurs utilisent et tirent de la valeur de la nouvelle solution",
+                "Faire des tests techniques",
+                "Rédiger le cahier des charges"
+            ],
+            correctAnswer: "Assurer que les utilisateurs utilisent et tirent de la valeur de la nouvelle solution",
+            explanation: "L'adoption est la clé du succès. Elle ne se limite pas au déploiement, mais à l'utilisation effective et à la satisfaction des utilisateurs."
+        },
+        {
+            question: "Quelle est la première réaction face à un grand changement ? <span class='competence-badge'>Changement</span>",
+            options: ["L'enthousiasme", "Le déni et la peur", "L'acceptation", "La collaboration"],
+            correctAnswer: "Le déni et la peur",
+            explanation: "Le changement génère souvent une résistance initiale. L'accompagnement doit anticiper cette réaction pour la surmonter."
+        },
+        {
+            question: "Quel rôle joue un 'ambassadeur du changement' ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Prendre toutes les décisions",
+                "Gérer les aspects techniques",
+                "Relayer la vision et accompagner les utilisateurs sur le terrain",
+                "Rédiger la documentation technique"
+            ],
+            correctAnswer: "Relayer la vision et accompagner les utilisateurs sur le terrain",
+            explanation: "Les ambassadeurs, choisis pour leur influence, sont des maillons essentiels pour rassurer, former et obtenir l'adhésion de leurs collègues."
+        },
+        {
+            question: "Quel type de communication est le plus efficace pour la conduite du changement ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Une communication descendante (top-down)",
+                "Une communication bidirectionnelle, transparente et régulière",
+                "Des e-mails envoyés à la dernière minute",
+                "Des réunions obligatoires"
+            ],
+            correctAnswer: "Une communication bidirectionnelle, transparente et régulière",
+            explanation: "La communication doit rassurer, expliquer le 'pourquoi' du changement et permettre aux utilisateurs de s'exprimer (feedback)."
+        },
+        {
+            question: "Comment mesurer l'adhésion des utilisateurs ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Le nombre de participants aux réunions",
+                "Le nombre de licences achetées",
+                "Le taux d'utilisation de la solution et le score de satisfaction",
+                "Le temps passé sur la solution"
+            ],
+            correctAnswer: "Le taux d'utilisation de la solution et le score de satisfaction",
+            explanation: "L'adhésion se mesure par des KPIs d'utilisation, des sondages de satisfaction (NPS), et des indicateurs de performance post-déploiement."
+        },
+        {
+            question: "Quel modèle de conduite du changement décrit les 5 étapes d'un individu face au changement ? <span class='competence-badge'>Changement</span>",
+            options: ["ADKAR", "Matrice RACI", "Swot", "Balanced Scorecard"],
+            correctAnswer: "ADKAR",
+            explanation: "Le modèle ADKAR (Awareness, Desire, Knowledge, Ability, Reinforcement) permet d'accompagner chaque personne dans son cheminement individuel face au changement."
+        },
+        {
+            question: "Quel est l'un des principaux facteurs de résistance au changement ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Un budget trop important",
+                "La peur de l'inconnu et la perte de repères",
+                "Des objectifs clairs",
+                "Une équipe de projet expérimentée"
+            ],
+            correctAnswer: "La peur de l'inconnu et la perte de repères",
+            explanation: "Les utilisateurs ont peur de perdre leurs habitudes, leurs compétences et leur influence. La conduite du changement doit adresser ces peurs."
+        },
+        {
+            question: "Quelle est l'une des phases clés d'un plan de conduite du changement ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Le développement du code",
+                "L'analyse de l'impact et la segmentation des parties prenantes",
+                "La rédaction des user stories",
+                "L'audit financier"
+            ],
+            correctAnswer: "L'analyse de l'impact et la segmentation des parties prenantes",
+            explanation: "Comprendre qui est impacté (et comment) permet de construire une stratégie d'accompagnement ciblée pour chaque groupe d'utilisateurs."
+        },
+        {
+            question: "Quel est le but d'une 'Formation de formateurs' ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Former directement tous les utilisateurs",
+                "Former des experts internes qui formeront ensuite leurs collègues",
+                "Former l'équipe de développement",
+                "Faire des présentations pour la direction"
+            ],
+            correctAnswer: "Former des experts internes qui formeront ensuite leurs collègues",
+            explanation: "Cette approche démultiplie la capacité de formation et s'appuie sur la crédibilité des ambassadeurs internes."
+        },
+        {
+            question: "Qu'est-ce que la 'courbe du changement' ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Un graphique de progression du projet",
+                "Une représentation des émotions et de l'état psychologique des individus face au changement",
+                "Une mesure de la satisfaction client",
+                "Un outil de planification"
+            ],
+            correctAnswer: "Une représentation des émotions et de l'état psychologique des individus face au changement",
+            explanation: "Elle décrit les étapes du choc initial, du déni, de la résistance, de l'expérimentation et de l'engagement final."
+        },
+        {
+            question: "Comment un 'sponsor' peut-il influencer positivement un projet ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "En participant à toutes les réunions",
+                "En communiquant activement son soutien et en prenant les décisions importantes",
+                "En ne faisant rien",
+                "En gérant les détails techniques"
+            ],
+            correctAnswer: "En communiquant activement son soutien et en prenant les décisions importantes",
+            explanation: "Le sponsor est le garant du projet, son soutien visible et sa capacité à arbitrer sont essentiels pour l'adhésion."
+        },
+        {
+            question: "Quelle méthode permet de formaliser un plan de communication ? <span class='competence-badge'>Changement</span>",
+            options: ["La matrice RACI", "Le plan de communication (quoi, qui, quand, comment)", "Le diagramme de Gantt", "Le business case"],
+            correctAnswer: "Le plan de communication (quoi, qui, quand, comment)",
+            explanation: "Ce plan structuré définit les messages clés, les cibles, les canaux et la fréquence des communications pour chaque phase du projet."
+        },
+        {
+            question: "Quel est un bon indicateur d'un projet mal géré en conduite du changement ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Un taux d'adoption de la solution élevé",
+                "Des demandes d'utilisateurs fréquentes",
+                "Un taux de support élevé et des retours négatifs après déploiement",
+                "Une équipe de projet motivée"
+            ],
+            correctAnswer: "Un taux de support élevé et des retours négatifs après déploiement",
+            explanation: "Un nombre élevé de tickets d'assistance et de plaintes est un signe que la solution n'a pas été bien adoptée ou que la formation était insuffisante."
+        },
+        {
+            question: "Qu'est-ce que l'objectif 'Reinforcement' dans le modèle ADKAR ? <span class='competence-badge'>Changement</span>",
+            options: [
+                "Créer de la connaissance",
+                "Développer un désir de changer",
+                "Ancrer durablement le changement dans les pratiques",
+                "Prendre conscience du changement"
+            ],
+            correctAnswer: "Ancrer durablement le changement dans les pratiques",
+            explanation: "Le 'Renforcement' consiste à célébrer les succès, à ajuster les processus et à fournir un support continu pour que les utilisateurs ne reviennent pas à leurs anciennes méthodes."
+        },
+
+        // AXE 7 – GOUVERNANCE, ÉTHIQUE, CONFORMITÉ (10 questions)
+        {
+            question: "Quel framework couvre la gouvernance SI ? <span class='competence-badge'>Gouvernance</span>",
+            options: ["COBIT", "Scrum", "Lean", "Design Thinking"],
+            correctAnswer: "COBIT",
+            explanation: "COBIT (ISACA) fournit un cadre complet pour aligner la gouvernance IT sur les besoins métiers, avec processus et objectifs de contrôle."
+        },
+        {
+            question: "Quelle est la principale différence entre la sécurité et la conformité ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "La sécurité est technique, la conformité est juridique",
+                "La sécurité protège les actifs, la conformité est la preuve du respect des règles",
+                "Aucune différence, ce sont des synonymes",
+                "La sécurité est une obligation, la conformité est optionnelle"
+            ],
+            correctAnswer: "La sécurité protège les actifs, la conformité est la preuve du respect des règles",
+            explanation: "La sécurité est la mise en œuvre de mesures pour protéger les données. La conformité consiste à démontrer que ces mesures respectent les normes et lois (ex: ISO 27001, RGPD)."
+        },
+        {
+            question: "Quel est l'objectif d'un plan de continuité d'activité (PCA) ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Créer un plan de recrutement",
+                "Permettre à l'entreprise de continuer ses opérations après un incident majeur",
+                "Optimiser le budget IT",
+                "Accélérer le développement de logiciels"
+            ],
+            correctAnswer: "Permettre à l'entreprise de continuer ses opérations après un incident majeur",
+            explanation: "Le PCA définit les procédures, ressources et équipes nécessaires pour maintenir les activités critiques de l'entreprise en cas de crise (incendie, cyberattaque, etc.)."
+        },
+        {
+            question: "Qu'est-ce qu'une 'Politique de Sécurité du SI' (PSSI) ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Un outil de monitoring des réseaux",
+                "Un document qui définit les règles et les objectifs de sécurité",
+                "Un plan d'actions de sécurité",
+                "La liste des mots de passe"
+            ],
+            correctAnswer: "Un document qui définit les règles et les objectifs de sécurité",
+            explanation: "La PSSI est la référence de la gouvernance de la sécurité. Elle définit les principes, les responsabilités et les exigences de sécurité pour l'ensemble de l'organisation."
+        },
+        {
+            question: "Quel cadre de référence est le plus souvent utilisé pour la gestion des services informatiques ? <span class='competence-badge'>Gouvernance</span>",
+            options: ["COBIT", "ITIL", "Scrum", "Lean"],
+            correctAnswer: "ITIL",
+            explanation: "ITIL (Information Technology Infrastructure Library) fournit les meilleures pratiques pour la gestion des services IT (ITSM), incluant la gestion des incidents, des problèmes et des changements."
+        },
+        {
+            question: "Quel est le but d'un 'audit de conformité' ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Vérifier la performance technique des applications",
+                "S'assurer que l'organisation respecte les lois, réglementations et normes internes",
+                "Réduire les coûts",
+                "Améliorer l'expérience utilisateur"
+            ],
+            correctAnswer: "S'assurer que l'organisation respecte les lois, réglementations et normes internes",
+            explanation: "Les audits de conformité vérifient la bonne application des règles, comme le RGPD, la norme ISO 27001 ou des politiques internes."
+        },
+        {
+            question: "Quel est l'un des risques majeurs des Shadow IT ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Une mauvaise qualité des applications",
+                "Des coûts d'abonnement trop élevés",
+                "Des failles de sécurité et un manque de contrôle",
+                "Un manque de fonctionnalités"
+            ],
+            correctAnswer: "Des failles de sécurité et un manque de contrôle",
+            explanation: "Le Shadow IT (l'utilisation de solutions informatiques non approuvées par l'IT) échappe aux contrôles de sécurité et peut créer des vulnérabilités importantes."
+        },
+        {
+            question: "Quelle méthode permet de cartographier et de gérer les risques SI ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Une matrice d'évaluation des risques (probabilité x impact)",
+                "Le diagramme de Gantt",
+                "La méthode MoSCoW",
+                "Le planning poker"
+            ],
+            correctAnswer: "Une matrice d'évaluation des risques (probabilité x impact)",
+            explanation: "Cette matrice permet d'identifier, d'évaluer et de prioriser les risques en fonction de leur probabilité d'occurrence et de la gravité de leur impact."
+        },
+        {
+            question: "Qu'est-ce que l'éthique algorithmique ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Un langage de programmation",
+                "Un ensemble de principes pour concevoir des systèmes d'IA justes et transparents",
+                "Une norme de sécurité",
+                "Une loi sur la protection des données"
+            ],
+            correctAnswer: "Un ensemble de principes pour concevoir des systèmes d'IA justes et transparents",
+            explanation: "L'éthique algorithmique cherche à prévenir les biais, à garantir la transparence des décisions et à respecter les valeurs humaines dans la conception des IA."
+        },
+        {
+            question: "Quel est l'objectif d'une revue de sécurité régulière ? <span class='competence-badge'>Gouvernance</span>",
+            options: [
+                "Améliorer le code source",
+                "Identifier les vulnérabilités et les menaces, et s'assurer que les mesures de protection sont efficaces",
+                "Optimiser la performance des serveurs",
+                "Réduire le nombre d'erreurs en production"
+            ],
+            correctAnswer: "Identifier les vulnérabilités et les menaces, et s'assurer que les mesures de protection sont efficaces",
+            explanation: "Les audits et revues de sécurité sont essentiels pour s'adapter à l'évolution des menaces et maintenir un niveau de protection adéquat."
+        }
+    ]
+};
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.innerHTML = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.innerHTML = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Bravo, c'est la bonne réponse !";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication :";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            let scoreColor;
+            let recommendationsHtml;
+
+            if (percentage >= 80) {
+                scoreColor = 'var(--success-color)';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent !</h5><p>Vous avez une maîtrise avancée des compétences clés de la transformation digitale. Poursuivez votre développement avec des certifications ou des projets complexes.</p>';
+            } else if (percentage >= 50) {
+                scoreColor = 'var(--digital-blue)';
+                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Bon potentiel !</h5><p>Vous avez de solides bases mais certaines compétences méritent d\'être approfondies. Ciblez vos axes de progression en fonction de vos projets.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> À développer !</h5><p>Consolidez vos connaissances fondamentales. Identifiez 2-3 axes prioritaires pour votre montée en compétence.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>

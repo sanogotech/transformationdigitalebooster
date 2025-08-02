@@ -93,47 +93,48 @@
       color: var(--secondary-color);
       margin-bottom: 1rem;
     }
-
-    /* Style pour le bouton interactif */
-    .btn-quiz {
-      background-color: var(--agile-blue);
-      color: white;
-      border-radius: 50px;
-      padding: 0.75rem 2rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-quiz:hover {
-      background-color: var(--accent-color);
-    }
-
+    
     .card-body {
       text-align: center;
     }
     
     .interactive-content {
-      display: none; /* Cache le contenu interactif par défaut */
       margin-top: 1rem;
       padding-top: 1rem;
       border-top: 1px solid #eee;
     }
     
+    .accordion-button {
+      background-color: var(--agile-blue);
+      color: white;
+      font-weight: 600;
+      border-radius: 0.5rem !important;
+      transition: background-color 0.3s ease;
+    }
+
+    .accordion-button:hover {
+        background-color: var(--secondary-color);
+    }
+    
     .accordion-button:not(.collapsed) {
-        color: var(--dark-bg);
-        background-color: #e7f1ff;
+        color: #fff;
+        background-color: var(--accent-color);
         box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
     }
     
-    /* Animation pour l'ouverture des sections interactives */
-    .interactive-content.show {
-        animation: fadeIn 0.5s ease-in-out;
+    .accordion-item {
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .glossary-term {
+        font-weight: bold;
+        color: var(--agile-blue);
+        margin-top: 1rem;
     }
-    
+
     footer {
       background-color: var(--dark-bg);
       color: #fff;
@@ -175,6 +176,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#gouvernance">Gouvernance</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#glossaire">Glossaire</a>
+          </li>
         </ul>
       </div>
     </div>
@@ -197,17 +201,78 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">1. Gestion de Projet</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-right">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-tasks card-icon"></i>
                 <h5 class="card-title fw-bold">Méthodologies et Outils</h5>
                 <p class="card-text">
-                  Découvrez les différentes approches pour mener un projet à bien, des méthodes traditionnelles aux cadres agiles comme Scrum et Kanban.
+                  La gestion de projet est l'application de processus, de méthodes, de compétences, de connaissances et d'expériences pour atteindre des objectifs de projet. C'est l'épine dorsale de toute initiative, qu'elle soit digitale ou non.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('gestion-de-projet-content')">En savoir plus</button>
-                <div id="gestion-de-projet-content" class="interactive-content">
-                  <p>La gestion de projet est l'application de processus, de méthodes, de compétences, de connaissances et d'expériences pour atteindre des objectifs de projet. Les outils comme Jira, Trello ou Asana sont essentiels pour la collaboration.</p>
+                <div class="accordion" id="accordionGestionProjet">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Approches Clés
+                      </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionGestionProjet">
+                      <div class="accordion-body text-start">
+                        <p>Il existe deux grandes familles de méthodologies : les méthodes traditionnelles (comme le cycle en V ou le Waterfall) et les méthodes agiles. Le choix de la bonne approche dépend de la complexité, de la stabilité des besoins et du niveau d'incertitude du projet.</p>
+                        <h6>Tableau : Comparaison des approches de gestion de projet</h6>
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                              <tr>
+                                <th>Caractéristique</th>
+                                <th>Méthode Traditionnelle (Cycle en V)</th>
+                                <th>Méthode Agile (Scrum)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Planification</td>
+                                <td>Planification détaillée au début.</td>
+                                <td>Planification itérative et adaptative.</td>
+                              </tr>
+                              <tr>
+                                <td>Délais & Coût</td>
+                                <td>Fixes.</td>
+                                <td>Variables et estimés.</td>
+                              </tr>
+                              <tr>
+                                <td>Flexibilité</td>
+                                <td>Faible. Changement coûteux.</td>
+                                <td>Élevée. Accepte et embrasse le changement.</td>
+                              </tr>
+                              <tr>
+                                <td>Livrables</td>
+                                <td>Un seul livrable final.</td>
+                                <td>Multiples livrables incrémentaux.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Outils de collaboration
+                      </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionGestionProjet">
+                      <div class="accordion-body text-start">
+                        <p>Les outils de gestion de projet sont cruciaux pour la coordination des équipes et le suivi des tâches. Ils permettent de visualiser l'avancement, d'assigner les responsabilités et de centraliser les informations.</p>
+                        <ul>
+                            <li><strong>Jira :</strong> Très populaire pour le développement logiciel avec des tableaux Scrum et Kanban.</li>
+                            <li><strong>Trello :</strong> Basé sur des cartes et des colonnes, idéal pour des projets simples.</li>
+                            <li><strong>Asana :</strong> Offre une vue d'ensemble des tâches et des projets avec des fonctionnalités de reporting.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -219,19 +284,46 @@
     <!-- Section AMOA -->
     <section id="amoa" class="py-5">
       <div class="container">
-        <h2 class="section-title" data-aos="fade-down">2. AMOA</h2>
+        <h2 class="section-title" data-aos="fade-down">2. AMOA (Assistance à la Maîtrise d'Ouvrage)</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-left">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-handshake card-icon"></i>
-                <h5 class="card-title fw-bold">Assistance à la Maîtrise d'Ouvrage</h5>
+                <h5 class="card-title fw-bold">Le pont entre le besoin et la solution</h5>
                 <p class="card-text">
-                  L'AMOA est le lien entre les besoins métiers et l'équipe technique. Découvrez comment faciliter la communication et assurer la qualité.
+                  L'AMOA est un rôle essentiel qui agit comme l'intermédiaire entre les besoins de l'entreprise (Maîtrise d'Ouvrage) et l'équipe technique chargée du développement (Maîtrise d'Œuvre).
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('amoa-content')">En savoir plus</button>
-                <div id="amoa-content" class="interactive-content">
-                  <p>Le rôle de l'AMOA est de s'assurer que la solution développée par l'équipe technique répond bien aux besoins exprimés par le client (la maîtrise d'ouvrage). L'AMOA peut rédiger les spécifications fonctionnelles et valider la solution finale.</p>
+                <div class="accordion" id="accordionAMOA">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAMOA1" aria-expanded="false" aria-controls="collapseAMOA1">
+                        Rôles et responsabilités
+                      </button>
+                    </h2>
+                    <div id="collapseAMOA1" class="accordion-collapse collapse" data-bs-parent="#accordionAMOA">
+                      <div class="accordion-body text-start">
+                        <p>L'AMOA a pour mission de s'assurer que le produit final correspond aux attentes des utilisateurs et de l'entreprise. Ses tâches incluent :</p>
+                        <ul>
+                            <li><strong>Recueil des besoins :</strong> Organiser des ateliers et des entretiens pour comprendre les attentes.</li>
+                            <li><strong>Rédaction des spécifications :</strong> Traduire les besoins métiers en spécifications fonctionnelles claires.</li>
+                            <li><strong>Suivi et validation :</strong> S'assurer que la solution est conforme aux attentes et valider les livrables.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAMOA2" aria-expanded="false" aria-controls="collapseAMOA2">
+                        Compétences et Valeur Ajoutée
+                      </button>
+                    </h2>
+                    <div id="collapseAMOA2" class="accordion-collapse collapse" data-bs-parent="#accordionAMOA">
+                      <div class="accordion-body text-start">
+                        <p>Un bon AMOA possède à la fois des compétences techniques (pour dialoguer avec les développeurs) et des connaissances métiers (pour comprendre les utilisateurs). Sa valeur ajoutée réside dans sa capacité à minimiser les malentendus et à garantir la bonne adéquation de la solution au besoin.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -245,17 +337,73 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">3. Transformation Digitale</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-right">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-globe card-icon"></i>
                 <h5 class="card-title fw-bold">Le grand bouleversement</h5>
                 <p class="card-text">
-                  Comprenez les enjeux et les piliers de la transformation digitale : culture, processus, technologie et expérience client.
+                  La transformation digitale est un processus profond de changement qui impacte la culture d'entreprise, les modèles opérationnels et la manière d'interagir avec les clients.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('td-content')">En savoir plus</button>
-                <div id="td-content" class="interactive-content">
-                  <p>La transformation digitale ne se résume pas à l'adoption de nouvelles technologies. C'est un processus profond de changement qui impacte la culture d'entreprise, les modèles opérationnels et la manière d'interagir avec les clients et les partenaires.</p>
+                <div class="accordion" id="accordionTD">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTD1" aria-expanded="false" aria-controls="collapseTD1">
+                        Les 4 piliers de la transformation
+                      </button>
+                    </h2>
+                    <div id="collapseTD1" class="accordion-collapse collapse" data-bs-parent="#accordionTD">
+                      <div class="accordion-body text-start">
+                        <p>Pour réussir sa transformation, une entreprise doit agir sur quatre axes majeurs :</p>
+                        <h6>Tableau : Les piliers et leurs impacts</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Pilier</th>
+                                        <th>Description</th>
+                                        <th>Impacts</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Culture & Organisation</td>
+                                        <td>Développer une mentalité de collaboration et d'innovation.</td>
+                                        <td>Structure d'équipe plus agile, prise de décision décentralisée.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Processus</td>
+                                        <td>Optimiser les flux de travail grâce aux technologies.</td>
+                                        <td>Automatisation, réduction des tâches manuelles, efficacité accrue.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Technologie</td>
+                                        <td>Adopter des outils modernes (Cloud, IA, IoT).</td>
+                                        <td>Meilleure gestion des données, innovation de produits.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expérience Client</td>
+                                        <td>Placer le client au centre de la stratégie.</td>
+                                        <td>Personnalisation, omnicanalité, services plus rapides.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTD2" aria-expanded="false" aria-controls="collapseTD2">
+                        Enjeux et défis
+                      </button>
+                    </h2>
+                    <div id="collapseTD2" class="accordion-collapse collapse" data-bs-parent="#accordionTD">
+                      <div class="accordion-body text-start">
+                        <p>Les principaux défis sont la résistance au changement, le manque de compétences internes, le coût initial des investissements et la sécurité des données.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,17 +417,79 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">4. Agilité</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-left">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-rocket card-icon"></i>
-                <h5 class="card-title fw-bold">S'adapter en permanence</h5>
+                <h5 class="card-title fw-bold">Un état d'esprit, une culture</h5>
                 <p class="card-text">
-                  Découvrez les principes et les valeurs du Manifeste Agile, et comment les mettre en pratique au quotidien pour des équipes performantes.
+                  L'agilité, bien plus qu'une simple méthode, est un état d'esprit qui privilégie la collaboration, la livraison de valeur rapide et l'adaptation au changement plutôt que le suivi rigide d'un plan initial.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('agilite-content')">En savoir plus</button>
-                <div id="agilite-content" class="interactive-content">
-                  <p>L'agilité est un état d'esprit qui privilégie la collaboration, la livraison de valeur rapide et l'adaptation au changement. Scrum et Kanban sont les frameworks les plus populaires pour l'implémenter.</p>
+                <div class="accordion" id="accordionAgilite">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAgilite1" aria-expanded="false" aria-controls="collapseAgilite1">
+                        Le framework Scrum
+                      </button>
+                    </h2>
+                    <div id="collapseAgilite1" class="accordion-collapse collapse" data-bs-parent="#accordionAgilite">
+                      <div class="accordion-body text-start">
+                        <p>Scrum est le framework le plus populaire pour mettre en œuvre l'agilité. Il repose sur des rôles, des cérémonies et des artefacts bien définis.</p>
+                        <h6>Tableau : Rôles et cérémonies de Scrum</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Rôle</th>
+                                        <th>Responsabilité</th>
+                                        <th>Cérémonie</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Product Owner (PO)</td>
+                                        <td>Maximise la valeur du produit, gère le Product Backlog.</td>
+                                        <td>Sprint Planning</td>
+                                        <td>Planification des tâches du Sprint.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Scrum Master (SM)</td>
+                                        <td>Facilite l'équipe, supprime les obstacles.</td>
+                                        <td>Daily Scrum</td>
+                                        <td>Synchronisation quotidienne de l'équipe (15min).</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Équipe de Développement</td>
+                                        <td>Crée l'incrément de produit à chaque Sprint.</td>
+                                        <td>Sprint Review</td>
+                                        <td>Démonstration du travail accompli.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>Sprint Retrospective</td>
+                                        <td>Amélioration continue du processus.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAgilite2" aria-expanded="false" aria-controls="collapseAgilite2">
+                        Kanban
+                      </button>
+                    </h2>
+                    <div id="collapseAgilite2" class="accordion-collapse collapse" data-bs-parent="#accordionAgilite">
+                      <div class="accordion-body text-start">
+                        <p>Kanban est une autre méthode agile axée sur la visualisation du flux de travail. Les tâches sont représentées par des cartes qui se déplacent sur un tableau (le "kanban board") à travers différentes colonnes (à faire, en cours, terminé).</p>
+                        <p>Ses principes sont de visualiser le flux de travail, de limiter le travail en cours et de mesurer le temps de cycle (Lead Time).</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -293,17 +503,68 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">5. IA & Data</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-right">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-brain card-icon"></i>
                 <h5 class="card-title fw-bold">L'intelligence au service de l'entreprise</h5>
                 <p class="card-text">
-                  Explorez le rôle de l'intelligence artificielle et l'importance des données dans la prise de décision et l'innovation.
+                  L'intelligence artificielle et l'analyse de données sont au cœur de la prise de décision moderne et de l'innovation. Elles permettent d'extraire de la valeur des grandes quantités d'informations.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('ia-data-content')">En savoir plus</button>
-                <div id="ia-data-content" class="interactive-content">
-                  <p>Les données sont le nouveau pétrole. L'IA permet d'analyser ces données pour en extraire de la valeur, automatiser des tâches et créer des expériences client personnalisées. Les disciplines comme le Machine Learning et le Deep Learning sont au cœur de cette révolution.</p>
+                <div class="accordion" id="accordionIA">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIA1" aria-expanded="false" aria-controls="collapseIA1">
+                        Concepts clés de l'IA
+                      </button>
+                    </h2>
+                    <div id="collapseIA1" class="accordion-collapse collapse" data-bs-parent="#accordionIA">
+                      <div class="accordion-body text-start">
+                        <p>L'IA est un vaste domaine qui comprend plusieurs sous-catégories. On peut les classer selon leur but :</p>
+                        <h6>Tableau : Types d'Intelligence Artificielle</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Domaine</th>
+                                        <th>Description</th>
+                                        <th>Exemple d'application</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Machine Learning</td>
+                                        <td>Apprentissage automatique à partir des données.</td>
+                                        <td>Systèmes de recommandation (Netflix, Amazon).</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Deep Learning</td>
+                                        <td>Utilise des réseaux de neurones pour analyser des données complexes.</td>
+                                        <td>Reconnaissance faciale, voitures autonomes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Traitement du Langage Naturel (NLP)</td>
+                                        <td>Permet aux machines de comprendre le langage humain.</td>
+                                        <td>Chatbots, analyse de sentiments.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIA2" aria-expanded="false" aria-controls="collapseIA2">
+                        La gouvernance des données
+                      </button>
+                    </h2>
+                    <div id="collapseIA2" class="accordion-collapse collapse" data-bs-parent="#accordionIA">
+                      <div class="accordion-body text-start">
+                        <p>La gouvernance des données est l'ensemble des processus, des politiques et des règles qui garantissent que les données sont gérées de manière fiable et sécurisée. Une bonne gouvernance est indispensable pour exploiter l'IA de manière efficace et éthique.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -317,17 +578,45 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">6. Conduite du Changement</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-left">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-users-gear card-icon"></i>
                 <h5 class="card-title fw-bold">Accompagner l'humain</h5>
                 <p class="card-text">
-                  La transformation digitale repose avant tout sur l'adhésion des équipes. Apprenez les techniques pour accompagner les collaborateurs.
+                  La transformation digitale n'est pas qu'une affaire de technologie, c'est avant tout une affaire d'humains. La conduite du changement vise à accompagner les collaborateurs pour garantir leur adhésion.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('cdc-content')">En savoir plus</button>
-                <div id="cdc-content" class="interactive-content">
-                  <p>La conduite du changement est essentielle pour garantir le succès d'un projet. Elle vise à anticiper les résistances, à former les équipes et à communiquer efficacement pour que chacun s'approprie les nouvelles méthodes et outils.</p>
+                <div class="accordion" id="accordionCDC">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCDC1" aria-expanded="false" aria-controls="collapseCDC1">
+                        Les étapes clés
+                      </button>
+                    </h2>
+                    <div id="collapseCDC1" class="accordion-collapse collapse" data-bs-parent="#accordionCDC">
+                      <div class="accordion-body text-start">
+                        <p>Un plan de conduite du changement efficace suit généralement ces étapes :</p>
+                        <ul>
+                            <li><strong>Diagnostic :</strong> Analyser l'impact du changement sur les équipes.</li>
+                            <li><strong>Communication :</strong> Expliquer le pourquoi du changement de manière transparente.</li>
+                            <li><strong>Formation :</strong> Proposer des formations pour développer les nouvelles compétences.</li>
+                            <li><strong>Accompagnement :</strong> Fournir un soutien continu pour faciliter l'adoption.</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCDC2" aria-expanded="false" aria-controls="collapseCDC2">
+                        Stratégie et Adhésion
+                      </button>
+                    </h2>
+                    <div id="collapseCDC2" class="accordion-collapse collapse" data-bs-parent="#accordionCDC">
+                      <div class="accordion-body text-start">
+                        <p>Il est crucial d'impliquer les équipes dès le début du processus pour qu'elles se sentent actrices du changement. Les champions du changement (early adopters) peuvent jouer un rôle de facilitateur majeur.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -341,20 +630,106 @@
       <div class="container">
         <h2 class="section-title" data-aos="fade-down">7. Gouvernance</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-lg-8" data-aos="fade-right">
+          <div class="col-lg-10" data-aos="fade-up">
             <div class="card p-4">
               <div class="card-body">
                 <i class="fas fa-shield-alt card-icon"></i>
                 <h5 class="card-title fw-bold">Stratégie et pilotage</h5>
                 <p class="card-text">
-                  Comprenez l'importance d'une gouvernance solide pour aligner la stratégie digitale avec les objectifs de l'entreprise.
+                  La gouvernance digitale est le cadre qui permet de prendre des décisions éclairées et de piloter les initiatives de transformation pour qu'elles soient alignées avec la stratégie globale de l'entreprise.
                 </p>
-                <button class="btn btn-quiz" onclick="toggleContent('gouvernance-content')">En savoir plus</button>
-                <div id="gouvernance-content" class="interactive-content">
-                  <p>La gouvernance permet de définir les rôles et les responsabilités, de mettre en place des indicateurs de performance (KPIs) et de s'assurer que les initiatives digitales contribuent à la création de valeur pour l'entreprise.</p>
+                <div class="accordion" id="accordionGouvernance">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGouv1" aria-expanded="false" aria-controls="collapseGouv1">
+                        Indicateurs Clés de Performance (KPIs)
+                      </button>
+                    </h2>
+                    <div id="collapseGouv1" class="accordion-collapse collapse" data-bs-parent="#accordionGouvernance">
+                      <div class="accordion-body text-start">
+                        <p>Les KPIs permettent de mesurer l'efficacité de la transformation digitale et d'ajuster la stratégie si nécessaire. Ils doivent être SMART (Spécifiques, Mesurables, Atteignables, Réalistes, Temporellement définis).</p>
+                        <h6>Tableau : Exemples de KPIs</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Axe de mesure</th>
+                                        <th>Exemple de KPI</th>
+                                        <th>Objectif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Efficacité opérationnelle</td>
+                                        <td>Réduction du temps de cycle.</td>
+                                        <td>Améliorer la vitesse de livraison des projets.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expérience client</td>
+                                        <td>Taux de satisfaction client (NPS).</td>
+                                        <td>Augmenter la fidélité et la satisfaction.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Adoption des outils</td>
+                                        <td>Taux d'utilisation des nouvelles plateformes.</td>
+                                        <td>Garantir l'adoption par les équipes.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Glossaire -->
+    <section id="glossaire" class="py-5 bg-white">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-down">8. Glossaire des termes clés</h2>
+        <div class="row g-4 justify-content-center" data-aos="fade-up">
+          <div class="col-lg-10 text-start">
+            <dl>
+              <div class="row">
+                <div class="col-md-6">
+                    <dt class="glossary-term">Agilité</dt>
+                    <dd>Approche de gestion de projet et de développement de produits qui privilégie la collaboration, l'itération et l'adaptation au changement.</dd>
+
+                    <dt class="glossary-term">AMOA (Assistance à la Maîtrise d'Ouvrage)</dt>
+                    <dd>Rôle d'interface entre les métiers et l'équipe technique, chargé de traduire les besoins en spécifications fonctionnelles.</dd>
+
+                    <dt class="glossary-term">Cycle en V (Waterfall)</dt>
+                    <dd>Méthode de gestion de projet séquentielle où chaque phase (spécification, développement, test) doit être complétée avant de passer à la suivante.</dd>
+                    
+                    <dt class="glossary-term">KPI (Key Performance Indicator)</dt>
+                    <dd>Indicateur clé de performance. Mesure quantifiable qui permet de suivre l'avancement vers un objectif donné.</dd>
+                    
+                    <dt class="glossary-term">Scrum</dt>
+                    <dd>Un framework agile pour gérer des projets complexes, basé sur des itérations courtes (Sprints), des rôles spécifiques et des cérémonies.</dd>
+                </div>
+                <div class="col-md-6">
+                    <dt class="glossary-term">Product Owner (PO)</dt>
+                    <dd>Responsable de maximiser la valeur du produit. Gère et priorise le Product Backlog.</dd>
+                    
+                    <dt class="glossary-term">Scrum Master (SM)</dt>
+                    <dd>Facilite l'équipe Scrum et s'assure que le processus Scrum est suivi et compris par tous.</dd>
+                    
+                    <dt class="glossary-term">Kanban</dt>
+                    <dd>Méthode agile centrée sur la visualisation du flux de travail et la limitation du travail en cours (WIP) pour améliorer l'efficacité.</dd>
+                    
+                    <dt class="glossary-term">IA (Intelligence Artificielle)</dt>
+                    <dd>Domaine de l'informatique visant à créer des machines capables de simuler l'intelligence humaine, comme l'apprentissage et la résolution de problèmes.</dd>
+                    
+                    <dt class="glossary-term">Transformation Digitale</dt>
+                    <dd>Processus d'intégration des technologies digitales dans tous les aspects d'une entreprise, entraînant des changements fondamentaux dans la manière dont elle opère et délivre de la valeur.</dd>
+                </div>
+              </div>
+            </dl>
           </div>
         </div>
       </div>
@@ -381,17 +756,6 @@
       duration: 1000,
       once: true,
     });
-    
-    // Fonction pour gérer le contenu interactif
-    function toggleContent(id) {
-        const element = document.getElementById(id);
-        const isVisible = element.style.display === 'block';
-        element.style.display = isVisible ? 'none' : 'block';
-        if (!isVisible) {
-            // Smooth scroll to the element if it becomes visible
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
   </script>
 
 </body>
