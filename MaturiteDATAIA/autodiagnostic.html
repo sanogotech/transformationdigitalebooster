@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic de Maturité Data</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { padding-top: 3rem; }
+    .context-help { font-size: 0.9em; color: #666; }
+    .card { margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mb-4">🧭 Diagnostic de Maturité Data</h1>
+    <p class="text-center">Répondez à ces 12 questions pour évaluer la maturité Data de votre organisation.</p>
+
+    <form id="diagnosticForm">
+      <div id="questions"></div>
+      <button type="submit" class="btn btn-primary btn-block">🎯 Évaluer</button>
+    </form>
+
+    <div id="results" class="mt-5" style="display:none;">
+      <h2 class="text-center">📊 Résultats du Diagnostic</h2>
+      <canvas id="radarChart" width="400" height="400"></canvas>
+      <div class="mt-4" id="recommendation"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "Votre organisation utilise-t-elle encore des fichiers Excel non centralisés pour ses processus critiques ?",
+      "Partagez-vous les fichiers via une plateforme collaborative avec des règles d'accès claires ?",
+      "Disposez-vous de tableaux de bord BI mis à jour et utilisés régulièrement ?",
+      "Les scripts de traitement de données sont-ils centralisés et versionnés ?",
+      "Votre entreprise a-t-elle un entrepôt de données (DWH) fonctionnel ?",
+      "Un dictionnaire de données ou catalogue est-il disponible et utilisé ?",
+      "Les pipelines de données sont-ils orchestrés et surveillés automatiquement ?",
+      "Les équipes métiers ont-elles accès à la donnée en libre-service ?",
+      "Avez-vous des modèles IA déployés et monitorés ?",
+      "L'IA est-elle utilisée dans les décisions quotidiennes métier ?",
+      "Les boucles de retour d'expérience sont-elles basées sur les données ?",
+      "Votre stratégie d'entreprise est-elle pensée autour de la donnée ?"
+    ];
+
+    const helpTexts = [
+      "Ex : Des fichiers Excel critiques gérés manuellement sur plusieurs postes.",
+      "Ex : Utilisation de Google Drive, SharePoint, avec accès définis.",
+      "Ex : Des dashboards Power BI/Tableau régulièrement utilisés par les métiers.",
+      "Ex : Code Python dans GitHub/GitLab, avec bonne documentation.",
+      "Ex : BigQuery, Snowflake, Redshift, etc. avec schéma clair.",
+      "Ex : Utilisation d’un outil comme DataHub, Amundsen, avec documentation des KPIs.",
+      "Ex : Airflow, dbt, tests de données automatisés.",
+      "Ex : Les métiers peuvent extraire des données sans passer par la DSI.",
+      "Ex : Modèles IA en production avec suivi de performance (drift, etc.).",
+      "Ex : Prédictions/automatisations IA intégrées aux workflows métiers.",
+      "Ex : Post-mortems ou rétrospectives enrichis de données et KPIs.",
+      "Ex : Les projets et outils sont conçus avec une logique data-first."
+    ];
+
+    const scores = [];
+
+    const container = document.getElementById('questions');
+    questions.forEach((q, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-body">
+          <h5 class="card-title">${i+1}. ${q}</h5>
+          <p class="context-help">💡 ${helpTexts[i]}</p>
+          <div class="form-group">
+            <select class="form-control score-select" required>
+              <option value="">-- Choisir un niveau --</option>
+              <option value="1">1 - Pas du tout</option>
+              <option value="2">2 - Très peu</option>
+              <option value="3">3 - Partiellement</option>
+              <option value="4">4 - Majoritairement</option>
+              <option value="5">5 - Complètement</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    document.getElementById('diagnosticForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      scores.length = 0;
+      const selects = document.querySelectorAll('.score-select');
+      let valid = true;
+      selects.forEach(select => {
+        const val = parseInt(select.value);
+        if (isNaN(val)) valid = false;
+        else scores.push(val);
+      });
+      if (!valid) return alert('Merci de répondre à toutes les questions.');
+      showResults();
+    });
+
+    function showResults() {
+      document.getElementById('results').style.display = 'block';
+      const ctx = document.getElementById('radarChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: questions.map((q, i) => `N${i+1}`),
+          datasets: [{
+            label: 'Score de Maturité',
+            data: scores,
+            backgroundColor: 'rgba(0, 123, 255, 0.2)',
+            borderColor: 'rgba(0, 123, 255, 1)',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          scale: {
+            ticks: { beginAtZero: true, min: 0, max: 5, stepSize: 1 }
+          }
+        }
+      });
+      const avg = scores.reduce((a,b) => a + b, 0) / scores.length;
+      const recDiv = document.getElementById('recommendation');
+      let feedback = '';
+      if (avg < 2) {
+        feedback = '<h4 class="text-danger">📉 Niveau : Survie</h4><p>Priorisez l’élimination des fichiers dispersés, standardisez vos pratiques et lancez une gouvernance simple.</p>';
+      } else if (avg < 3) {
+        feedback = '<h4 class="text-warning">🛠 Niveau : Structuration</h4><p>Structurez vos sources de vérité, gouvernance, pipelines et culture data.</p>';
+      } else if (avg < 4) {
+        feedback = '<h4 class="text-info">🚧 Niveau : Industrialisation</h4><p>Renforcez l’automatisation, l’accès aux données, le monitoring et l’usage métier.</p>';
+      } else {
+        feedback = '<h4 class="text-success">🚀 Niveau : Excellence</h4><p>Vous êtes proche d’une organisation data-first. Consolidez la culture, l’innovation et la valeur métier !</p>';
+      }
+      recDiv.innerHTML = feedback;
+    }
+  </script>
+</body>
+</html>
