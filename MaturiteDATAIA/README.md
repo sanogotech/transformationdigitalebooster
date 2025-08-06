@@ -352,8 +352,4 @@
 
 
 
-* ✅ Un fichier PDF/Word structuré ?
-* 📊 Une infographie ou poster visuel à afficher ?
-* 📋 Un **outil d’auto-diagnostic interactif** (Excel ou Notion) ?
-
 Je peux le faire immédiatement.
