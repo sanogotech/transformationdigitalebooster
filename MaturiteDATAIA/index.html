@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic de Maturité Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --survie: #FFA500;
+            --structuration: #FFD700;
+            --industrialisation: #90EE90;
+            --excellence: #87CEEB;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .category-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .category-header {
+            padding: 1.5rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .survie { background-color: var(--survie); }
+        .structuration { background-color: var(--structuration); }
+        .industrialisation { background-color: var(--industrialisation); }
+        .excellence { background-color: var(--excellence); }
+        
+        .level-card {
+            border-left: 5px solid;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .level-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .level-card.survie { border-left-color: var(--survie); }
+        .level-card.structuration { border-left-color: var(--structuration); }
+        .level-card.industrialisation { border-left-color: var(--industrialisation); }
+        .level-card.excellence { border-left-color: var(--excellence); }
+        
+        .progress {
+            height: 30px;
+            border-radius: 15px;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #6e8efb, #a777e3);
+        }
+        
+        .tooltip-inner {
+            max-width: 300px;
+            padding: 1rem;
+        }
+        
+        .roadmap-step {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .roadmap-step:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #dee2e6;
+        }
+        
+        .roadmap-step:last-child:before {
+            height: 50%;
+        }
+        
+        .roadmap-step .dot {
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+        
+        .roadmap-step.survie .dot { background-color: var(--survie); }
+        .roadmap-step.structuration .dot { background-color: var(--structuration); }
+        .roadmap-step.industrialisation .dot { background-color: var(--industrialisation); }
+        .roadmap-step.excellence .dot { background-color: var(--excellence); }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .badge-category {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeInLeft" href="#">
+                <span style="color: #6e8efb;">Data</span><span style="color: #a777e3;">Maturity</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#diagnostic">Diagnostic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#roadmap">Feuille de route</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">À propos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section animate__animated animate__fadeIn">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-4">Diagnostic Complet de Maturité Data</h1>
+            <p class="lead mb-5">12 niveaux pour piloter votre transformation digitale</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#diagnostic" class="btn btn-light btn-lg px-4 py-2">Commencer le diagnostic</a>
+                <a href="#roadmap" class="btn btn-outline-light btn-lg px-4 py-2">Voir la feuille de route</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diagnostic Section -->
+    <section id="diagnostic" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 animate__animated animate__fadeIn">Évaluez votre maturité data</h2>
+            
+            <!-- Progress Bar -->
+            <div class="row mb-5 animate__animated animate__fadeInUp">
+                <div class="col-md-10 mx-auto">
+                    <h5 class="mb-3">Votre score de maturité: <span id="maturityScore">0</span>/12</h5>
+                    <div class="progress">
+                        <div id="maturityProgress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="row">
+                <!-- Survie -->
+                <div class="col-lg-6 mb-4 animate__animated animate__fadeInLeft">
+                    <div class="category-card h-100">
+                        <div class="category-header survie">
+                            <h3>CATÉGORIE 1 – SURVIE</h3>
+                            <p>Des données non maîtrisées, fragmentées, dangereuses.</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Level 1 -->
+                            <div class="card level-card survie mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 1 – Excel Sauvage</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level1" data-level="1">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"On navigue à vue, chaque fichier est une bombe à retardement."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel1">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel1">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Identifier les sources critiques, éviter les pertes de données.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Données sur des clés USB, postes individuels</li>
+                                                <li>Copie manuelle entre fichiers</li>
+                                                <li>Formules cassées, erreurs fréquentes, aucune traçabilité</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Centraliser les fichiers sur Google Drive / OneDrive</li>
+                                                <li>Modéliser les fichiers critiques</li>
+                                                <li>Former les utilisateurs à des modèles réutilisables</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 2 -->
+                            <div class="card level-card survie mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 2 – Collaboration Manuelle</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level2" data-level="2">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"On commence à partager… mais mal."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel2">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel2">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Structurer la collaboration autour des fichiers partagés.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Fichiers partagés mais dupliqués</li>
+                                                <li>Absence de droits d'accès clairs</li>
+                                                <li>Multiples versions : v1_final_v3_final_final.xlsx</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Mettre en place des conventions de nommage</li>
+                                                <li>Définir les rôles d'accès</li>
+                                                <li>Utiliser les commentaires, les historiques de modification</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 3 -->
+                            <div class="card level-card survie">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 3 – BI Orphelin</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level3" data-level="3">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"On a des dashboards, mais personne ne s'en sert."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel3">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel3">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Rétablir la confiance et l'usage autour des rapports.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Rapports Power BI/Tableau existent mais non mis à jour</li>
+                                                <li>Personne n'en connaît le périmètre</li>
+                                                <li>Les métiers préfèrent exporter et recalculer</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Désigner un owner pour chaque dashboard</li>
+                                                <li>Documenter les indicateurs</li>
+                                                <li>Créer un planning de maintenance</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Structuration -->
+                <div class="col-lg-6 mb-4 animate__animated animate__fadeInRight">
+                    <div class="category-card h-100">
+                        <div class="category-header structuration">
+                            <h3>CATÉGORIE 2 – STRUCTURATION</h3>
+                            <p>La donnée devient accessible, propre, documentée, partagée.</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Level 4 -->
+                            <div class="card level-card structuration mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 4 – Data Ad Hoc</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level4" data-level="4">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"Des scripts utiles… mais dépendants de héros isolés."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel4">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel4">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Assurer la pérennité des traitements de données.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Scripts en local, pas versionnés</li>
+                                                <li>Zéro documentation</li>
+                                                <li>Dépendance à 1 ou 2 développeurs data</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Centraliser les scripts sur Git</li>
+                                                <li>Créer des environnements standardisés (Conda, Docker)</li>
+                                                <li>Faire des revues de code</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 5 -->
+                            <div class="card level-card structuration mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 5 – Data Structurée</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level5" data-level="5">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"On commence à construire une base fiable."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel5">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel5">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Disposer d'un entrepôt de données fiable et maintenu.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Sources identifiées, entrepôt en place (Snowflake, BigQuery, etc.)</li>
+                                                <li>Extraction planifiée</li>
+                                                <li>Début d'usage transverse</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Mettre en place un schéma source → destination</li>
+                                                <li>Instaurer un contrôle de qualité sur les pipelines</li>
+                                                <li>Consolider les usages métiers autour du DWH</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 6 -->
+                            <div class="card level-card structuration">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 6 – Gouvernance Définie</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level6" data-level="6">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"On sait ce que signifient les données et comment les utiliser."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel6">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel6">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Fiabiliser la compréhension et l'usage des données.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Catalogue de données en cours</li>
+                                                <li>Indicateurs documentés</li>
+                                                <li>Métiers impliqués</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Mettre en place un data catalog (ex : DataHub)</li>
+                                                <li>Définir les indicateurs clés par département</li>
+                                                <li>Créer un comité gouvernance mensuel</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Industrialisation -->
+                <div class="col-lg-6 mb-4 animate__animated animate__fadeInLeft">
+                    <div class="category-card h-100">
+                        <div class="category-header industrialisation">
+                            <h3>CATÉGORIE 3 – INDUSTRIALISATION</h3>
+                            <p>La donnée devient automatisée, exploitable, utile au quotidien.</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Level 7 -->
+                            <div class="card level-card industrialisation mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 7 – DataOps</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level7" data-level="7">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"L'architecture est sous contrôle, les flux sont automatisés."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel7">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel7">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Automatiser la chaîne de valeur de la donnée.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Pipelines orchestrés</li>
+                                                <li>Tests de qualité automatisés</li>
+                                                <li>Déploiement contrôlé</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Implémenter Airflow, dbt, tests unitaires</li>
+                                                <li>Mettre en place des alertes en cas d'échec</li>
+                                                <li>Formaliser le versioning des flux</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 8 -->
+                            <div class="card level-card industrialisation mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 8 – Self-Service BI</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level8" data-level="8">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"Les métiers consomment les données en autonomie."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel8">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel8">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Offrir des outils simples, compréhensibles, accessibles.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Données accessibles via un portail</li>
+                                                <li>Dashboarding adapté aux utilisateurs</li>
+                                                <li>Moins de sollicitations à la DSI</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Créer une base de dashboards certifiés</li>
+                                                <li>Former les utilisateurs à la dataviz</li>
+                                                <li>Publier un guide d'usage</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 9 -->
+                            <div class="card level-card industrialisation">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 9 – MLOps / IA en Production</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level9" data-level="9">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"L'intelligence artificielle devient opérationnelle."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel9">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel9">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Déployer, suivre et fiabiliser les modèles IA.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Modèles déployés</li>
+                                                <li>Suivi des performances</li>
+                                                <li>Versions maîtrisées</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Mettre en place MLflow, pipeline CI/CD IA</li>
+                                                <li>Définir un processus de validation métier</li>
+                                                <li>Monitorer les performances</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Excellence -->
+                <div class="col-lg-6 mb-4 animate__animated animate__fadeInRight">
+                    <div class="category-card h-100">
+                        <div class="category-header excellence">
+                            <h3>CATÉGORIE 4 – EXCELLENCE</h3>
+                            <p>La donnée devient stratégie, culture et moteur d'innovation continue.</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- Level 10 -->
+                            <div class="card level-card excellence mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 10 – AI Native</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level10" data-level="10">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"L'IA est intégrée aux décisions quotidiennes."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel10">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel10">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Intégrer l'IA dans la culture métier.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>IA dans les processus RH, finances, production, etc.</li>
+                                                <li>Scénarios A/B en cours permanent</li>
+                                                <li>Processus augmentés par l'IA</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Cadrer les cas d'usage stratégiques</li>
+                                                <li>Créer un Lab IA ouvert aux métiers</li>
+                                                <li>Renforcer la formation continue</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 11 -->
+                            <div class="card level-card excellence mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 11 – Organisation Apprenante</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level11" data-level="11">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"La donnée alimente les boucles d'amélioration continue."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel11">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel11">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Intégrer les données dans le pilotage de la performance.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>Culture du feedback</li>
+                                                <li>Apprentissage de l'erreur</li>
+                                                <li>Innovation data portée par les métiers</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Mettre en place des OKRs pilotés par la donnée</li>
+                                                <li>Organiser des revues data croisées</li>
+                                                <li>Intégrer l'analyse post-mortem des projets</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Level 12 -->
+                            <div class="card level-card excellence">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">Niveau 12 – Data-First by Design</h5>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input level-check" type="checkbox" id="level12" data-level="12">
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">"La donnée structure toute l'entreprise : stratégie, outils, RH."</p>
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel12">
+                                        Voir détails
+                                    </button>
+                                    <div class="collapse mt-2" id="detailsLevel12">
+                                        <div class="card card-body bg-light">
+                                            <p><strong>Objectif :</strong> Concevoir l'entreprise autour de la donnée dès l'origine.</p>
+                                            <p><strong>Symptômes :</strong></p>
+                                            <ul>
+                                                <li>L'architecture, les outils, les décisions sont data-centric</li>
+                                                <li>RH, produit, marketing : tout est co-conçu avec la data</li>
+                                                <li>Leadership convaincu et engagé</li>
+                                            </ul>
+                                            <p><strong>Actions recommandées :</strong></p>
+                                            <ul>
+                                                <li>Faire de la donnée un pilier stratégique</li>
+                                                <li>Fusionner roadmap produit + data + SI</li>
+                                                <li>Définir des indicateurs de valeur de la donnée</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <button id="generateRoadmap" class="btn btn-primary btn-lg px-5 py-3 animate__animated animate__pulse animate__infinite">
+                    Générer ma feuille de route personnalisée
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-5 bg-light" style="display: none;">
+        <div class="container">
+            <h2 class="text-center mb-5">Votre feuille de route personnalisée</h2>
+            
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="card shadow">
+                        <div class="card-header bg-white">
+                            <h4 class="mb-0">Synthèse de votre maturité</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h5>Score global</h5>
+                                    <div class="display-4 fw-bold" id="roadmapScore">0</div>
+                                    <div class="text-muted">/12 niveaux atteints</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Progression par catégorie</h5>
+                                    <div class="mb-2">
+                                        <span class="d-inline-block me-2" style="width: 100px;">Survie</span>
+                                        <div class="progress" style="height: 20px; width: calc(100% - 100px); display: inline-block;">
+                                            <div class="progress-bar bg-warning" role="progressbar" id="survieProgress" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="d-inline-block me-2" style="width: 100px;">Structuration</span>
+                                        <div class="progress" style="height: 20px; width: calc(100% - 100px); display: inline-block;">
+                                            <div class="progress-bar bg-yellow" role="progressbar" id="structurationProgress" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="d-inline-block me-2" style="width: 100px;">Industrialisation</span>
+                                        <div class="progress" style="height: 20px; width: calc(100% - 100px); display: inline-block;">
+                                            <div class="progress-bar bg-success" role="progressbar" id="industrialisationProgress" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="d-inline-block me-2" style="width: 100px;">Excellence</span>
+                                        <div class="progress" style="height: 20px; width: calc(100% - 100px); display: inline-block;">
+                                            <div class="progress-bar bg-info" role="progressbar" id="excellenceProgress" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5 class="mb-4">Étapes recommandées</h5>
+                            <div id="roadmapSteps">
+                                <!-- Steps will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <button id="exportRoadmap" class="btn btn-outline-primary">
+                    <i class="bi bi-download me-2"></i>Exporter en PDF
+                </button>
+                <button id="restartDiagnostic" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-arrow-repeat me-2"></i>Recommencer le diagnostic
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="mb-4">À propos du diagnostic</h2>
+                    <p>Ce diagnostic de maturité data vous permet d'évaluer où en est votre organisation dans sa transformation data et d'identifier les prochaines étapes pour progresser.</p>
+                    <p>Les 12 niveaux sont regroupés en 4 catégories qui représentent les grandes phases de maturité d'une organisation face à la donnée.</p>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="mb-4">Méthodologie</h2>
+                    <p>Chaque niveau correspond à un palier de maturité avec :</p>
+                    <ul>
+                        <li>Des symptômes observables</li>
+                        <li>Des risques associés</li>
+                        <li>Des actions concrètes pour progresser</li>
+                        <li>Les compétences clés à développer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-black text-white text-center">
+        <div class="container">
+            <p class="mb-0">© 2023 Diagnostic de Maturité Data. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Button -->
+    <div class="floating-btn animate__animated animate__bounceIn" id="floatingBtn">
+        <i class="bi bi-graph-up"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update score when checkboxes change
+            const checkboxes = document.querySelectorAll('.level-check');
+            const maturityScore = document.getElementById('maturityScore');
+            const maturityProgress = document.getElementById('maturityProgress');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateScore);
+            });
+            
+            function updateScore() {
+                let score = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) score++;
+                });
+                
+                maturityScore.textContent = score;
+                const percentage = (score / 12) * 100;
+                maturityProgress.style.width = percentage + '%';
+                
+                // Update category progress
+                updateCategoryProgress();
+            }
+            
+            function updateCategoryProgress() {
+                // Survie (1-3)
+                const survieChecked = document.querySelectorAll('#level1:checked, #level2:checked, #level3:checked').length;
+                document.getElementById('survieProgress').style.width = (survieChecked / 3 * 100) + '%';
+                
+                // Structuration (4-6)
+                const structurationChecked = document.querySelectorAll('#level4:checked, #level5:checked, #level6:checked').length;
+                document.getElementById('structurationProgress').style.width = (structurationChecked / 3 * 100) + '%';
+                
+                // Industrialisation (7-9)
+                const industrialisationChecked = document.querySelectorAll('#level7:checked, #level8:checked, #level9:checked').length;
+                document.getElementById('industrialisationProgress').style.width = (industrialisationChecked / 3 * 100) + '%';
+                
+                // Excellence (10-12)
+                const excellenceChecked = document.querySelectorAll('#level10:checked, #level11:checked, #level12:checked').length;
+                document.getElementById('excellenceProgress').style.width = (excellenceChecked / 3 * 100) + '%';
+            }
+            
+            // Generate roadmap
+            document.getElementById('generateRoadmap').addEventListener('click', function() {
+                const score = parseInt(document.getElementById('maturityScore').textContent);
+                document.getElementById('roadmapScore').textContent = score;
+                
+                // Show roadmap section
+                document.getElementById('roadmap').style.display = 'block';
+                
+                // Scroll to roadmap
+                document.getElementById('roadmap').scrollIntoView({ behavior: 'smooth' });
+                
+                // Generate steps
+                generateRoadmapSteps();
+            });
+            
+            function generateRoadmapSteps() {
+                const roadmapSteps = document.getElementById('roadmapSteps');
+                roadmapSteps.innerHTML = '';
+                
+                // Get current level (highest checked)
+                let currentLevel = 0;
+                for (let i = 12; i >= 1; i--) {
+                    if (document.getElementById('level' + i).checked) {
+                        currentLevel = i;
+                        break;
+                    }
+                }
+                
+                // Add current status
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'alert alert-info mb-4';
+                if (currentLevel === 0) {
+                    statusDiv.textContent = 'Votre organisation est au tout début de sa transformation data.';
+                } else if (currentLevel < 4) {
+                    statusDiv.textContent = 'Votre organisation est en phase de survie avec les données.';
+                } else if (currentLevel < 7) {
+                    statusDiv.textContent = 'Votre organisation structure progressivement ses données.';
+                } else if (currentLevel < 10) {
+                    statusDiv.textContent = 'Votre organisation industrialise ses processus data.';
+                } else {
+                    statusDiv.textContent = 'Votre organisation est avancée dans sa maturité data.';
+                }
+                roadmapSteps.appendChild(statusDiv);
+                
+                // Generate next steps
+                if (currentLevel < 12) {
+                    const nextStepsTitle = document.createElement('h6');
+                    nextStepsTitle.className = 'mb-3 fw-bold';
+                    nextStepsTitle.textContent = 'Prochaines étapes recommandées :';
+                    roadmapSteps.appendChild(nextStepsTitle);
+                    
+                    for (let i = currentLevel + 1; i <= Math.min(currentLevel + 3, 12); i++) {
+                        const checkbox = document.getElementById('level' + i);
+                        const card = checkbox.closest('.card');
+                        const title = card.querySelector('.card-title').textContent;
+                        const description = card.querySelector('.card-text').textContent;
+                        
+                        // Determine category
+                        let categoryClass = '';
+                        if (i <= 3) categoryClass = 'survie';
+                        else if (i <= 6) categoryClass = 'structuration';
+                        else if (i <= 9) categoryClass = 'industrialisation';
+                        else categoryClass = 'excellence';
+                        
+                        const stepDiv = document.createElement('div');
+                        stepDiv.className = 'roadmap-step ' + categoryClass;
+                        
+                        stepDiv.innerHTML = `
+                            <div class="dot"></div>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">${title}</h5>
+                                        <span class="badge bg-${categoryClass} badge-category">Catégorie ${Math.ceil(i/3)}</span>
+                                    </div>
+                                    <p class="card-text text-muted mt-2">${description}</p>
+                                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#roadmapDetails${i}">
+                                        Voir les actions
+                                    </button>
+                                    <div class="collapse mt-2" id="roadmapDetails${i}">
+                                        ${card.querySelector('.collapse .card-body').innerHTML}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        roadmapSteps.appendChild(stepDiv);
+                    }
+                } else {
+                    const congratsDiv = document.createElement('div');
+                    congratsDiv.className = 'alert alert-success';
+                    congratsDiv.innerHTML = `
+                        <h4 class="alert-heading">Félicitations !</h4>
+                        <p>Votre organisation a atteint le niveau maximum de maturité data.</p>
+                        <hr>
+                        <p class="mb-0">Continuez à innover et à maintenir vos bonnes pratiques.</p>
+                    `;
+                    roadmapSteps.appendChild(congratsDiv);
+                }
+            }
+            
+            // Restart diagnostic
+            document.getElementById('restartDiagnostic').addEventListener('click', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updateScore();
+                document.getElementById('roadmap').style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Floating button
+            document.getElementById('floatingBtn').addEventListener('click', function() {
+                const score = parseInt(document.getElementById('maturityScore').textContent);
+                alert(`Votre score actuel de maturité data est : ${score}/12\n\n${getScoreMessage(score)}`);
+            });
+            
+            function getScoreMessage(score) {
+                if (score === 0) return "Commencez par identifier vos sources de données critiques.";
+                if (score <= 3) return "Votre organisation est en phase de survie. Concentrez-vous sur la centralisation des données.";
+                if (score <= 6) return "Vous structurez vos données. Travaillez sur la gouvernance et la qualité.";
+                if (score <= 9) return "Vous industrialisez vos processus. Automatisez et formez vos équipes.";
+                if (score <= 11) return "Vous êtes avancé. Intégrez l'IA dans vos processus métiers.";
+                return "Excellent ! Vous avez une organisation data-first. Continuez à innover.";
+            }
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
