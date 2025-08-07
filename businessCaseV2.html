@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Case Digital - Modèle Avancé</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f9;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .section-card {
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-color: white;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-header {
+            background-color: var(--light-color);
+            padding: 1.2rem;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            color: var(--primary-color);
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-body {
+            padding: 1.5rem;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--primary-color);
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-bottom-color: var(--secondary-color);
+            background-color: var(--light-color);
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+            background-color: white;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0 8px 8px 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-group-item {
+            border: none;
+            border-left: 3px solid var(--secondary-color);
+            margin-bottom: 10px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--light-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .financial-metrics {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            animation: animateValue 2s ease-out;
+        }
+
+        @keyframes animateValue {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            
+            .metric-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Tailwind-like utility classes */
+        .container {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 1rem;
+            padding-left: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .container {
+                max-width: 640px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px;
+            }
+        }
+        
+        @media (min-width: 1280px) {
+            .container {
+                max-width: 1280px;
+            }
+        }
+        
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        .flex {
+            display: flex;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        
+        .w-full {
+            width: 100%;
+        }
+        
+        .md\:w-3\/4 {
+            width: 75%;
+        }
+        
+        .md\:w-1\/4 {
+            width: 25%;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .text-4xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+        }
+        
+        .md\:text-5xl {
+            font-size: 3rem;
+            line-height: 1;
+        }
+        
+        .font-bold {
+            font-weight: 700;
+        }
+        
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem;
+        }
+        
+        .md\:text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        
+        .mt-3 {
+            margin-top: 0.75rem;
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        
+        .me-2 {
+            margin-right: 0.5rem;
+        }
+        
+        .mt-8 {
+            margin-top: 2rem;
+        }
+        
+        .mb-12 {
+            margin-bottom: 3rem;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .p-8 {
+            padding: 2rem;
+        }
+        
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        
+        .bg-white {
+            background-color: white;
+        }
+        
+        .shadow-xl {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .text-3xl {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+        }
+        
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        
+        .text-gray-600 {
+            color: #4b5563;
+        }
+        
+        .mt-4 {
+            margin-top: 1rem;
+        }
+        
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+        
+        .flex-col {
+            flex-direction: column;
+        }
+        
+        .sm\:flex-row {
+            flex-direction: row;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+        
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 1rem;
+        }
+        
+        .sm\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
+            margin-top: 0;
+        }
+        
+        .sm\:space-x-4 > :not([hidden]) ~ :not([hidden]) {
+            margin-left: 1rem;
+        }
+        
+        .bg-blue-600 {
+            background-color: #2563eb;
+        }
+        
+        .text-white {
+            color: white;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
+        }
+        
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        
+        .px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        
+        .rounded-full {
+            border-radius: 9999px;
+        }
+        
+        .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hover\:bg-blue-700:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .transition {
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        .duration-300 {
+            transition-duration: 300ms;
+        }
+        
+        .bg-gray-200 {
+            background-color: #e5e7eb;
+        }
+        
+        .text-gray-800 {
+            color: #1f2937;
+        }
+        
+        .hover\:bg-gray-300:hover {
+            background-color: #d1d5db;
+        }
+        
+        .bg-gray-800 {
+            background-color: #1f2937;
+        }
+        
+        .py-8 {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .mt-12 {
+            margin-top: 3rem;
+        }
+        
+        .rounded-t-3xl {
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .md\:w-1\/2 {
+            width: 50%;
+        }
+        
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+        }
+        
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+        
+        .md\:mt-0 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center flex-wrap">
+                <div class="w-full md:w-3/4">
+                    <h1 class="text-4xl md:text-5xl font-bold">Business Case Digital</h1>
+                    <p class="text-lg md:text-xl mt-3">Modèle complet pour justifier votre investissement dans la transformation digitale</p>
+                </div>
+                <div class="w-full md:w-1/4 text-right">
+                    <i class="fas fa-chart-line fa-5x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4">
+        
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs mb-4" id="businessCaseTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="structure-tab" data-bs-toggle="tab" data-bs-target="#structure" type="button" role="tab" aria-controls="structure" aria-selected="true">
+                    <i class="fas fa-sitemap me-2"></i>Structure d'un Business Case Convaincant
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="demarches-tab" data-bs-toggle="tab" data-bs-target="#demarches" type="button" role="tab" aria-controls="demarches" aria-selected="false">
+                    <i class="fas fa-tasks me-2"></i>Démarches Clés
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="exemples-tab" data-bs-toggle="tab" data-bs-target="#exemples" type="button" role="tab" aria-controls="exemples" aria-selected="false">
+                    <i class="fas fa-lightbulb me-2"></i>Exemples Concrets
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="top10-tab" data-bs-toggle="tab" data-bs-target="#top10" type="button" role="tab" aria-controls="top10" aria-selected="false">
+                    <i class="fas fa-trophy me-2"></i>Top 10 KPI par Domaine
+                </button>
+            </li>
+        </ul>
+        
+        <!-- Tab Content -->
+        <div class="tab-content" id="businessCaseTabsContent">
+
+            <!-- Structure Tab -->
+            <div class="tab-pane fade show active" id="structure" role="tabpanel" aria-labelledby="structure-tab">
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-info-circle me-2"></i>Contexte et Problématique</div>
+                    <div class="section-body">
+                        <p>Définissez clairement le problème à résoudre ou l'opportunité à saisir. Utilisez des données chiffrées pour étayer le besoin.</p>
+                        <p><strong>Exemple :</strong> "Le marché des services de streaming a progressé de 25% l'an dernier, mais notre part de marché a stagné, indiquant un retard dans notre offre digitale."</p>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-bullseye me-2"></i>Objectifs Stratégiques (SMART)</div>
+                    <div class="section-body">
+                        <p>Formulez des objectifs <strong>S</strong>pécifiques, <strong>M</strong>esurables, <strong>A</strong>tteignables, <strong>R</strong>éalistes et <strong>T</strong>emporellement définis. C'est la boussole de votre projet.</p>
+                        <p><strong>Exemple :</strong> "Augmenter de 15% le nombre d'abonnements en ligne sur les 12 prochains mois."</p>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-lightbulb me-2"></i>Solution Proposée</div>
+                    <div class="section-body">
+                        <p>Décrivez la solution envisagée. Soyez précis sur la nature du projet (e-commerce, application mobile, etc.) et ses fonctionnalités clés.</p>
+                        <p><strong>Exemple :</strong> "Développement d'une application mobile 'Mobile Banking' avec fonctionnalités de gestion de budget, de virements instantanés et de chatbot."</p>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-chart-pie me-2"></i>Analyse et Projections Financières</div>
+                    <div class="section-body">
+                        <p>Cette section est le cœur de la justification. Présentez les coûts (CAPEX/OPEX), les bénéfices attendus et les indicateurs financiers clés comme le ROI, la NPV et le Payback.</p>
+                        <p><strong>Exemple :</strong> "L'investissement initial est de 500k€. Les revenus supplémentaires projetés sont de 300k€ la première année, pour un ROI estimé à 150% sur 3 ans."</p>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-exclamation-triangle me-2"></i>Risques et Plan de Mitigation</div>
+                    <div class="section-body">
+                        <p>Identifiez les risques potentiels (technologiques, d'adoption, financiers) et proposez des actions pour les minimiser.</p>
+                        <p><strong>Exemple :</strong> "Risque d'adoption faible. Mitigation : Plan de communication ciblé, phase de test avec les utilisateurs clés et formation."</p>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><i class="fas fa-project-diagram me-2"></i>Plan de Mise en Œuvre</div>
+                    <div class="section-body">
+                        <p>Détaillez le calendrier du projet, les étapes clés, les ressources nécessaires et les responsabilités.</p>
+                        <p><strong>Exemple :</strong> "Phase 1 (Mois 1-3) : Spécifications et Design. Phase 2 (Mois 4-9) : Développement et Tests. Phase 3 (Mois 10-12) : Déploiement et Lancement."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Démarches Tab -->
+            <div class="tab-pane fade" id="demarches" role="tabpanel" aria-labelledby="demarches-tab">
+                <h5 class="mb-4">Les 5 étapes pour construire un business case percutant</h5>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">
+                        <h6>1. Cadrage et analyse du besoin</h6>
+                        <p>Analysez le contexte interne et externe. Identifiez la problématique, les pain points des utilisateurs ou les opportunités de marché. Collectez des données qualitatives et quantitatives pour étayer votre analyse. Menez des entretiens, des sondages et des études de marché.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h6>2. Définition de la solution et des objectifs</h6>
+                        <p>Proposez une solution concrète qui répond à la problématique. Formulez des objectifs clairs et mesurables (SMART). Ces objectifs doivent être alignés avec la stratégie globale de l'entreprise.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h6>3. Évaluation financière (Coûts & Bénéfices)</h6>
+                        <p>Estimez les coûts d'investissement (CAPEX : développement, licences, matériel) et les coûts récurrents (OPEX : maintenance, support, hébergement). En parallèle, projetez les bénéfices (augmentation des revenus, réduction des coûts, amélioration de la productivité). Utilisez des projections sur 3 à 5 ans.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h6>4. Évaluation des risques et des bénéfices non financiers</h6>
+                        <p>Identifiez les principaux risques (techniques, humains, financiers) et proposez des plans de mitigation. N'oubliez pas d'inclure les bénéfices intangibles : amélioration de l'image de marque, satisfaction client, engagement des employés, etc.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h6>5. Formalisation et présentation</h6>
+                        <p>Rassemblez toutes les informations dans un document structuré et facile à lire. Utilisez des graphiques, des tableaux et des visuels pour rendre les données complexes plus accessibles. Préparez une présentation courte et impactante pour les décideurs, en insistant sur le retour sur investissement.</p>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Exemples Tab -->
+            <div class="tab-pane fade" id="exemples" role="tabpanel" aria-labelledby="exemples-tab">
+                <h5 class="mb-4">Exemples de Business Case pour différents projets</h5>
+                <div class="accordion" id="accordionExemples">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <strong>Projet :</strong> Création d'une plateforme d'e-commerce
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExemples">
+                            <div class="accordion-body">
+                                <strong>Contexte :</strong> Marché en croissance de 10% par an, faiblesse du canal de vente direct à l'entreprise.
+                                <br><strong>Objectif :</strong> Générer 2M€ de chiffre d'affaires supplémentaire en 2 ans.
+                                <br><strong>Coûts :</strong> 400k€ CAPEX (développement), 80k€ OPEX/an (marketing, maintenance).
+                                <br><strong>Bénéfices :</strong> Augmentation des ventes, élargissement du marché, meilleure connaissance client.
+                                <br><strong>Indicateurs :</strong> ROI de 150% sur 3 ans, NPV positive.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <strong>Projet :</strong> Intégration d'un ERP pour l'automatisation des processus
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExemples">
+                            <div class="accordion-body">
+                                <strong>Contexte :</strong> Processus manuels chronophages et erreurs de saisie.
+                                <br><strong>Objectif :</strong> Réduire de 30% le temps de traitement des commandes en 1 an.
+                                <br><strong>Coûts :</strong> 750k€ CAPEX (licences, intégration), 50k€ OPEX/an (support, mises à jour).
+                                <br><strong>Bénéfices :</strong> Gain de productivité, réduction des erreurs, optimisation des stocks.
+                                <br><strong>Indicateurs :</strong> Payback en 2.5 ans, ROI de 180% sur 4 ans.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <strong>Projet :</strong> Lancement d'une application mobile de fidélisation
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExemples">
+                            <div class="accordion-body">
+                                <strong>Contexte :</strong> Faible engagement client, fidélité en baisse.
+                                <br><strong>Objectif :</strong> Augmenter la fréquence d'achat de 20% chez les utilisateurs de l'application.
+                                <br><strong>Coûts :</strong> 250k€ CAPEX (développement), 30k€ OPEX/an (marketing push, support).
+                                <br><strong>Bénéfices :</strong> Augmentation du chiffre d'affaires, amélioration de la satisfaction, collecte de données client.
+                                <br><strong>Indicateurs :</strong> Augmentation de la valeur vie client (LTV), taux d'engagement de l'application.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top 10 KPI Tab -->
+            <div class="tab-pane fade" id="top10" role="tabpanel" aria-labelledby="top10-tab">
+                <h5 class="mb-4">Top 10 des KPI par domaine d'activité</h5>
+                <div class="accordion" id="accordionKPIs">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFinance">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFinance" aria-expanded="true" aria-controls="collapseFinance">
+                                <i class="fas fa-dollar-sign me-2"></i>Finance
+                            </button>
+                        </h2>
+                        <div id="collapseFinance" class="accordion-collapse collapse show" aria-labelledby="headingFinance" data-bs-parent="#accordionKPIs">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'automatisation des processus financiers</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût d'acquisition client (CAC)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de conversion digital</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Valeur à Vie du Client (LTV)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de désabonnement (Churn Rate)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Délai de traitement des réclamations</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>NPS (Net Promoter Score)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût de maintenance des systèmes IT</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Part des transactions en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Nombre d'utilisateurs actifs mensuels (MAU)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingRetail">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRetail" aria-expanded="false" aria-controls="collapseRetail">
+                                <i class="fas fa-store me-2"></i>Retail
+                            </button>
+                        </h2>
+                        <div id="collapseRetail" class="accordion-collapse collapse" aria-labelledby="headingRetail" data-bs-parent="#accordionKPIs">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de conversion e-commerce</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Panier moyen en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de clics (CTR) des campagnes marketing</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût d'acquisition d'un nouveau client en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de retour produits</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Satisfaction client (CSAT)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'utilisation de l'application mobile</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Part des ventes omnicanales</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Délai moyen de livraison</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Inventaire tournant</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSante">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSante" aria-expanded="false" aria-controls="collapseSante">
+                                <i class="fas fa-heartbeat me-2"></i>Santé
+                            </button>
+                        </h2>
+                        <div id="collapseSante" class="accordion-collapse collapse" aria-labelledby="headingSante" data-bs-parent="#accordionKPIs">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Nombre de consultations en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'adoption du dossier patient digital</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Réduction du temps d'attente aux urgences</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de conformité aux réglementations (RGPD, etc.)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Nombre de téléconsultations par mois</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Satisfaction des patients (score e-réputation)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût par patient réduit grâce au digital</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'utilisation des outils de télésurveillance</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Productivité du personnel soignant</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de prescription électronique</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingIndustrie">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIndustrie" aria-expanded="false" aria-controls="collapseIndustrie">
+                                <i class="fas fa-industry me-2"></i>Industrie
+                            </button>
+                        </h2>
+                        <div id="collapseIndustrie" class="accordion-collapse collapse" aria-labelledby="headingIndustrie" data-bs-parent="#accordionKPIs">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'arrêt de production (Downtime)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Efficacité globale des équipements (OEE)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Réduction des déchets de production</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'adoption des outils de maintenance prédictive</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût de la non-qualité</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Temps de cycle de production</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de digitalisation de la chaîne logistique</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Productivité par employé</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût d'exploitation par unité produite</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de conformité aux normes de sécurité</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingServicePublic">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseServicePublic" aria-expanded="false" aria-controls="collapseServicePublic">
+                                <i class="fas fa-landmark me-2"></i>Service Public
+                            </button>
+                        </h2>
+                        <div id="collapseServicePublic" class="accordion-collapse collapse" aria-labelledby="headingServicePublic" data-bs-parent="#accordionKPIs">
+                            <div class="accordion-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de dématérialisation des démarches</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Satisfaction des usagers (e-satisfaction)</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Temps moyen de traitement d'une demande</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Coût de traitement d'une démarche</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'accès aux services en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Nombre de téléservices créés</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux d'erreur dans les formulaires en ligne</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Réduction des déplacements physiques des usagers</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Nombre d'incidents de sécurité informatique</li>
+                                    <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Taux de résolution au premier contact</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="mt-8 mb-12 text-center">
+            <div class="p-8 rounded-lg bg-white shadow-xl">
+                <h3 class="text-3xl font-bold text-gray-800">Prêt à lancer votre transformation digitale ?</h3>
+                <p class="text-lg text-gray-600 mt-4">Ce modèle prouve un ROI attractif avec un risque maîtrisé. Utilisez-le pour convaincre vos décideurs.</p>
+                <div class="mt-6 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <button class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-thumbs-up me-2"></i>Approuver le projet
+                    </button>
+                    <button class="bg-gray-200 text-gray-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-300 transition duration-300">
+                        <i class="fas fa-question-circle me-2"></i>Plus d'informations
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12 rounded-t-3xl">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-full md:w-1/2">
+                    <h5 class="text-xl font-bold">Business Case Digital</h5>
+                    <p class="text-sm mt-2">Modèle complet pour la transformation digitale</p>
+                </div>
+                <div class="w-full md:w-1/2 text-right mt-4 md:mt-0">
+                    <p class="text-sm">© 2023 Direction de la Transformation Digitale</p>
+                    <p class="text-sm">Dernière mise à jour: <span id="current-date"></span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set the current date in the footer
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('fr-FR');
+    </script>
+</body>
+</html>
