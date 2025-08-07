@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Maturité Data & Entreprise Data-Driven</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --digital-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--digital-blue);
+            background-color: #f5f9ff;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+
+        .competence-badge {
+            background-color: var(--digital-blue);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-database" style="color:var(--digital-blue);"></i> Quiz Maturité Data & Entreprise Data-Driven</h1>
+                <p>Évaluez vos connaissances sur la gestion des données et la culture data-driven</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 45</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Chargement de la question...</h2>
+                    <div id="options-container">
+                        <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+       const quizData = {
+    questions: [
+        // Section 1 - Fondamentaux de la Data (15 questions)
+        {
+            question: "Qu'est-ce qui définit une entreprise 'data-driven' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Une entreprise qui stocke beaucoup de données",
+                "Une entreprise qui prend ses décisions stratégiques principalement basées sur des données",
+                "Une entreprise qui utilise exclusivement le cloud",
+                "Une entreprise qui a un département data science"
+            ],
+            correctAnswer: "Une entreprise qui prend ses décisions stratégiques principalement basées sur des données",
+            explanation: "Une entreprise data-driven intègre systématiquement les données dans ses processus décisionnels à tous les niveaux, pas seulement dans des domaines spécifiques."
+        },
+        {
+            question: "Quel est le principal avantage d'une approche data-driven ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Réduire les coûts informatiques",
+                "Prendre des décisions plus objectives et mesurables",
+                "Automatiser tous les processus humains",
+                "Éliminer complètement l'intuition dans les décisions"
+            ],
+            correctAnswer: "Prendre des décisions plus objectives et mesurables",
+            explanation: "L'approche data-driven permet de réduire les biais cognitifs et d'évaluer l'impact réel des décisions grâce à des indicateurs mesurables."
+        },
+        {
+            question: "Quelle est la différence entre data et information ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "La data est structurée, l'information ne l'est pas",
+                "L'information est une donnée contextualisée et interprétée",
+                "Il n'y a pas de différence, ce sont des synonymes",
+                "La data est numérique, l'information peut être analogique"
+            ],
+            correctAnswer: "L'information est une donnée contextualisée et interprétée",
+            explanation: "Les données brutes deviennent de l'information lorsqu'elles sont organisées, traitées et interprétées dans un contexte spécifique."
+        },
+        {
+            question: "Quel est l'objectif principal de la gouvernance des données ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Stocker le plus de données possible",
+                "Assurer la qualité, la sécurité et la conformité des données",
+                "Automatiser toutes les décisions",
+                "Créer des tableaux de bord complexes"
+            ],
+            correctAnswer: "Assurer la qualité, la sécurité et la conformité des données",
+            explanation: "La gouvernance des données vise à établir des règles et processus pour que les données soient fiables, sécurisées et conformes aux réglementations."
+        },
+        {
+            question: "Qu'est-ce que le 'data literacy' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "La capacité à programmer en Python",
+                "La capacité à lire, comprendre, créer et communiquer à partir de données",
+                "La connaissance des bases de données relationnelles",
+                "La maîtrise des outils de BI"
+            ],
+            correctAnswer: "La capacité à lire, comprendre, créer et communiquer à partir de données",
+            explanation: "La data literacy est une compétence essentielle dans une entreprise data-driven, permettant à tous les employés d'utiliser efficacement les données."
+        },
+        {
+            question: "Quel est le rôle principal d'un Chief Data Officer (CDO) ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Développer des algorithmes de machine learning",
+                "Définir et mettre en œuvre la stratégie data de l'entreprise",
+                "Gérer l'infrastructure informatique",
+                "Créer des tableaux de bord pour la direction"
+            ],
+            correctAnswer: "Définir et mettre en œuvre la stratégie data de l'entreprise",
+            explanation: "Le CDO est responsable de la valorisation des données comme actif stratégique, en alignant la stratégie data sur les objectifs business."
+        },
+        {
+            question: "Qu'est-ce qu'une 'single source of truth' en gestion des données ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Un outil de reporting unique",
+                "Une source de données de référence unique et fiable pour toute l'entreprise",
+                "Une base de données centralisée",
+                "Un entrepôt de données historique"
+            ],
+            correctAnswer: "Une source de données de référence unique et fiable pour toute l'entreprise",
+            explanation: "La single source of truth évite les incohérences en garantissant que tout le monde travaille avec les mêmes données de référence."
+        },
+        {
+            question: "Quel est l'objectif principal du data storytelling ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Créer des graphiques complexes",
+                "Transformer des analyses en récits persuasifs pour influencer les décisions",
+                "Documenter les processus ETL",
+                "Automatiser les rapports"
+            ],
+            correctAnswer: "Transformer des analyses en récits persuasifs pour influencer les décisions",
+            explanation: "Le data storytelling combine données, visualisations et narration pour rendre les insights actionnables et mémorables."
+        },
+        {
+            question: "Qu'est-ce que le 'data mesh' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Un réseau de capteurs IoT",
+                "Une approche décentralisée de l'architecture data où les données sont traitées comme un produit",
+                "Un type de base de données NoSQL",
+                "Une méthode de nettoyage des données"
+            ],
+            correctAnswer: "Une approche décentralisée de l'architecture data où les données sont traitées comme un produit",
+            explanation: "Le data mesh organise les données par domaines métiers, avec des équipes responsables de la qualité et de l'accessibilité de leurs données."
+        },
+        {
+            question: "Quel est le principal défi dans la mise en place d'une culture data-driven ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Le coût des outils techniques",
+                "Le changement des mentalités et des processus décisionnels",
+                "Le stockage des données",
+                "La formation des data scientists"
+            ],
+            correctAnswer: "Le changement des mentalités et des processus décisionnels",
+            explanation: "La transition vers une culture data-driven nécessite un changement organisationnel profond, souvent plus difficile que les aspects techniques."
+        },
+        {
+            question: "Qu'est-ce que la 'data democratization' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "L'ouverture des données publiques",
+                "La mise à disposition des données à tous les employés selon leurs besoins",
+                "La suppression de tous les contrôles d'accès aux données",
+                "L'utilisation exclusive de logiciels open source"
+            ],
+            correctAnswer: "La mise à disposition des données à tous les employés selon leurs besoins",
+            explanation: "La démocratisation des données permet aux non-spécialistes d'accéder et d'utiliser les données de manière autonome, avec des garde-fous appropriés."
+        },
+        {
+            question: "Quel est l'objectif principal d'un data catalog ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Stocker des copies de sauvegarde des données",
+                "Documenter et rendre découvrables les actifs de données de l'entreprise",
+                "Automatiser les processus ETL",
+                "Créer des modèles prédictifs"
+            ],
+            correctAnswer: "Documenter et rendre découvrables les actifs de données de l'entreprise",
+            explanation: "Un data catalog est un inventaire des données disponibles avec leur métadonnées, essentiel pour la découvrabilité et la réutilisation des données."
+        },
+        {
+            question: "Qu'est-ce que le 'time to insight' dans une organisation data-driven ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Le temps nécessaire pour collecter des données",
+                "Le temps entre la collecte des données et leur analyse",
+                "Le temps entre une question business et la réponse data",
+                "La durée de vie des données"
+            ],
+            correctAnswer: "Le temps entre une question business et la réponse data",
+            explanation: "Réduire le time to insight est crucial pour une entreprise data-driven, permettant des décisions plus rapides et opportunes."
+        },
+        {
+            question: "Quel est l'avantage principal des 'data products' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Ils génèrent directement des revenus",
+                "Ils encapsulent données, code et documentation pour une réutilisation facile",
+                "Ils sont plus faciles à stocker",
+                "Ils nécessitent moins de gouvernance"
+            ],
+            correctAnswer: "Ils encapsulent données, code et documentation pour une réutilisation facile",
+            explanation: "Les data products sont conçus comme des produits autonomes et réutilisables, accélérant la création de valeur à partir des données."
+        },
+        {
+            question: "Qu'est-ce que le 'dataOps' ? <span class='competence-badge'>Fondamentaux</span>",
+            options: [
+                "Un langage de programmation pour les données",
+                "Une méthodologie pour améliorer la qualité et réduire le cycle de vie des solutions data",
+                "Un outil de visualisation de données",
+                "Un type de base de données"
+            ],
+            correctAnswer: "Une méthodologie pour améliorer la qualité et réduire le cycle de vie des solutions data",
+            explanation: "DataOps applique les principes DevOps aux pipelines de données pour améliorer la collaboration, la qualité et la vitesse de livraison."
+        },
+
+        // Section 2 - Maturité Data (15 questions)
+        {
+            question: "Quel est le premier niveau typique dans un modèle de maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Data-driven",
+                "Conscient",
+                "Géré",
+                "Optimisé"
+            ],
+            correctAnswer: "Conscient",
+            explanation: "Le niveau initial (souvent appelé 'Conscient' ou 'Ad hoc') se caractérise par une prise de conscience des enjeux data mais sans processus formalisés."
+        },
+        {
+            question: "Quel élément est essentiel pour atteindre un niveau avancé de maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Une stratégie data alignée avec la stratégie d'entreprise",
+                "L'achat des outils les plus récents",
+                "L'externalisation de toutes les activités data",
+                "La suppression de tous les silos organisationnels"
+            ],
+            correctAnswer: "Une stratégie data alignée avec la stratégie d'entreprise",
+            explanation: "Une stratégie data claire, soutenue par la direction et alignée sur les objectifs business est le fondement d'une haute maturité data."
+        },
+        {
+            question: "Quel indicateur permet de mesurer la maturité data d'une organisation ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Le nombre de data scientists employés",
+                "Le pourcentage de décisions basées sur des données",
+                "La taille de l'entrepôt de données",
+                "Le budget alloué aux outils data"
+            ],
+            correctAnswer: "Le pourcentage de décisions basées sur des données",
+            explanation: "La mesure la plus significative est l'impact réel des données sur les processus décisionnels de l'organisation."
+        },
+        {
+            question: "Quel est un signe d'une faible maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Des tableaux de bord personnalisés pour chaque département",
+                "L'absence de gouvernance des données formalisée",
+                "L'utilisation de plusieurs outils analytiques",
+                "La présence d'un Chief Data Officer"
+            ],
+            correctAnswer: "L'absence de gouvernance des données formalisée",
+            explanation: "Une gouvernance inexistante ou informelle est un indicateur clé d'une faible maturité data."
+        },
+        {
+            question: "Quelle pratique est caractéristique d'une maturité data intermédiaire ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Les données sont utilisées uniquement pour le reporting historique",
+                "Les données pilotent des processus opérationnels en temps réel",
+                "Les données sont intégrées dans les processus décisionnels stratégiques",
+                "L'entreprise a une vision unifiée de ses clients"
+            ],
+            correctAnswer: "Les données sont intégrées dans les processus décisionnels stratégiques",
+            explanation: "À un niveau intermédiaire, les données influencent activement les décisions mais ne sont pas encore totalement intégrées à tous les processus."
+        },
+        {
+            question: "Quel est l'avantage principal d'une haute maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Réduction des coûts informatiques",
+                "Meilleure agilité et capacité d'innovation",
+                "Élimination complète des risques liés aux données",
+                "Automatisation de toutes les décisions humaines"
+            ],
+            correctAnswer: "Meilleure agilité et capacité d'innovation",
+            explanation: "Les organisations avec une haute maturité data peuvent identifier plus rapidement les opportunités et les menaces, favorisant l'innovation."
+        },
+        {
+            question: "Quelle est la première étape pour évaluer la maturité data d'une entreprise ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Acheter un outil d'analyse",
+                "Former tous les employés au machine learning",
+                "Réaliser un audit des capacités et pratiques data existantes",
+                "Migrer toutes les données vers le cloud"
+            ],
+            correctAnswer: "Réaliser un audit des capacités et pratiques data existantes",
+            explanation: "Un diagnostic précis des forces et faiblesses actuelles est essentiel avant de planifier toute initiative d'amélioration."
+        },
+        {
+            question: "Quel facteur est le plus important pour progresser en maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "L'implication active de la direction générale",
+                "Le budget alloué aux outils techniques",
+                "Le nombre de certifications des employés",
+                "L'âge de l'infrastructure data"
+            ],
+            correctAnswer: "L'implication active de la direction générale",
+            explanation: "Sans l'engagement du top management, les initiatives data peinent à dépasser le stade expérimental ou départemental."
+        },
+        {
+            question: "Quelle pratique distingue une entreprise avec une maturité data avancée ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "L'utilisation de données en temps réel pour des décisions opérationnelles",
+                "La possession d'un entrepôt de données",
+                "L'existence d'une équipe data science",
+                "La production régulière de rapports"
+            ],
+            correctAnswer: "L'utilisation de données en temps réel pour des décisions opérationnelles",
+            explanation: "Les organisations très matures intègrent les données directement dans les flux de travail et processus décisionnels en temps réel."
+        },
+        {
+            question: "Quel est un obstacle courant à l'amélioration de la maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Les silos organisationnels et la fragmentation des données",
+                "Le manque de solutions techniques sur le marché",
+                "L'absence de réglementation sur les données",
+                "La simplicité des architectures data"
+            ],
+            correctAnswer: "Les silos organisationnels et la fragmentation des données",
+            explanation: "La fragmentation des données entre départements est un défi majeur pour atteindre une vue unifiée et cohérente."
+        },
+        {
+            question: "Quelle compétence est la plus critique pour améliorer la maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "La maîtrise des derniers algorithmes de machine learning",
+                "La capacité à aligner les initiatives data sur les objectifs business",
+                "La connaissance approfondie de tous les outils du marché",
+                "La capacité à coder en plusieurs langages"
+            ],
+            correctAnswer: "La capacité à aligner les initiatives data sur les objectifs business",
+            explanation: "La valeur des données vient de leur application concrète à des problèmes business, pas de leur sophistication technique."
+        },
+        {
+            question: "Quel indicateur ne fait PAS partie des mesures typiques de maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Le pourcentage de données de qualité",
+                "Le temps moyen pour répondre à une requête data",
+                "Le nombre d'employés formés à l'utilisation des données",
+                "La couleur des rapports produits"
+            ],
+            correctAnswer: "La couleur des rapports produits",
+            explanation: "Les mesures de maturité portent sur la qualité, l'accessibilité, l'utilisation et l'impact des données, pas sur des aspects cosmétiques."
+        },
+        {
+            question: "Quelle initiative a le plus d'impact pour améliorer la maturité data ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Créer un centre d'excellence data transverse",
+                "Acheter une solution BI pour chaque département",
+                "Externaliser toute la gestion des données",
+                "Nommer un data scientist chef de projet"
+            ],
+            correctAnswer: "Créer un centre d'excellence data transverse",
+            explanation: "Un centre d'excellence permet de diffuser les bonnes pratiques, tout en maintenant une cohérence globale des approches."
+        },
+        {
+            question: "Quelle est la caractéristique d'une gouvernance data mature ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "Elle est centralisée et contrôlée par l'IT",
+                "Elle est décentralisée mais avec des standards communs",
+                "Elle est absente pour favoriser l'agilité",
+                "Elle est externalisée à un prestataire"
+            ],
+            correctAnswer: "Elle est décentralisée mais avec des standards communs",
+            explanation: "Une gouvernance mature équilibre autonomie locale et cohérence globale, avec des rôles et responsabilités clairs."
+        },
+        {
+            question: "Quelle transformation est nécessaire pour passer d'une maturité intermédiaire à avancée ? <span class='competence-badge'>Maturité</span>",
+            options: [
+                "De l'analyse descriptive à l'analyse prédictive et prescriptive",
+                "De l'absence de données à la collecte de données",
+                "Des rapports statiques aux tableaux de bord",
+                "De l'utilisation ponctuelle à l'absence de données"
+            ],
+            correctAnswer: "De l'analyse descriptive à l'analyse prédictive et prescriptive",
+            explanation: "Les organisations très matures ne se contentent pas de décrire le passé mais utilisent les données pour anticiper et recommander des actions."
+        },
+
+        // Section 3 - Implémentation et Cas d'Usage (15 questions)
+        {
+            question: "Quel est le premier pas concret pour devenir une entreprise data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Acheter une solution de big data",
+                "Identifier un problème business précis que les données peuvent résoudre",
+                "Former tous les employés au machine learning",
+                "Migrer toutes les données vers le cloud"
+            ],
+            correctAnswer: "Identifier un problème business précis que les données peuvent résoudre",
+            explanation: "Commencer par un cas d'usage concret avec un ROI clair permet de démontrer la valeur des données et d'obtenir l'adhésion."
+        },
+        {
+            question: "Quel département bénéficie généralement le plus d'une approche data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Marketing et relation client",
+                "Ressources humaines",
+                "Juridique",
+                "Tous les départements peuvent en bénéficier"
+            ],
+            correctAnswer: "Tous les départements peuvent en bénéficier",
+            explanation: "Toutes les fonctions de l'entreprise peuvent tirer avantage des données, du marketing à la production en passant par les RH."
+        },
+        {
+            question: "Quelle est la clé pour assurer l'adoption des outils data par les métiers ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Imposer leur utilisation par la direction",
+                "Concevoir des solutions centrées sur l'utilisateur et ses besoins",
+                "Choisir les outils les plus puissants du marché",
+                "Externaliser la formation des utilisateurs"
+            ],
+            correctAnswer: "Concevoir des solutions centrées sur l'utilisateur et ses besoins",
+            explanation: "L'adoption repose sur la résolution de problèmes concrets des utilisateurs avec des interfaces intuitives, pas sur la technologie sous-jacente."
+        },
+        {
+            question: "Quel est un cas d'usage classique de l'analytique dans les ressources humaines ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Prédiction du turnover",
+                "Automatisation des paies",
+                "Gestion des badges d'accès",
+                "Création de contrats"
+            ],
+            correctAnswer: "Prédiction du turnover",
+            explanation: "L'analytique RH peut identifier les facteurs de risque de départ et aider à mettre en place des actions préventives."
+        },
+        {
+            question: "Quelle infrastructure est la plus adaptée pour une entreprise data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Une architecture unifiée et évolutive",
+                "Plusieurs solutions indépendantes par département",
+                "Une solution unique centralisée",
+                "Des outils différents pour chaque utilisateur"
+            ],
+            correctAnswer: "Une architecture unifiée et évolutive",
+            explanation: "L'architecture doit permettre l'intégration des données tout en restant flexible pour s'adapter aux besoins changeants."
+        },
+        {
+            question: "Quel est l'avantage principal des outils de self-service BI ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Ils éliminent le besoin de spécialistes data",
+                "Ils permettent aux métiers d'explorer les données de manière autonome",
+                "Ils sont moins chers que les solutions traditionnelles",
+                "Ils fonctionnent sans gouvernance des données"
+            ],
+            correctAnswer: "Ils permettent aux métiers d'explorer les données de manière autonome",
+            explanation: "Le self-service BI donne aux utilisateurs métiers la capacité d'explorer les données tout en maintenant des garde-fous pour la qualité et la sécurité."
+        },
+        {
+            question: "Quelle pratique favorise le mieux une culture data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Récompenser les décisions basées sur des données",
+                "Acheter les derniers outils analytiques",
+                "Embaucher exclusivement des data scientists",
+                "Réduire le budget des intuitions non vérifiées"
+            ],
+            correctAnswer: "Récompenser les décisions basées sur des données",
+            explanation: "La reconnaissance des comportements souhaités est plus efficace pour changer la culture que les approches punitives ou purement technologiques."
+        },
+        {
+            question: "Quel est un indicateur clé de performance pour une initiative data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Le nombre de rapports produits",
+                "L'impact sur les résultats business",
+                "La complexité des modèles utilisés",
+                "La quantité de données collectées"
+            ],
+            correctAnswer: "L'impact sur les résultats business",
+            explanation: "La valeur des initiatives data se mesure par leur contribution concrète aux objectifs business, pas par des métriques techniques."
+        },
+        {
+            question: "Quelle approche est recommandée pour prioriser les cas d'usage data ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Commencer par les projets les plus techniquement complexes",
+                "Prioriser en fonction de la valeur business et de la faisabilité",
+                "Traiter tous les cas d'usage simultanément",
+                "Attendre d'avoir un système data parfait avant de commencer"
+            ],
+            correctAnswer: "Prioriser en fonction de la valeur business et de la faisabilité",
+            explanation: "Une approche pragmatique qui combine impact potentiel et réalisme de mise en œuvre permet des succès rapides et concrets."
+        },
+        {
+            question: "Quel est le rôle des data stewards dans une organisation data-driven ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Développer des algorithmes de machine learning",
+                "Gérer l'infrastructure technique des données",
+                "Assurer la qualité et la cohérence des données dans leur domaine",
+                "Créer des tableaux de bord pour la direction"
+            ],
+            correctAnswer: "Assurer la qualité et la cohérence des données dans leur domaine",
+            explanation: "Les data stewards sont des experts métier qui garantissent la pertinence et la qualité des données dans leur domaine de compétence."
+        },
+        {
+            question: "Quelle pratique permet de maintenir la qualité des données dans le temps ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Nettoyer les données une fois par an",
+                "Implémenter des contrôles de qualité automatisés à chaque étape",
+                "Externaliser la gestion de la qualité",
+                "Supprimer régulièrement les anciennes données"
+            ],
+            correctAnswer: "Implémenter des contrôles de qualité automatisés à chaque étape",
+            explanation: "La qualité des données doit être vérifiée en continu, dès la collecte, pas seulement lors de nettoyages ponctuels."
+        },
+        {
+            question: "Quel est un avantage des data lakes par rapport aux entrepôts de données traditionnels ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Ils nécessitent moins de gouvernance",
+                "Ils stockent des données structurées et non structurées dans leur format natif",
+                "Ils fournissent des performances supérieures pour les requêtes SQL",
+                "Ils sont moins chers à mettre en œuvre"
+            ],
+            correctAnswer: "Ils stockent des données structurées et non structurées dans leur format natif",
+            explanation: "Les data lakes conservent les données brutes dans leur format d'origine, offrant une grande flexibilité pour des analyses futures."
+        },
+        {
+            question: "Quelle méthodologie est utile pour gérer un projet data ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "CRISP-DM",
+                "Scrum",
+                "Waterfall",
+                "Toutes ces réponses"
+            ],
+            correctAnswer: "Toutes ces réponses",
+            explanation: "Différentes méthodologies peuvent être adaptées selon la nature du projet data, souvent en combinant plusieurs approches."
+        },
+        {
+            question: "Quel est un piège courant dans les projets data ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Se concentrer uniquement sur la technologie et négliger les aspects humains",
+                "Impliquer les métiers dès le début",
+                "Démarrer avec un cas d'usage simple",
+                "Former les utilisateurs régulièrement"
+            ],
+            correctAnswer: "Se concentrer uniquement sur la technologie et négliger les aspects humains",
+            explanation: "Les défis organisationnels et culturels sont souvent plus difficiles à surmonter que les aspects techniques."
+        },
+        {
+            question: "Quelle pratique aide à mesurer le ROI des initiatives data ? <span class='competence-badge'>Implémentation</span>",
+            options: [
+                "Définir des indicateurs de succès clairs avant de commencer",
+                "Ne mesurer que les coûts techniques",
+                "Attendre plusieurs années avant toute évaluation",
+                "Externaliser l'évaluation à un cabinet conseil"
+            ],
+            correctAnswer: "Définir des indicateurs de succès clairs avant de commencer",
+            explanation: "Définir dès le départ comment sera mesuré le succès permet une évaluation objective de la valeur créée."
+        }
+    ]
+};
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.innerHTML = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.innerHTML = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Bravo, c'est la bonne réponse !";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication :";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            let scoreColor;
+            let recommendationsHtml;
+
+            if (percentage >= 80) {
+                scoreColor = 'var(--success-color)';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent !</h5><p>Vous avez une compréhension approfondie de la maturité data et des organisations data-driven. Vous pourriez envisager de guider d\'autres entreprises dans leur transformation.</p>';
+            } else if (percentage >= 50) {
+                scoreColor = 'var(--digital-blue)';
+                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Bonne connaissance !</h5><p>Vous maîtrisez les concepts clés mais certaines zones méritent d\'être approfondies. Ciblez les aspects où vous avez fait des erreurs pour progresser.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> À développer !</h5><p>Consolidez vos connaissances fondamentales sur la gestion des données et les stratégies data-driven. Identifiez 2-3 axes prioritaires pour votre montée en compétence.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>
