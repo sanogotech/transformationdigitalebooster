@@ -1,62 +1,167 @@
-# 🧭 **GUIDE COMPLET : Migration d’un système legacy critique vers le Cloud — sans interruption**
+# 🧭 **GUIDE COMPLET : Migration d’un Système Legacy Critique vers le Cloud — sans Interruption**
 
-## 🎯 Objectif
+## 🎯 Objectif global
 
-Migrer 15 ans de données critiques, 47 applications interconnectées, 3M de transactions/jour, sans **aucun downtime**, avec un **budget de 2,8M€** et une **infrastructure obsolète** (2008), **sans documentation complète.**
+> Migrer **15 ans de données critiques**, **47 applications interconnectées**, avec **3 millions de transactions/jour**, sans **aucune interruption de service**, dans un contexte contraint :
 
----
-
-## 🧱 **Étape 1 : Diagnostic stratégique et cartographie initiale**
-
-### 🎯 Objectif : Comprendre avant d'agir
-
-**Actions :**
-
-* Réunir tous les assets techniques (code, logs, schémas, base de données, scripts, etc.)
-* Cartographier les 47 applications et leurs dépendances (flux, API, batchs, etc.)
-* Identifier les "zones à risque" (nœuds critiques, applications orphelines, techno obsolètes)
-* Évaluer les performances du système actuel (CPU, I/O, charges réseau)
-
-### 📊 Outils :
-
-* **Elastic Stack** (pour logs + visualisation)
-* **Miro / ArchiMate** pour la cartographie applicative
-* **Jira + Confluence** pour centraliser les connaissances
-
-### ✅ Bonnes pratiques :
-
-* Créer une **fiche par application** : rôle, données, dépendances, propriétaire
-* Identifier les **SPOFs** (Single Points of Failure)
-* Auditer la sécurité et la conformité RGPD en parallèle
+* 💾 Infrastructure obsolète (2008)
+* 📉 Aucune documentation complète
+* 💰 Budget limité à 2,8 M€
 
 ---
 
-## 🏗️ **Étape 2 : Construction d’une architecture parallèle (architecture miroir)**
+## 🧱 ÉTAPE 1 : Diagnostic stratégique & cartographie initiale
 
-### 🎯 Objectif : Isoler le legacy, sécuriser les tests, garantir la réversibilité
+### 🎯 Objectif
 
-### 📐 Architecture choisie :
+Comprendre **l'existant dans sa globalité**, identifier les dépendances et risques majeurs avant d'amorcer la migration.
 
-* Cloud hybride basé sur **Kubernetes (K8s)** + services managés (S3, RDS, etc.)
-* Bus d’événements pour l’intégration **(Kafka + CDC avec Debezium)**
-* **Infrastructure as Code** (Terraform + Ansible)
+---
 
-### 🛠️ Outils clés :
+### 📋 Plan d'action détaillé
 
-* **Terraform** pour provisionner les environnements
-* **Istio** pour le service mesh et le routage progressif
-* **Velero** pour les backups/restores
+| Action                                  | Description                                                                                        |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 🗃️ Collecte des artefacts              | Centraliser code source, scripts, logs, schémas de BDD, configurations, fichiers batch             |
+| 🗺️ Cartographie applicative            | Identifier les flux inter-applications (API, batchs, triggers), SLA, types de données échangées    |
+| 🔍 Analyse de la criticité & complexité | Identifier SPOFs, couplages forts, composants obsolètes ou à risque (ex : versions non maintenues) |
+| 📊 Analyse de la performance            | Benchmark CPU, I/O, latence, bande passante, volumétrie en base et fréquence d’usage               |
+| 📄 Analyse de conformité & sécurité     | Vérifier RGPD, accès critiques, droits utilisateurs, audit trail                                   |
 
-### ✅ Bonnes pratiques :
+---
 
-* **Ne rien modifier sur le legacy**
-* Construire en parallèle : infrastructure, déploiement CI/CD, monitoring
-* Prévoir un **budget tampon** pour le double run (\~15% du total)
-* Isoler totalement les flux réseau, monitoring, logs
+### 📊 Outils recommandés
 
-### 🔁 REX :
+| Catégorie     | Outils                                                      |
+| ------------- | ----------------------------------------------------------- |
+| Supervision   | Elastic Stack (Elasticsearch, Logstash, Kibana), Prometheus |
+| Documentation | Confluence, Notion, GitLab Wikis                            |
+| Cartographie  | Miro, Draw\.io, ArchiMate                                   |
+| Collaboration | Jira, Trello, Notion                                        |
 
-> "Le legacy n'a jamais été interrompu. On pouvait couper le cloud et tout continuait. Cette indépendance a sauvé le projet."
+---
+
+### ✅ Bonnes pratiques
+
+* Créer une **fiche standardisée par application** incluant :
+
+  * Rôle métier
+  * Stack technologique
+  * Données manipulées
+  * Fréquence d’usage
+  * Criticité (SLA, SLO, SLI)
+  * Points de couplage
+* Classer les applications selon leur **criticité business**
+* Identifier les applications **orphelines** ou à **forte dette technique**
+* Produire un **graph de dépendance inter-applicative**
+* Valider la **conformité RGPD** sur chaque domaine fonctionnel
+
+---
+
+### 📌 Exemple de fiche applicative
+
+| Élément              | Valeur                                |
+| -------------------- | ------------------------------------- |
+| Nom de l’application | BillingCore                           |
+| Stack technique      | Java 6, Oracle 11g, WebLogic          |
+| Propriétaire         | DSI - Division Finance                |
+| Données critiques    | Facturation, taxes, historique client |
+| Interfaces           | CRM, ERP, Paiement                    |
+| Dépendances          | DB commune, batch nocturne            |
+| Fréquence            | Temps réel + batchs                   |
+| Documentation        | Partielle (dernier update : 2016)     |
+
+---
+
+## 🏗️ ÉTAPE 2 : Construction d’une Architecture Parallèle (Miroir)
+
+### 🎯 Objectif
+
+Créer un **environnement cloud complet** en miroir du legacy, capable de :
+
+* Exécuter les mêmes traitements
+* Traiter les mêmes flux en parallèle
+* Réagir en cas de bascule sans impacter la production
+
+---
+
+### 📐 Architecture cible (hybride cloud + event-driven)
+
+#### 🧱 Architecture technique simplifiée
+
+![Diagramme d'architecture parallèle](sandbox:/mnt/data/architecture_migration_legacy_cloud.png)
+
+| Composant           | Rôle                                                    |
+| ------------------- | ------------------------------------------------------- |
+| 🖥️ Legacy          | Source de vérité (lecture seule)                        |
+| ☁️ Cloud Mirror     | Nouvelle architecture K8s + services managés (RDS, S3…) |
+| 🔄 Kafka + Debezium | Capture et stream des données (CDC)                     |
+| ⚙️ Terraform        | Provisionnement infra cloud, IaC                        |
+| 🧭 Istio            | Service Mesh pour routage progressif                    |
+| 💾 Velero           | Sauvegarde/restauration (bases, PV, configs)            |
+| 📈 Elastic Stack    | Supervision centralisée des deux environnements         |
+
+---
+
+### 🛠️ Outils utilisés
+
+| Fonction             | Outils/Méthodes utilisés   |
+| -------------------- | -------------------------- |
+| Infra as Code        | Terraform + Ansible        |
+| Cluster containerisé | Kubernetes (K8s), Helm     |
+| Observabilité        | ELK + Prometheus + Grafana |
+| CI/CD                | GitLab CI, ArgoCD          |
+| Sauvegardes          | Velero + snapshots S3      |
+| Sécurité + Routage   | Istio, cert-manager, OPA   |
+
+---
+
+### 📊 Dimensionnement recommandé
+
+| Ressource      | Spécification initiale (scalable)        |
+| -------------- | ---------------------------------------- |
+| Noeuds K8s     | 6 nœuds (3 front, 3 back, autoscaling)   |
+| Brokers Kafka  | 3 brokers, replication factor 2          |
+| Stockage objet | 8 To (S3) + versioning                   |
+| DB cloud (RDS) | PostgreSQL multi-AZ + 1 read-replica     |
+| Monitoring     | 1 cluster Elastic, 1 Prometheus          |
+| Sauvegarde     | Snapshots S3 / Glacier (2 fois par jour) |
+
+---
+
+### ✅ Bonnes pratiques
+
+* **Ne jamais modifier** les systèmes legacy existants
+* Créer un **environnement cloud isolé** (réseau, IAM, DNS, logs)
+* Activer un **double run** pour validation sur production
+* Mettre en place une **architecture stateless** dans le cloud
+* **Automatiser** tout le déploiement (IaC + CI/CD)
+* Intégrer des **règles de sécurité réseau** (MTLS, zero-trust)
+
+---
+
+### 🔁 REX (retour d’expérience)
+
+> 🔎 **Cas réel :**
+> Une mauvaise configuration réseau entre le cloud et le legacy a été détectée **grâce à l’environnement miroir**, sans impacter la prod.
+> Ce type de test aurait été impossible dans un environnement unique.
+
+> 🛡️ **Décision stratégique :**
+> Le DG avait exigé zéro interruption.
+> Grâce à la **cohabitation totale cloud/legacy pendant 3 mois**, le système a pu **absorber les pics de charge**, sans rupture, ni incident utilisateur.
+
+---
+
+## ✅ Résumé comparatif (avant / après architecture miroir)
+
+| Critère             | Avant (Legacy seul)     | Après (Miroir Cloud)         |
+| ------------------- | ----------------------- | ---------------------------- |
+| 📉 Performances     | 2,1s / requête          | 250ms / requête              |
+| 📦 Résilience       | 1 zone / SPOF multiples | Multi-zones, sans SPOF       |
+| 🧪 Capacité de test | Sandbox manuelle        | Tests live sur trafic réel   |
+| 🔁 Réversibilité    | N/A                     | Bascule instantanée possible |
+| 🔒 Sécurité         | ACL limitées            | Zero-trust + MTLS + audit    |
+| 💰 Coût infra       | 78k€/mois               | 24k€/mois après migration    |
 
 ---
 
