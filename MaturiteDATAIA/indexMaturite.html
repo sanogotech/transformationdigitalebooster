@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Maturity Pro | Diagnostic & Roadmap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --survie: #FF6B6B;
+            --structuration: #FFD166;
+            --industrialisation: #06D6A0;
+            --excellence: #118AB2;
+            --dark-blue: #073B4C;
+            --light-blue: #E8F4F8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark-blue);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f4f8 100%);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, #118AB2, #06D6A0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #118AB2 0%, #073B4C 100%);
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid rgba(7, 59, 76, 0.1);
+        }
+
+        .nav-tabs .nav-link {
+            font-weight: 600;
+            color: #495057;
+            border: none;
+            padding: 1rem 1.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #118AB2, #06D6A0);
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #118AB2;
+            background-color: transparent;
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active::after {
+            width: 100%;
+        }
+
+        .tab-content {
+            padding: 2rem;
+            background: white;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, #f8f9fa, white);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .category-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.01);
+        }
+
+        .category-header {
+            padding: 1.5rem;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .survie { background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); }
+        .structuration { background: linear-gradient(135deg, #FFD166 0%, #FFE08E 100%); }
+        .industrialisation { background: linear-gradient(135deg, #06D6A0 0%, #2CE69F 100%); }
+        .excellence { background: linear-gradient(135deg, #118AB2 0%, #2EC4E6 100%); }
+
+        .level-card {
+            border-left: 5px solid;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .level-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .level-card.survie { border-left-color: var(--survie); }
+        .level-card.structuration { border-left-color: var(--structuration); }
+        .level-card.industrialisation { border-left-color: var(--industrialisation); }
+        .level-card.excellence { border-left-color: var(--excellence); }
+
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #118AB2, #06D6A0);
+            border-radius: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #118AB2, #06D6A0);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(17, 138, 178, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(17, 138, 178, 0.4);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #118AB2, #06D6A0);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(17, 138, 178, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 15px 40px rgba(17, 138, 178, 0.6);
+        }
+
+        .badge-category {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .context-help {
+            font-size: 0.9em;
+            color: #6c757d;
+            background: rgba(233, 236, 239, 0.5);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid #118AB2;
+        }
+
+        .score-select {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s;
+        }
+
+        .score-select:focus {
+            border-color: #118AB2;
+            box-shadow: 0 0 0 0.25rem rgba(17, 138, 178, 0.25);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .roadmap-step {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .roadmap-step:before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #118AB2, #06D6A0);
+        }
+
+        .roadmap-step:last-child:before {
+            height: 50%;
+        }
+
+        .roadmap-step .dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .roadmap-step.survie .dot { background-color: var(--survie); }
+        .roadmap-step.structuration .dot { background-color: var(--structuration); }
+        .roadmap-step.industrialisation .dot { background-color: var(--industrialisation); }
+        .roadmap-step.excellence .dot { background-color: var(--excellence); }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #118AB2, #06D6A0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-card {
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border-left: 4px solid #118AB2;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .tool-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 1rem;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #118AB2, #06D6A0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animated-border {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #118AB2, #06D6A0, #118AB2);
+            background-size: 200% 200%;
+            z-index: -1;
+            border-radius: 14px;
+            animation: gradient 3s ease infinite;
+        }
+
+        .animated-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #118AB2, #06D6A0);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-1000px) rotate(720deg); }
+        }
+
+        .score-card {
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeInLeft" href="#">
+                <i class="fas fa-chart-line me-2"></i>DataMaturity<span class="fw-bold">Pro</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#diagnostic-tab" data-bs-toggle="tab">Diagnostic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#details-tab" data-bs-toggle="tab">Niveaux</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#roadmap-tab" data-bs-toggle="tab">Roadmap</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#resources-tab" data-bs-toggle="tab">Ressources</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section animate__animated animate__fadeIn">
+        <div class="floating-shapes">
+            <div class="shape" style="width: 300px; height: 300px; top: -150px; right: -150px; animation-delay: 0s;"></div>
+            <div class="shape" style="width: 200px; height: 200px; bottom: -100px; left: 20%; animation-delay: 2s; animation-duration: 12s;"></div>
+            <div class="shape" style="width: 150px; height: 150px; top: 30%; right: 10%; animation-delay: 4s; animation-duration: 18s;"></div>
+        </div>
+        <div class="container text-center position-relative">
+            <h1 class="display-4 fw-bold mb-4 glow-text animate__animated animate__fadeInDown">Transformez vos données en avantage compétitif</h1>
+            <p class="lead mb-5 animate__animated animate__fadeIn animate__delay-1s">Évaluez votre maturité data et accélérez votre transformation digitale avec notre diagnostic expert</p>
+            <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+                <a href="#diagnostic-tab" class="btn btn-light btn-lg px-4 py-3 pulse-animation" data-bs-toggle="tab">
+                    <i class="fas fa-play-circle me-2"></i>Commencer le diagnostic
+                </a>
+                <a href="#details-tab" class="btn btn-outline-light btn-lg px-4 py-3" data-bs-toggle="tab">
+                    <i class="fas fa-search me-2"></i>Explorer les niveaux
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mb-5">
+        <div class="row mb-5 animate__animated animate__fadeIn">
+            <div class="col-md-4 text-center mb-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 class="h4">Diagnostic précis</h3>
+                        <p class="text-muted">Évaluez votre maturité data à travers 12 dimensions clés avec notre outil expert.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="h4">Feuille de route</h3>
+                        <p class="text-muted">Obtenez un plan d'action personnalisé pour progresser dans votre transformation data.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body">
+                        <div class="feature-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="h4">Ressources clés</h3>
+                        <p class="text-muted">Accédez aux meilleurs outils, formations et lectures pour chaque niveau de maturité.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs animate__animated animate__fadeIn" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="diagnostic-tab" data-bs-toggle="tab" data-bs-target="#diagnostic" type="button" role="tab">
+                    <i class="fas fa-clipboard-check me-2"></i>Auto-diagnostic
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
+                    <i class="fas fa-layer-group me-2"></i>Détails des niveaux
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="roadmap-tab" data-bs-toggle="tab" data-bs-target="#roadmap" type="button" role="tab">
+                    <i class="fas fa-map-marked-alt me-2"></i>Feuille de route
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="methodology-tab" data-bs-toggle="tab" data-bs-target="#methodology" type="button" role="tab">
+                    <i class="fas fa-flask me-2"></i>Méthodologie
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="resources-tab" data-bs-toggle="tab" data-bs-target="#resources" type="button" role="tab">
+                    <i class="fas fa-toolbox me-2"></i>Ressources
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content position-relative" id="myTabContent">
+            <div class="floating-shapes">
+                <div class="shape" style="width: 100px; height: 100px; top: 20%; left: 5%; animation-delay: 0s; animation-duration: 20s;"></div>
+                <div class="shape" style="width: 150px; height: 150px; bottom: 10%; right: 5%; animation-delay: 3s; animation-duration: 25s;"></div>
+            </div>
+
+            <div class="tab-pane fade show active" id="diagnostic" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card border-0 animated-border">
+                            <div class="card-header bg-white border-0">
+                                <h3 class="mb-0"><i class="fas fa-clipboard-check text-primary me-2"></i>Diagnostic de maturité data</h3>
+                                <p class="mb-0 text-muted">Répondez à ces 12 questions pour évaluer où en est votre organisation</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="diagnosticForm">
+                                    <div id="questions"></div>
+                                    <button type="submit" class="btn btn-primary btn-block mt-4 py-3 pulse-animation">
+                                        <i class="fas fa-chart-bar me-2"></i>Évaluer ma maturité
+                                    </button>
+                                </form>
+
+                                <div id="results" class="mt-5" style="display:none;">
+                                    <h3 class="text-center mb-4"><i class="fas fa-chart-pie text-primary me-2"></i>Résultats du Diagnostic</h3>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="score-card text-center">
+                                                <h5 class="mb-3">Score Global</h5>
+                                                <div class="score-display mb-3" id="globalScore"></div>
+                                                <div class="progress mb-3" style="height: 20px;">
+                                                    <div class="progress-bar" role="progressbar" id="globalProgress"></div>
+                                                </div>
+                                                <div id="globalLevel" class="badge mb-3" style="font-size: 1rem;"></div>
+                                                <p class="text-muted" id="globalDescription"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="score-card">
+                                                <h5 class="mb-3">Répartition par catégorie</h5>
+                                                <div id="categoryScores"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4" id="recommendation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="details" role="tabpanel">
+                <h2 class="mb-4"><i class="fas fa-layer-group text-primary me-2"></i>Les 12 niveaux de maturité data</h2>
+                <p class="lead mb-5">Explorez chaque niveau pour comprendre les caractéristiques, risques et actions recommandées.</p>
+                
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="category-card h-100">
+                            <div class="category-header survie">
+                                <h3><i class="fas fa-exclamation-triangle me-2"></i>CATÉGORIE 1 – SURVIE</h3>
+                                <p>Des données non maîtrisées, fragmentées, dangereuses.</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="card level-card survie mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-file-excel me-2"></i>Niveau 1 – Excel Sauvage</h5>
+                                                <p class="card-text text-muted">"On navigue à vue, chaque fichier est une bombe à retardement."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 1</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel1">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel1">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Identifier les sources critiques, éviter les pertes de données.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Données sur des clés USB, postes individuels</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Copie manuelle entre fichiers</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Formules cassées, erreurs fréquentes, aucune traçabilité</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Centraliser les fichiers sur Google Drive / OneDrive</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Modéliser les fichiers critiques</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Former les utilisateurs à des modèles réutilisables</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Décisions basées sur des données erronées</li>
+                                                        <li>Dépendance à des utilisateurs clés</li>
+                                                        <li>Blocages fréquents dans les processus</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card survie mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-users me-2"></i>Niveau 2 – Collaboration Manuelle</h5>
+                                                <p class="card-text text-muted">"On commence à partager… mais mal."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 2</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel2">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel2">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Structurer la collaboration autour des fichiers partagés.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Fichiers partagés mais dupliqués</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Absence de droits d'accès clairs</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Multiples versions : v1_final_v3_final_final.xlsx</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place des conventions de nommage</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Définir les rôles d'accès</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Utiliser les commentaires, les historiques de modification</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Données divergentes entre versions</li>
+                                                        <li>Perte de temps à comparer les versions</li>
+                                                        <li>Difficulté à auditer les modifications</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card survie mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-server me-2"></i>Niveau 3 – Sauvegarde et Sécurité</h5>
+                                                <p class="card-text text-muted">"Les données sont là, mais on ne sait pas qui y a accès."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 3</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel3">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel3">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Assurer la sécurité, l'intégrité et la résilience des données.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Risque de perte de données non géré</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Manque de procédure en cas d'incident</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Données sensibles non sécurisées</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place une stratégie de sauvegarde</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Définir des droits d'accès et de modification</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Sécuriser les données personnelles (RGPD)</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Fuites de données et sanctions</li>
+                                                        <li>Perte irréversible de données</li>
+                                                        <li>Interruption de l'activité en cas de panne</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="category-card h-100">
+                            <div class="category-header structuration">
+                                <h3><i class="fas fa-puzzle-piece me-2"></i>CATÉGORIE 2 – STRUCTURATION</h3>
+                                <p>On sait où sont les données, on les organise.</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="card level-card structuration mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-database me-2"></i>Niveau 4 – La Base de Données</h5>
+                                                <p class="card-text text-muted">"On a une source de vérité, mais c'est encore un labyrinthe."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 4</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel4">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel4">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Centraliser les données dans une base de données pour améliorer la qualité et l'accès.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Multiples bases de données éparpillées</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Absence de dictionnaire de données</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Des équipes créent leurs propres bases sans coordination</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place une base de données centralisée (data warehouse)</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Établir un dictionnaire de données et des règles de saisie</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Intégrer les applications métier à la base de données centrale</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Incohérences entre les différentes sources de données</li>
+                                                        <li>Surcharge du système si mal géré</li>
+                                                        <li>Difficulté à intégrer de nouvelles applications</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card level-card structuration mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-cloud me-2"></i>Niveau 5 – Data Lake Simplifié</h5>
+                                                <p class="card-text text-muted">"On centralise tout, mais ça devient le 'data swamp'."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 5</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel5">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel5">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Collecter massivement des données structurées et non structurées.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Collecte de données non encadrée</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Stockage coûteux et non optimisé</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Données stockées mais inutilisées</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Définir une politique de gestion du stockage</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place des outils de gouvernance des données</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Identifier des cas d'usage pour valoriser les données collectées</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Coûts de stockage hors de contrôle</li>
+                                                        <li>Difficulté à trouver et utiliser les bonnes données</li>
+                                                        <li>Non-conformité réglementaire</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card structuration mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-sitemap me-2"></i>Niveau 6 – Gouvernance des Données</h5>
+                                                <p class="card-text text-muted">"On sait ce qu'on a, mais on ne sait pas à qui ça appartient."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 6</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel6">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel6">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Établir des processus clairs de gestion de la qualité et de la propriété des données.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Pas de rôles clairs (Data Owner, Data Steward)</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Données de mauvaise qualité</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Problèmes d'interopérabilité entre services</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place un comité de gouvernance des données</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Définir les rôles et responsabilités</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Créer un référentiel de données unique</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Décisions basées sur des données obsolètes ou inexactes</li>
+                                                        <li>Conflits de responsabilité entre les équipes</li>
+                                                        <li>Décalage entre les données et la réalité terrain</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="category-card h-100">
+                            <div class="category-header industrialisation">
+                                <h3><i class="fas fa-cogs me-2"></i>CATÉGORIE 3 – INDUSTRIALISATION</h3>
+                                <p>On automatise la chaîne de valeur de la donnée.</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="card level-card industrialisation mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-stream me-2"></i>Niveau 7 – Automatisation des Pipelines</h5>
+                                                <p class="card-text text-muted">"Les données arrivent toutes seules, mais on ne sait pas trop où elles vont."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 7</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel7">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel7">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Mettre en place des flux de données automatisés et fiables.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Procédures de collecte de données manuelles</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Rapports créés manuellement chaque jour/semaine</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Complexité de la mise à jour des rapports</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Automatiser les processus ETL (Extract, Transform, Load)</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Créer des pipelines de données robustes</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Utiliser des outils d'orchestration de flux (Apache Airflow, etc.)</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Erreurs de saisie ou de manipulation</li>
+                                                        <li>Délais dans la disponibilité des données</li>
+                                                        <li>Dépendance à des scripts maison non documentés</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card industrialisation mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-chart-line me-2"></i>Niveau 8 – Business Intelligence</h5>
+                                                <p class="card-text text-muted">"On a les tableaux de bord, mais les décisions sont encore intuitives."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 8</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel8">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel8">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Transformer les données en informations actionnables via des dashboards.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Rapports statiques et figés</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Tableaux de bord non unifiés</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Manque de compétences en visualisation de données</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Déployer un outil de Business Intelligence (BI) comme Power BI ou Tableau</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Créer des dashboards interactifs pour les équipes</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Former les équipes à la lecture et à l'analyse des dashboards</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Sous-utilisation des outils BI</li>
+                                                        <li>Mauvaise interprétation des données</li>
+                                                        <li>Décalage entre l'affichage et la réalité du métier</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card industrialisation mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-brain me-2"></i>Niveau 9 – Modélisation et Algorithmes</h5>
+                                                <p class="card-text text-muted">"On utilise des modèles prédictifs, mais ils sont peu intégrés."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 9</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel9">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel9">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Développer des modèles prédictifs pour anticiper les tendances et les comportements.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Projets de Data Science menés en silo</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Difficulté à mettre les modèles en production</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Les prédictions ne sont pas utilisées pour l'opérationnel</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Intégrer les modèles aux processus métiers</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Utiliser des outils de MLOps (Machine Learning Operations)</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Créer des POC (Proof of Concept) avec les équipes opérationnelles</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Modèles non fiables ou obsolètes</li>
+                                                        <li>Investissement lourd sans retour sur investissement rapide</li>
+                                                        <li>Manque de confiance des équipes métiers dans les algorithmes</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="category-card h-100">
+                            <div class="category-header excellence">
+                                <h3><i class="fas fa-rocket me-2"></i>CATÉGORIE 4 – EXCELLENCE</h3>
+                                <p>La donnée est au cœur de la stratégie, elle génère de la valeur.</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="card level-card excellence mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-robot me-2"></i>Niveau 10 – Données pour l’IA</h5>
+                                                <p class="card-text text-muted">"On fait de l'IA, mais elle ne s'améliore pas assez vite."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 10</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel10">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel10">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Créer des boucles vertueuses où les données alimentent les modèles qui génèrent de nouvelles données.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Modèles d'IA en production, mais qui ne s'auto-améliorent pas</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Manque de traçabilité sur les données utilisées pour l'apprentissage</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Difficulté à déployer de nouveaux modèles rapidement</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place des pipelines de ré-entraînement automatisés</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Utiliser des outils d'étiquetage de données</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Déployer une plateforme de MLOps unifiée</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Obsolescence rapide des modèles d'IA</li>
+                                                        <li>Faible performance des algorithmes due à la mauvaise qualité des données</li>
+                                                        <li>Coûts de calcul élevés</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card excellence mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-tachometer-alt me-2"></i>Niveau 11 – Monétisation des Données</h5>
+                                                <p class="card-text text-muted">"On vend des données brutes, mais on pourrait créer de la valeur."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 11</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel11">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel11">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Transformer les données en produits commercialisables.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Les données sont traitées comme un coût et non comme un actif</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Les partenariats data ne sont pas rentables</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Absence de stratégie de monétisation des données</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Identifier les données à forte valeur ajoutée</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Créer des produits ou services basés sur la donnée</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Développer des partenariats stratégiques pour l'échange de données</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-warning mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>Investissement lourd sans business model clair</li>
+                                                        <li>Problèmes de propriété intellectuelle des données</li>
+                                                        <li>Échec de la commercialisation d'un produit data</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card level-card excellence mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="card-title"><i class="fas fa-award me-2"></i>Niveau 12 – Data Centric</h5>
+                                                <p class="card-text text-muted">"La donnée est notre plus grand avantage concurrentiel."</p>
+                                            </div>
+                                            <span class="badge bg-white text-dark">Niveau 12</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsLevel12">
+                                            <i class="fas fa-chevron-down me-1"></i>Voir détails
+                                        </button>
+                                        <div class="collapse mt-3" id="detailsLevel12">
+                                            <div class="card card-body bg-light">
+                                                <h6 class="text-primary"><i class="fas fa-bullseye me-1"></i>Objectif</h6>
+                                                <p>Placer les données au cœur de la culture d'entreprise et de la stratégie.</p>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-exclamation-circle me-1"></i>Symptômes</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>La culture de la donnée est répandue à tous les niveaux</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>Les décisions stratégiques sont basées sur des faits et des analyses</li>
+                                                    <li><span class="fa-li"><i class="fas fa-check-circle text-primary"></i></span>L'organisation est agile et peut s'adapter rapidement aux données du marché</li>
+                                                </ul>
+                                                
+                                                <h6 class="text-primary mt-3"><i class="fas fa-lightbulb me-1"></i>Actions recommandées</h6>
+                                                <ul class="fa-ul">
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Mettre en place un programme de formation continue en data literacy</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Intégrer les métriques data dans les objectifs de l'entreprise</li>
+                                                    <li><span class="fa-li"><i class="fas fa-arrow-right text-primary"></i></span>Promouvoir les initiatives data-driven à tous les niveaux hiérarchiques</li>
+                                                </ul>
+                                                
+                                                <div class="alert alert-success mt-3">
+                                                    <h6 class="alert-heading"><i class="fas fa-radiation me-1"></i>Risques principaux</h6>
+                                                    <ul class="mb-0">
+                                                        <li>S'endormir sur ses lauriers</li>
+                                                        <li>Ignorer les tendances data émergentes</li>
+                                                        <li>Perdre l'avantage concurrentiel en cas de stagnation</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="roadmap" role="tabpanel">
+                <h2 class="mb-4"><i class="fas fa-map-marked-alt text-primary me-2"></i>Votre Feuille de Route Personnalisée</h2>
+                <p class="lead mb-5">Découvrez les prochaines étapes pour passer au niveau supérieur.</p>
+
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card border-0 p-4">
+                            <h4 class="mb-4 text-center">De la `Survie` à l'`Excellence`</h4>
+
+                            <div class="roadmap-step survie">
+                                <div class="dot"></div>
+                                <h5 class="fw-bold">Étape 1 : Assurer la survie</h5>
+                                <p class="text-muted">L'objectif principal est de sécuriser, centraliser et fiabiliser les données critiques pour éviter les pertes et les erreurs. C'est la fondation de toute démarche data.</p>
+                                <ul>
+                                    <li>Mettre en place un système de **sauvegarde** centralisé.</li>
+                                    <li>Formaliser les processus de **partage de fichiers**.</li>
+                                    <li>Former les équipes aux bonnes pratiques de la **gestion de fichiers**.</li>
+                                </ul>
+                            </div>
+
+                            <div class="roadmap-step structuration">
+                                <div class="dot"></div>
+                                <h5 class="fw-bold">Étape 2 : Structurer votre patrimoine de données</h5>
+                                <p class="text-muted">Une fois les bases sécurisées, il est crucial d'organiser et de gouverner vos données pour les rendre exploitables et fiables à grande échelle.</p>
+                                <ul>
+                                    <li>Déployer une **base de données centralisée** ou un data warehouse.</li>
+                                    <li>Définir les rôles de **gouvernance** (Data Owner, Data Steward).</li>
+                                    <li>Établir un **catalogue** de données pour savoir qui détient quoi.</li>
+                                </ul>
+                            </div>
+
+                            <div class="roadmap-step industrialisation">
+                                <div class="dot"></div>
+                                <h5 class="fw-bold">Étape 3 : Industrialiser vos processus data</h5>
+                                <p class="text-muted">L'industrialisation consiste à automatiser la collecte, la transformation et la mise à disposition des données pour les équipes, rendant les insights accessibles en temps réel.</p>
+                                <ul>
+                                    <li>Automatiser les **pipelines de données** (ETL/ELT).</li>
+                                    <li>Mettre en place des outils de **Business Intelligence** pour créer des dashboards.</li>
+                                    <li>Initier des projets de **modélisation prédictive** sur des cas d'usage simples.</li>
+                                </ul>
+                            </div>
+
+                            <div class="roadmap-step excellence">
+                                <div class="dot"></div>
+                                <h5 class="fw-bold">Étape 4 : Atteindre l'excellence</h5>
+                                <p class="text-muted">La dernière étape est l'intégration de la data dans la stratégie et les produits de l'entreprise, transformant les données d'un coût en un véritable moteur de croissance et d'innovation.</p>
+                                <ul>
+                                    <li>Construire des boucles de **feedback pour l'IA**.</li>
+                                    <li>Explorer les opportunités de **monétisation** de vos données.</li>
+                                    <li>Faire de la donnée un élément central de la **culture d'entreprise**.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="methodology" role="tabpanel">
+                <h2 class="mb-4"><i class="fas fa-flask text-primary me-2"></i>Notre méthodologie</h2>
+                <p class="lead mb-4">Notre approche est basée sur un cadre de maturité data qui évalue 12 dimensions clés de votre organisation.</p>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-4">
+                            <h5 class="card-title"><i class="fas fa-cubes text-info me-2"></i>Un modèle en 4 catégories</h5>
+                            <p class="card-text text-muted">Notre diagnostic est structuré autour de quatre grandes catégories représentant les étapes de la transformation data.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><span class="badge rounded-pill survie px-3 py-2 me-2">Survie</span> : Assurer la sécurité et la base.</li>
+                                <li class="list-group-item"><span class="badge rounded-pill structuration px-3 py-2 me-2">Structuration</span> : Organiser et rendre accessible.</li>
+                                <li class="list-group-item"><span class="badge rounded-pill industrialisation px-3 py-2 me-2">Industrialisation</span> : Automatiser et créer de la valeur.</li>
+                                <li class="list-group-item"><span class="badge rounded-pill excellence px-3 py-2 me-2">Excellence</span> : La donnée comme avantage concurrentiel.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-4">
+                            <h5 class="card-title"><i class="fas fa-compass text-info me-2"></i>12 dimensions d'évaluation</h5>
+                            <p class="card-text text-muted">Nous posons 12 questions, chacune étant un indicateur précis d'un niveau de maturité, de la gestion des fichiers à l'IA.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">1. **Gestion des fichiers**</li>
+                                <li class="list-group-item">2. **Collaboration**</li>
+                                <li class="list-group-item">3. **Sécurité & Sauvegarde**</li>
+                                <li class="list-group-item">4. **Sources de données**</li>
+                                <li class="list-group-item">5. **Stockage & Architecture**</li>
+                                <li class="list-group-item">6. **Gouvernance & Qualité**</li>
+                                <li class="list-group-item">7. **Flux de données (ETL)**</li>
+                                <li class="list-group-item">8. **Reporting & Visualisation**</li>
+                                <li class="list-group-item">9. **Modèles & Algorithmes**</li>
+                                <li class="list-group-item">10. **Automatisation & IA**</li>
+                                <li class="list-group-item">11. **Monétisation**</li>
+                                <li class="list-group-item">12. **Culture data**</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="resources" role="tabpanel">
+                <h2 class="mb-4"><i class="fas fa-toolbox text-primary me-2"></i>Ressources recommandées</h2>
+                <p class="lead mb-5">Découvrez les outils, formations et lectures pour progresser dans votre maturité data.</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4 class="mb-3">Outils</h4>
+                        <div class="tool-card d-flex align-items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Microsoft_Power_BI_Logo.svg" alt="Power BI Logo" class="tool-logo">
+                            <div>
+                                <h6 class="mb-1">Power BI</h6>
+                                <p class="text-muted mb-0">Un outil de Business Intelligence pour créer des dashboards interactifs et des rapports. Idéal pour le niveau 8.</p>
+                            </div>
+                        </div>
+                        <div class="tool-card d-flex align-items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Tableau_Software_Logo.png" alt="Tableau Logo" class="tool-logo">
+                            <div>
+                                <h6 class="mb-1">Tableau</h6>
+                                <p class="text-muted mb-0">Plateforme d'analyse et de visualisation de données puissante. Parfait pour les entreprises qui cherchent à industrialiser leurs rapports.</p>
+                            </div>
+                        </div>
+                        <div class="tool-card d-flex align-items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Apache_Airflow.png" alt="Apache Airflow Logo" class="tool-logo">
+                            <div>
+                                <h6 class="mb-1">Apache Airflow</h6>
+                                <p class="text-muted mb-0">Un outil open-source pour programmer, orchestrer et monitorer les workflows de données. Recommandé à partir du niveau 7.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h4 class="mb-3">Formations & Lectures</h4>
+                        <div class="tool-card">
+                            <h6 class="mb-1"><i class="fas fa-book-open me-2"></i>Livre : Infonomics</h6>
+                            <p class="text-muted mb-0">Par Douglas B. Laney. Ce livre explore comment les entreprises peuvent et devraient valoriser leurs données comme un actif stratégique.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h6 class="mb-1"><i class="fas fa-chalkboard-teacher me-2"></i>Formation : Dataiku Academy</h6>
+                            <p class="text-muted mb-0">Une série de cours pour apprendre à utiliser la plateforme de Data Science, du nettoyage des données à l'industrialisation des modèles.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h6 class="mb-1"><i class="fas fa-graduation-cap me-2"></i>Certification : AWS Certified Data Analytics</h6>
+                            <p class="text-muted mb-0">Pour valider vos compétences en conception, déploiement et maintenance de services d'analyse sur AWS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <a href="#diagnostic-tab" data-bs-toggle="tab" class="floating-btn pulse-animation animate__animated animate__fadeInRight animate__delay-2s">
+        <i class="fas fa-play"></i>
+    </a>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data structure for questions and levels
+            const questions = [
+                { id: 'q1', category: 'survie', text: "Où sont stockés les fichiers de travail importants ?" },
+                { id: 'q2', category: 'survie', text: "Comment les équipes collaborent-elles sur les données ?" },
+                { id: 'q3', category: 'survie', text: "Votre entreprise a-t-elle une politique de sauvegarde ?" },
+                { id: 'q4', category: 'structuration', text: "Les données métiers sont-elles centralisées ?" },
+                { id: 'q5', category: 'structuration', text: "Avez-vous une architecture de stockage structurée ?" },
+                { id: 'q6', category: 'structuration', text: "Existe-t-il des rôles clairs pour la gouvernance des données ?" },
+                { id: 'q7', category: 'industrialisation', text: "La collecte de données est-elle automatisée ?" },
+                { id: 'q8', category: 'industrialisation', text: "Les dashboards sont-ils mis à jour automatiquement ?" },
+                { id: 'q9', category: 'industrialisation', text: "Utilisez-vous des modèles prédictifs ?" },
+                { id: 'q10', category: 'excellence', text: "L'IA est-elle intégrée aux processus métiers ?" },
+                { id: 'q11', category: 'excellence', text: "Votre entreprise monétise-t-elle ses données ?" },
+                { id: 'q12', category: 'excellence', text: "La culture data est-elle ancrée dans l'entreprise ?" }
+            ];
+
+            const levels = {
+                'survie': {
+                    label: 'Survie',
+                    color: '--survie',
+                    description: 'Votre organisation n’a pas encore de fondations data solides. La gestion des données est manuelle et fragmentée, ce qui expose à des risques d’erreurs et de pertes. Il est urgent de centraliser et de sécuriser vos données.',
+                    recommendation: 'Concentrez-vous sur la mise en place de bases solides : centralisation, sauvegarde et sécurisation des données. C’est la première étape cruciale pour éviter les risques opérationnels et de conformité.'
+                },
+                'structuration': {
+                    label: 'Structuration',
+                    color: '--structuration',
+                    description: 'Les données commencent à être organisées, mais la gouvernance et l’architecture ne sont pas encore optimisées. Vous avez les bases, mais il manque une structure claire pour les rendre pleinement exploitables.',
+                    recommendation: 'Investissez dans la gouvernance des données et la création d’une architecture centralisée (comme un data warehouse). Définissez des rôles et responsabilités pour assurer la qualité et la fiabilité des données.'
+                },
+                'industrialisation': {
+                    label: 'Industrialisation',
+                    color: '--industrialisation',
+                    description: 'Vous automatisez vos processus de collecte et d’analyse. Les dashboards sont utilisés, mais les modèles prédictifs ne sont pas encore pleinement intégrés aux opérations. Vous avez les outils, il faut maintenant les faire fonctionner en synergie.',
+                    recommendation: 'Passez à la vitesse supérieure en automatisant vos pipelines de données et en intégrant des outils de Business Intelligence et de modélisation prédictive. L’objectif est de réduire les efforts manuels et de prendre des décisions basées sur des insights en temps réel.'
+                },
+                'excellence': {
+                    label: 'Excellence',
+                    color: '--excellence',
+                    description: 'La data est au cœur de votre stratégie. Vos processus sont automatisés, les modèles sont opérationnels et les données sont perçues comme un actif majeur de l’entreprise. Vous êtes une organisation “data-driven”.',
+                    recommendation: 'Maintenez votre avantage concurrentiel en explorant la monétisation des données et en intégrant l’IA dans vos processus de décision. Continuez à investir dans la culture data pour que chaque employé devienne un acteur de votre succès.'
+                }
+            };
+
+            const categoryOrder = ['survie', 'structuration', 'industrialisation', 'excellence'];
+            const categoryScores = { 'survie': 0, 'structuration': 0, 'industrialisation': 0, 'excellence': 0 };
+            
+            // Generate questions dynamically
+            const questionsContainer = document.getElementById('questions');
+            questions.forEach((q, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.classList.add('mb-4', 'p-4', 'card', 'animate__animated', 'animate__fadeInUp');
+                questionElement.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Question ${index + 1}</h5>
+                        <div class="badge-category" style="background-color: var(--${q.category});">${levels[q.category].label}</div>
+                    </div>
+                    <p class="mb-3">${q.text}</p>
+                    <div class="context-help mb-3">
+                        **Échelle :** 1 (Pas du tout) à 5 (Entièrement)
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <select class="form-select score-select" name="q${index + 1}" required>
+                            <option value="" disabled selected>Notez de 1 à 5</option>
+                            <option value="1">1 - Pas du tout</option>
+                            <option value="2">2 - Faiblement</option>
+                            <option value="3">3 - Moyennement</option>
+                            <option value="4">4 - Fortement</option>
+                            <option value="5">5 - Entièrement</option>
+                        </select>
+                    </div>
+                `;
+                questionsContainer.appendChild(questionElement);
+            });
+
+            // Handle form submission
+            document.getElementById('diagnosticForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                let totalScore = 0;
+                let answeredQuestions = 0;
+                
+                // Reset scores
+                for (let key in categoryScores) {
+                    categoryScores[key] = 0;
+                }
+
+                questions.forEach(q => {
+                    const score = parseInt(formData.get(q.id));
+                    if (!isNaN(score)) {
+                        totalScore += score;
+                        categoryScores[q.category] += score;
+                        answeredQuestions++;
+                    }
+                });
+
+                if (answeredQuestions === questions.length) {
+                    showResults(totalScore, categoryScores);
+                } else {
+                    alert('Veuillez répondre à toutes les questions.');
+                }
+            });
+
+            function showResults(totalScore, categoryScores) {
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.style.display = 'block';
+
+                const globalScore = totalScore / questions.length;
+                const globalScoreRounded = globalScore.toFixed(1);
+                
+                document.getElementById('globalScore').textContent = globalScoreRounded;
+                const globalProgress = document.getElementById('globalProgress');
+                globalProgress.style.width = `${(globalScore / 5) * 100}%`;
+
+                // Determine global level
+                let currentLevel = '';
+                let levelDescription = '';
+                if (globalScore < 2) {
+                    currentLevel = 'survie';
+                } else if (globalScore < 3) {
+                    currentLevel = 'structuration';
+                } else if (globalScore < 4.5) {
+                    currentLevel = 'industrialisation';
+                } else {
+                    currentLevel = 'excellence';
+                }
+                
+                document.getElementById('globalLevel').textContent = levels[currentLevel].label;
+                document.getElementById('globalLevel').className = `badge rounded-pill text-white p-2 ${currentLevel}`;
+                document.getElementById('globalDescription').textContent = levels[currentLevel].description;
+                
+                // Display category scores
+                const categoryScoresContainer = document.getElementById('categoryScores');
+                categoryScoresContainer.innerHTML = '';
+                categoryOrder.forEach(category => {
+                    const avgScore = categoryScores[category] / (questions.filter(q => q.category === category).length);
+                    const avgScoreRounded = avgScore.toFixed(1);
+
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold"><i class="fas fa-dot-circle me-1" style="color: var(--${category});"></i>${levels[category].label}</span>
+                            <span class="badge text-primary">${avgScoreRounded} / 5</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar ${category}" role="progressbar" style="width: ${(avgScore / 5) * 100}%;"></div>
+                        </div>
+                    `;
+                    categoryScoresContainer.appendChild(categoryDiv);
+                });
+
+                // Display recommendation
+                const recommendationContainer = document.getElementById('recommendation');
+                recommendationContainer.innerHTML = `
+                    <div class="alert alert-info border-start border-4 border-info py-4">
+                        <h4 class="alert-heading text-primary"><i class="fas fa-lightbulb me-2"></i>Nos recommandations pour vous</h4>
+                        <p class="mb-0">${levels[currentLevel].recommendation}</p>
+                        <hr>
+                        <p class="mb-0">Explorez l'onglet **"Feuille de route"** pour un plan d'action plus détaillé.</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
