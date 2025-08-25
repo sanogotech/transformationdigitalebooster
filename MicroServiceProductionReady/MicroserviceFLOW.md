@@ -325,4 +325,3 @@ readinessProbe:
 
 ---
 
-Si tu veux, je peux **transformer tout ça en poster A3** (cheat-sheet avec schémas + tables) ou en **README d’archi** prêt à déposer dans ton repo.
