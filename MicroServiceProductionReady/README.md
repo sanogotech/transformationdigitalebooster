@@ -1,5 +1,8 @@
 # 🚀 Stack de Production pour Microservices (Production Microservices Stack)
 
+
+![Microservice Production](https://github.com/sanogotech/transformationdigitalebooster/blob/main/MicroServiceProductionReady/MicroServiceProduction.jpg)
+
 ## 1️⃣ API Gateway (Passerelle API) 🌍
 
 👉 **Rôle** : Point d’entrée unique des clients → microservices.
