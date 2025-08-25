@@ -4,6 +4,8 @@
 
 Contrairement au **monolithe**, une app en **microservices** découpe le domaine en petits services autonomes (User, Product, Order, Payment…). Chaque service est **indépendant** pour le build, le déploiement et la montée en charge, et communique via **API synchrones** (REST/GraphQL) et **événements asynchrones** (Kafka/RabbitMQ/NATS).
 
+![Flow Microservices](https://github.com/sanogotech/transformationdigitalebooster/blob/main/MicroServiceProductionReady/MicroServiceProductionFLOW.jpg)
+
 ---
 
 ## 1) 👤 Client Interaction (Web/Mobile)
