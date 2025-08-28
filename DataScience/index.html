@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portail Data Driven – Du brut à l'action</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Meta -->
+  <meta name="description" content="Le Processus Data Driven : de la collecte à l'action, avec les 4 types d'analyse (Descriptive, Diagnostique, Prédictive, Prescriptive).">
+
+  <style>
+    :root{
+      --bg:#f9fafc;
+      --card:#ffffff;
+      --muted:#4a5568;
+      --primary:#2563eb;
+      --accent:#06b6d4;
+      --hot:#dc2626;
+      --glow: 0 4px 20px rgba(37,99,235,.15);
+      --glass: rgba(255,255,255,.9);
+      --border: 1px solid rgba(0,0,0,.08);
+      --radius:12px;
+    }
+      --bg:#0b1020;
+      --card:#121938;
+      --muted:#aab2d5;
+      --primary:#7aa2ff;
+      --accent:#00e7d4;
+      --hot:#ff7373;
+      --glow: 0 10px 30px rgba(122,162,255,.35);
+      --glass: rgba(255,255,255,.06);
+      --border: 1px solid rgba(255,255,255,.08);
+      --radius:16px;
+    }
+    html,body{background:#f9fafc; color:#1a202c; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";}
+    a{color:var(--primary)}
+    .navbar{backdrop-filter: blur(8px); background-color: rgba(7,10,24,.6)!important; border-bottom: var(--border)}
+    .navbar-brand{font-weight:800; letter-spacing:.2px}
+    .hero{
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, rgba(122,162,255,.15), rgba(0,231,212,.08));
+      border-bottom: var(--border);
+    }
+    .hero h1{
+      font-weight:900; letter-spacing:.4px;
+      background: linear-gradient(90deg, #ffffff, #9ab7ff, #81ffe8);
+      -webkit-background-clip: text; background-clip:text; color: transparent;
+      text-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .hero-badge{
+      border:1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: 999px; padding:.4rem .9rem; font-weight:600; color:#d8e0ff;
+    }
+    .glass{
+      background: var(--glass);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--glow);
+    }
+    .cardx{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: var(--border); border-radius: var(--radius);
+      transition: transform .35s ease, box-shadow .35s ease;
+      height:100%;
+    }
+    .cardx:hover{ transform: translateY(-6px); box-shadow: 0 16px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(122,162,255,.15) inset;}
+    .icon-chip{
+      width:48px; height:48px; display:grid; place-items:center; border-radius:12px;
+      background: linear-gradient(145deg, rgba(122,162,255,.2), rgba(0,231,212,.12));
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+    }
+    .tag{border:1px dashed rgba(255,255,255,.2); padding:.25rem .5rem; border-radius:999px; color:#374151; font-size:.85rem}
+    .step{
+      position:relative; padding-left:2.75rem;
+    }
+    .step::before{
+      content:""; position:absolute; left:1.1rem; top:.4rem; width:12px; height:12px; border-radius:50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent)); box-shadow: 0 0 0 6px rgba(122,162,255,.15);
+    }
+    .step::after{
+      content:""; position:absolute; left:1.35rem; top:1.2rem; bottom:-1.2rem; width:2px; background: linear-gradient(180deg, rgba(122,162,255,.25), rgba(0,231,212,.25));
+    }
+    .step:last-child::after{display:none}
+    .kpi{font-weight:800; font-size:2rem}
+    .badge-soft{background: rgba(122,162,255,.12); border:1px solid rgba(122,162,255,.25); color:#1a202c}
+    .table{--bs-table-bg: transparent; --bs-table-color: #e7ecff; border-color: rgba(255,255,255,.15)}
+    .table thead th{background: rgba(255,255,255,.05)}
+    .shadow-ring{box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 10px 40px rgba(0,0,0,.35)!important}
+    .pulse{
+      position:absolute; inset: -40% -20% auto auto; width: 600px; height: 600px; filter: blur(90px);
+      background: radial-gradient(closest-side, rgba(0,231,212,.25), transparent 60%),
+                  radial-gradient(closest-side, rgba(122,162,255,.25), transparent 55%);
+      opacity:.55; pointer-events:none;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    @keyframes float{ from{transform: translateY(0)} to{transform: translateY(-30px)}}
+    .progress, .progress-bar{background-color: transparent}
+    .progress-bar{background-image: linear-gradient(90deg, var(--primary), var(--accent));}
+    .section-title{font-weight:800}
+    .chip{border:1px solid rgba(255,255,255,.14); padding:.35rem .65rem; border-radius:10px; font-size:.85rem; color:#d7dfff}
+    .offcanvas{background:#0e1430; border-left: var(--border)}
+    .btn-primary{--bs-btn-bg:#5b86ff; --bs-btn-border-color:#5b86ff; --bs-btn-hover-bg:#4d75ff; --bs-btn-hover-border-color:#4d75ff}
+    .btn-outline-light{--bs-btn-hover-bg: rgba(255,255,255,.1)}
+    .divider{height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent)}
+    .footer{border-top: var(--border); background: rgba(0,0,0,.2)}
+    .rounded-xxl{border-radius: 32px}
+    .rotate-1{transform: rotate(1deg)} .rotate--1{transform: rotate(-1deg)}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <span class="icon-chip text-dark fw-semibold"><i class="bi bi-cpu"></i></span>
+        <span>Portail <span class="text-info-emphasis">Data Driven</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#processus">Processus</a></li>
+          <li class="nav-item"><a class="nav-link" href="#analyses">4 Analyses</a></li>
+          <li class="nav-item"><a class="nav-link" href="#synthese">Synthèse</a></li>
+          <li class="nav-item"><a class="nav-link" href="#exemple">Cas Retail</a></li>
+          <li class="nav-item"><a class="nav-link" href="#demo">Demo Live</a></li>
+          <li class="nav-item"><a class="nav-link" href="#ressources">Ressources</a></li>
+          <li class="nav-item">
+            <button class="btn btn-sm btn-outline-light ms-lg-2" data-bs-toggle="offcanvas" data-bs-target="#toc">
+              <i class="bi bi-list"></i> Plan
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero py-5 py-lg-6 position-relative">
+    <div class="pulse"></div>
+    <div class="container py-4">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <span class="hero-badge mb-3 d-inline-flex align-items-center gap-2 text-dark fw-bold">
+            <i class="bi bi-rocket-takeoff"></i> Du brut à la décision actionnable
+          </span>
+          <h1 class="display-4 mb-3">Le Processus <span class="text-decoration-underline">Data Driven</span></h1>
+          <p class="lead text-dark">Une entreprise <strong>data‑driven</strong> place la donnée au cœur de ses décisions. Suivez 6 étapes clés où les 4 types d’analyses deviennent le moteur de valeur.</p>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <span class="chip text-dark fw-semibold"><i class="bi bi-shield-lock me-1"></i> RGPD</span>
+            <span class="chip text-dark fw-semibold"><i class="bi bi-diagram-3 me-1"></i> Data Lake / DWH</span>
+            <span class="chip text-dark fw-semibold"><i class="bi bi-gear me-1"></i> ETL</span>
+            <span class="chip text-dark fw-semibold"><i class="bi bi-robot me-1"></i> ML/AI</span>
+          </div>
+          <div class="d-flex gap-3 mt-4">
+            <a href="#processus" class="btn btn-primary btn-lg"><i class="bi bi-play-circle me-1"></i>Démarrer</a>
+            <a href="#exemple" class="btn btn-outline-light btn-lg"><i class="bi bi-lightning-charge me-1"></i>Voir l'impact</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass p-3 p-lg-4 rounded-xxl shadow-ring">
+            <canvas id="heroChart" height="200"></canvas>
+            <div class="mt-3 small text-secondary">Projection simple : CA réel vs. prédit sur 12 mois (démo).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- OFFCANVAS TOC -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="toc" aria-labelledby="tocLabel">
+    <div class="offcanvas-header">
+      <h5 id="tocLabel">Sommaire</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ol class="ps-3">
+        <li><a href="#processus">Les 6 étapes</a></li>
+        <li><a href="#analyses">Guide des 4 analyses</a></li>
+        <li><a href="#synthese">Tableau synthèse</a></li>
+        <li><a href="#exemple">Exemple Retail</a></li>
+        <li><a href="#demo">Demo Live</a></li>
+        <li><a href="#ressources">Ressources</a></li>
+      </ol>
+      <div class="divider my-4"></div>
+      <p class="text-secondary small">Astuce : utilisez <kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> pour parcourir les sections (démo).</p>
+    </div>
+  </div>
+
+  <!-- PROCESSUS -->
+  <section id="processus" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title text-dark">🔄 Les 6 étapes du processus Data Driven</h2>
+        <p class="text-secondary">Sans collecte fiable, pas de pilotage possible — et sans action, pas d’impact.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Steps timeline left -->
+        <div class="col-lg-7">
+          <div class="p-4 glass rounded-xxl">
+            <!-- Step 1 -->
+            <div class="step mb-4">
+              <h5>1️⃣ Collecter &amp; Centraliser</h5>
+              <p class="text-secondary mb-2">Sources : ERP, CRM, IoT, apps, réseaux sociaux, open data. Objectif : disposer de données variées, idéalement en temps réel.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="tag"><i class="bi bi-cloud-arrow-down me-1"></i> API</span>
+                <span class="tag"><i class="bi bi-diagram-3 me-1"></i> ETL</span>
+                <span class="tag"><i class="bi bi-bricks me-1"></i> Data Lake</span>
+                <span class="tag"><i class="bi bi-building-gear me-1"></i> DWH</span>
+              </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="step mb-4">
+              <h5>2️⃣ Gouverner &amp; Sécuriser</h5>
+              <p class="text-secondary mb-2">Qualité, conformité (RGPD, ISO 27001), cybersécurité. Instaurer la <strong>confiance</strong> dans la donnée.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="tag"><i class="bi bi-diagram-3 me-1"></i> MDM</span>
+                <span class="tag"><i class="bi bi-person-badge me-1"></i> IAM / SSO</span>
+                <span class="tag"><i class="bi bi-shield-lock me-1"></i> Politiques de sécurité</span>
+              </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="step mb-4">
+              <h5>3️⃣ Préparer &amp; Enrichir</h5>
+              <p class="text-secondary mb-2">Nettoyage, normalisation, déduplication, enrichissement externe. Objectif : donnée prête à l’analyse.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="tag"><i class="bi bi-filetype-py me-1"></i> Python/Pandas</span>
+                <span class="tag"><i class="bi bi-filetype-r me-1"></i> R</span>
+                <span class="tag"><i class="bi bi-diagram-3 me-1"></i> Talend</span>
+                <span class="tag"><i class="bi bi-braces-asterisk me-1"></i> dbt</span>
+              </div>
+              <div class="alert alert-info bg-opacity-10 border-0 mt-3 text-secondary">
+                💡 80% du travail d’un Data Scientist = <em>préparation de la donnée</em>.
+              </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="step mb-4">
+              <h5>4️⃣ Analyser &amp; Comprendre (cœur du Data Driven)</h5>
+              <ul class="text-secondary mb-2">
+                <li><strong>Descriptive</strong> – Quoi ? → Reporting, dashboards</li>
+                <li><strong>Diagnostique</strong> – Pourquoi ? → Causes racines</li>
+                <li><strong>Prédictive</strong> – Et après ? → ML, anticipation</li>
+                <li><strong>Prescriptive</strong> – Que faire ? → Optimisation, reco actionnables</li>
+              </ul>
+              <div class="progress" role="progressbar" aria-label="Maturité data" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">Maturité en hausse</div>
+              </div>
+            </div>
+            <!-- Step 5 -->
+            <div class="step mb-4">
+              <h5>5️⃣ Diffuser &amp; Rendre accessible</h5>
+              <p class="text-secondary mb-2">Que chaque décideur ait <em>les bons insights</em> : Power BI, Tableau, Metabase, API data, reporting auto.</p>
+              <div class="alert alert-warning bg-opacity-10 border-0 text-secondary">💡 Une donnée qui dort dans un rapport non consulté n’a aucune valeur.</div>
+            </div>
+            <!-- Step 6 -->
+            <div class="step">
+              <h5>6️⃣ Agir &amp; Améliorer en continu</h5>
+              <p class="text-secondary mb-2">Mise en œuvre (CRM, ERP, automatisation), tests A/B, suivi des KPIs, boucle de feedback.</p>
+              <span class="badge rounded-pill text-bg-success">Data Driven = Action Driven</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPIs / badges right -->
+        <div class="col-lg-5">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="cardx p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="icon-chip text-dark fw-semibold"><i class="bi bi-graph-up"></i></div>
+                  <span class="badge badge-soft">Maturité data</span>
+                </div>
+                <p class="mt-3 mb-0 text-secondary">Impact business des données lorsque l'on passe au prescriptif :</p>
+                <div class="kpi mt-2"><span id="multiplier">x1</span><span class="small text-secondary"> → visé : x3</span></div>
+                <div class="small text-secondary">💡 80% des entreprises s’arrêtent au descriptif.</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="cardx p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="icon-chip text-dark fw-semibold"><i class="bi bi-lightning-charge"></i></div>
+                  <span class="badge badge-soft">Livrables</span>
+                </div>
+                <ul class="mt-3 text-secondary">
+                  <li>Pipelines ETL, Data Lake, DWH</li>
+                  <li>Catalogues & règles de gouvernance</li>
+                  <li>Jeux propres & features</li>
+                  <li>Rapports, modèles, scoring, reco</li>
+                  <li>Dashboards & Data Stories</li>
+                  <li>APIs & plans d’action</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="cardx p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="icon-chip text-dark fw-semibold"><i class="bi bi-shield-check"></i></div>
+                  <span class="badge badge-soft">Confiance</span>
+                </div>
+                <p class="mt-3 text-secondary">Trust‑driven : qualité, traçabilité, sécurité, conformité. <span class="text-success">Adoption accrue</span> & <span class="text-info">ROI durable</span>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 ANALYSES -->
+  <section id="analyses" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title text-dark">📘 Guide Pratique – 4 types d’analyse</h2>
+        <p class="text-secondary">Une pyramide de maturité : décrire → expliquer → prévoir → décider.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- Descriptive -->
+        <div class="col-md-6 col-lg-3">
+          <div class="cardx p-4 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon-chip text-dark fw-semibold"><i class="bi bi-bar-chart-line"></i></div>
+              <h5 class="mb-0">Descriptive</h5>
+            </div>
+            <p class="text-secondary mt-3">“Que s’est-il passé ?” – la photo de la situation.</p>
+            <ul class="small text-secondary">
+              <li>CA du mois : 150 K€</li>
+              <li>Churn : 5%</li>
+              <li>Évolution 6 mois</li>
+            </ul>
+            <div class="mt-auto">
+              <span class="tag me-1">Excel</span><span class="tag me-1">SQL</span><span class="tag me-1">Power BI</span>
+            </div>
+          </div>
+        </div>
+        <!-- Diagnostique -->
+        <div class="col-md-6 col-lg-3">
+          <div class="cardx p-4 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon-chip text-dark fw-semibold"><i class="bi bi-search"></i></div>
+              <h5 class="mb-0">Diagnostique</h5>
+            </div>
+            <p class="text-secondary mt-3">“Pourquoi ?” – enquête et causes racines.</p>
+            <ul class="small text-secondary">
+              <li>Région Sud : 80% des pertes</li>
+              <li>Offre “Start” surreprésentée</li>
+              <li>Bug mobile → abandons</li>
+            </ul>
+            <div class="mt-auto">
+              <span class="tag me-1">Cohortes</span><span class="tag me-1">Régressions</span><span class="tag me-1">Pareto</span>
+            </div>
+          </div>
+        </div>
+        <!-- Prédictive -->
+        <div class="col-md-6 col-lg-3">
+          <div class="cardx p-4 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon-chip text-dark fw-semibold"><i class="bi bi-activity"></i></div>
+              <h5 class="mb-0">Prédictive</h5>
+            </div>
+            <p class="text-secondary mt-3">“Et après ?” – anticiper par modèles.</p>
+            <ul class="small text-secondary">
+              <li>Churn à 3 mois</li>
+              <li>Prévision ventes</li>
+              <li>Explicabilité (SHAP)</li>
+            </ul>
+            <div class="mt-auto">
+              <span class="tag me-1">scikit‑learn</span><span class="tag me-1">TensorFlow</span><span class="tag me-1">Séries temporelles</span>
+            </div>
+          </div>
+        </div>
+        <!-- Prescriptive -->
+        <div class="col-md-6 col-lg-3">
+          <div class="cardx p-4 h-100">
+            <div class="d-flex align-items-center gap-3">
+              <div class="icon-chip text-dark fw-semibold"><i class="bi bi-compass"></i></div>
+              <h5 class="mb-0">Prescriptive</h5>
+            </div>
+            <p class="text-secondary mt-3">“Que faire ?” – recommandations actionnables.</p>
+            <ul class="small text-secondary">
+              <li>Optimisation contraintes</li>
+              <li>A/B testing</li>
+              <li>Intégration CRM/ERP</li>
+            </ul>
+            <div class="mt-auto">
+              <span class="tag me-1">OR‑Tools</span><span class="tag me-1">Simulations</span><span class="tag me-1">APIs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Do / Don't & REX -->
+      <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+          <div class="cardx p-4">
+            <h6 class="text-uppercase text-secondary mb-3">Bonnes pratiques</h6>
+            <div class="row g-3">
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-success me-1">✅</span>Standardiser les KPI</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-success me-1">✅</span>Valider les modèles</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-success me-1">✅</span>Data Storytelling</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-success me-1">✅</span>Mise à jour / drift</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="cardx p-4">
+            <h6 class="text-uppercase text-secondary mb-3">Mauvais usages</h6>
+            <div class="row g-3">
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-danger me-1">❌</span>Chiffres sans contexte</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-danger me-1">❌</span>Confondre corrélation/causalité</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-danger me-1">❌</span>ML sans données propres</div>
+              <div class="col-sm-6"><span class="badge rounded-pill text-bg-danger me-1">❌</span>Pas d’adoption métier</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYNTHESE -->
+  <section id="synthese" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="section-title text-dark">🔗 Synthèse Data Science &amp; Data Driven</h2>
+      </div>
+      <div class="cardx p-3">
+   <div class="table-responsive">
+  <table class="table table-striped table-bordered align-middle ">
+    <thead class="table-primary text-dark text-center">
+      <tr>
+        <th style="width:18%">Étape Data Driven</th>
+        <th style="width:25%">Rôle Data Science</th>
+        <th style="width:25%">Types d’analyses mobilisés</th>
+        <th style="width:32%">Livrables</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><i class="bi bi-cloud-arrow-down-fill text-primary me-1"></i> <strong>Collecter</strong></td>
+        <td>Automatiser l’ingestion</td>
+        <td><span class="badge bg-secondary">–</span></td>
+        <td><span class="badge bg-info text-dark">Pipelines ETL</span>, Data Lake</td>
+      </tr>
+      <tr>
+        <td><i class="bi bi-shield-lock-fill text-success me-1"></i> <strong>Gouverner</strong></td>
+        <td>Assurer qualité & conformité</td>
+        <td><span class="badge bg-secondary">–</span></td>
+        <td><span class="badge bg-warning text-dark">Catalogue</span>, règles de gouvernance</td>
+      </tr>
+      <tr>
+        <td><i class="bi bi-tools text-warning me-1"></i> <strong>Préparer</strong></td>
+        <td>Nettoyer & transformer</td>
+        <td><span class="badge bg-secondary">–</span></td>
+        <td>Jeux propres, <span class="badge bg-info text-dark">Features</span></td>
+      </tr>
+      <tr>
+        <td><i class="bi bi-bar-chart-fill text-danger me-1"></i> <strong>Analyser</strong></td>
+        <td>Explorer & modéliser</td>
+        <td>
+          <span class="badge bg-primary">Descriptive</span>
+          <span class="badge bg-info text-dark">Diagnostique</span>
+          <span class="badge bg-success">Prédictive</span>
+          <span class="badge bg-danger">Prescriptive</span>
+        </td>
+        <td>Rapports, modèles, scoring, reco</td>
+      </tr>
+      <tr>
+        <td><i class="bi bi-display text-info me-1"></i> <strong>Diffuser</strong></td>
+        <td>Visualiser & vulgariser</td>
+        <td>
+          <span class="badge bg-primary">Descriptive</span>
+          <span class="badge bg-info text-dark">Diagnostique</span>
+        </td>
+        <td><span class="badge bg-success">Dashboards</span>, Data Stories</td>
+      </tr>
+      <tr>
+        <td><i class="bi bi-lightning-charge-fill text-warning me-1"></i> <strong>Agir</strong></td>
+        <td>Déployer & mesurer l’impact</td>
+        <td><span class="badge bg-danger">Prescriptive</span></td>
+        <td><span class="badge bg-primary">Plans d’action</span>, API, intégrations</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXEMPLE RETAIL -->
+  <section id="exemple" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="section-title text-dark">🎯 Exemple concret – Retail Data Driven</h2>
+        <p class="text-secondary">De la météo à la promo ciblée, comment compenser une baisse en magasin.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="cardx p-4 h-100">
+            <ol class="mb-0 text-secondary">
+              <li><strong>Collecte :</strong> Données caisse + appli mobile + météo locale.</li>
+              <li><strong>Gouvernance :</strong> Vérification RGPD (anonymisation).</li>
+              <li><strong>Préparation :</strong> Nettoyage ventes/jour + enrichies météo.</li>
+              <li><strong>Analyse :</strong>
+                <ul>
+                  <li><em>Descriptive :</em> CA -10% vs mois dernier.</li>
+                  <li><em>Diagnostique :</em> corrélation pluies & baisse fréquentation.</li>
+                  <li><em>Prédictive :</em> modèle prévoit -15% si pluie continue.</li>
+                  <li><em>Prescriptive :</em> promos en ligne + livraison gratuite quand il pleut.</li>
+                </ul>
+              </li>
+              <li><strong>Diffusion :</strong> Dashboard managers régionaux.</li>
+              <li><strong>Action :</strong> Campagne déployée, mesures temps réel.</li>
+            </ol>
+            <div class="alert alert-success mt-3 mb-0 bg-opacity-10 border-0 text-secondary">👉 Résultat simulé : <strong>+12% de ventes en ligne</strong> compensant la baisse en magasin.</div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass p-3 p-lg-4 rounded-xxl shadow-ring h-100">
+            <canvas id="retailChart" height="220"></canvas>
+            <div class="mt-2 small text-secondary">Simulation : impact de la pluie et des promos sur 8 semaines.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO LIVE -->
+  <section id="demo" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="section-title text-dark">🧪 Demo Live – Joue avec les leviers</h2>
+        <p class="text-secondary">Ajustez les curseurs et observez l’effet sur la marge et le churn.</p>
+      </div>
+
+      <div class="row g-4 align-items-stretch">
+        <div class="col-lg-7">
+          <div class="cardx p-4 h-100">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Budget promo (%)</label>
+                <input type="range" min="0" max="30" value="10" class="form-range" id="rngPromo">
+                <div class="small text-secondary">Augmente les ventes mais peut réduire la marge.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Qualité de service</label>
+                <input type="range" min="0" max="100" value="60" class="form-range" id="rngService">
+                <div class="small text-secondary">Améliore la satisfaction et réduit le churn.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Intensité météo défavorable</label>
+                <input type="range" min="0" max="100" value="40" class="form-range" id="rngMeteo">
+                <div class="small text-secondary">Plus il pleut, plus le trafic magasin baisse.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Frais de livraison</label>
+                <input type="range" min="0" max="15" value="5" class="form-range" id="rngLivraison">
+                <div class="small text-secondary">Livraison gratuite attire en ligne mais coûte.</div>
+              </div>
+            </div>
+            <div class="divider my-3"></div>
+            <div class="d-flex flex-wrap gap-4">
+              <div>
+                <div class="text-secondary small">Marge estimée</div>
+                <div class="kpi"><span id="kpiMarge">18.2%</span></div>
+              </div>
+              <div>
+                <div class="text-secondary small">Churn estimé</div>
+                <div class="kpi"><span id="kpiChurn">4.6%</span></div>
+              </div>
+              <div>
+                <div class="text-secondary small">Indice d’impact</div>
+                <div class="kpi"><span id="kpiImpact">72</span></div>
+              </div>
+              <div class="ms-auto">
+                <button class="btn btn-primary" id="btnScenario"><i class="bi bi-shuffle me-1"></i>Scenario aléatoire</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="glass p-3 p-lg-4 rounded-xxl shadow-ring h-100">
+            <canvas id="demoChart" height="220"></canvas>
+            <div class="mt-2 small text-secondary">Indices normalisés (0–100) recalculés en direct.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESSOURCES -->
+  <section id="ressources" class="py-5">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="section-title text-dark">📚 Ressources & Outils</h2>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="cardx p-4 h-100">
+            <h5 class="mb-3"><i class="bi bi-kanban me-2"></i>BI & Visualisation</h5>
+            <ul class="mb-0 text-secondary">
+              <li>Power BI, Tableau, Metabase</li>
+              <li>Dashboards, Data Stories</li>
+              <li>Automatisation du reporting</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cardx p-4 h-100">
+            <h5 class="mb-3"><i class="bi bi-diagram-3 me-2"></i>Ingestion & Modélisation</h5>
+            <ul class="mb-0 text-secondary">
+              <li>API, ETL/ELT, orchestration</li>
+              <li>Data Lake & Warehouse</li>
+              <li>dbt, qualité & lineage</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="cardx p-4 h-100">
+            <h5 class="mb-3"><i class="bi bi-shield-lock me-2"></i>Gouvernance & Sécurité</h5>
+            <ul class="mb-0 text-secondary">
+              <li>RGPD, ISO 27001</li>
+              <li>MDM, IAM/SSO</li>
+              <li>Politiques & audits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        <div class="col-md-6">
+          <div class="cardx p-4 h-100">
+            <h5 class="mb-3"><i class="bi bi-gear me-2"></i>Outils & Méthodes (data)</h5>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="tag">Python (Pandas)</span>
+              <span class="tag">R</span>
+              <span class="tag">SQL</span>
+              <span class="tag">scikit‑learn</span>
+              <span class="tag">TensorFlow</span>
+              <span class="tag">Séries temporelles</span>
+              <span class="tag">A/B Testing</span>
+              <span class="tag">Optimisation</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="cardx p-4 h-100">
+            <h5 class="mb-3"><i class="bi bi-emoji-sunglasses me-2"></i>À retenir</h5>
+            <ul class="mb-0 text-secondary">
+              <li>Le processus Data Driven crée un <strong>avantage compétitif</strong>.</li>
+              <li>Les 4 analyses irriguent l’<em>analyse</em>, la diffusion et l’action.</li>
+              <li>La Data Science est le <strong>moteur technique</strong>.</li>
+              <li>Ne pas seulement <em>rapporter</em> le passé : <strong>piloter</strong> le futur.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer py-4">
+    <div class="container text-center text-secondary">
+      <div>© 2025 • Portail Data Driven – Outil pédagogique</div>
+      <div class="small">Bootstrap 5 • Chart.js • Icons</div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Interactions -->
+  <script>
+    // Keyboard quick nav (demo)
+    document.addEventListener('keydown', (e)=>{
+      const ids = ['processus','analyses','synthese','exemple','demo','ressources'];
+      const current = ids.findIndex(id => location.hash.replace('#','')===id);
+      if(e.altKey && (e.key==='ArrowDown' || e.key==='ArrowUp')){
+        e.preventDefault();
+        let idx = current === -1 ? 0 : current;
+        if(e.key==='ArrowDown') idx = Math.min(ids.length-1, idx+1);
+        if(e.key==='ArrowUp') idx = Math.max(0, idx-1);
+        document.getElementById(ids[idx]).scrollIntoView({behavior:'smooth', block:'start'});
+        history.replaceState(null,'','#'+ids[idx]);
+      }
+    });
+
+    // Hero mini-chart
+    const heroCtx = document.getElementById('heroChart');
+    const months = ['J','F','M','A','M','J','J','A','S','O','N','D'];
+    const real = [12,14,13,15,17,16,18,17,19,20,22,23];
+    const pred = real.map((v,i)=> i<6 ? null : Math.round((real[i-1]*1.05 + (i%2?0.4:-0.3))*10)/10);
+    new Chart(heroCtx, {
+      type:'line',
+      data:{labels:months, datasets:[
+        {label:'Réel (M€)', data:real, tension:.35, pointRadius:0},
+        {label:'Prédit (M€)', data:pred, tension:.35, borderDash:[6,6], pointRadius:0}
+      ]},
+      options:{
+        responsive:true,
+        plugins:{legend:{labels:{color:'#cfe0ff'}}},
+        scales:{x:{ticks:{color:'#aab2d5'}}, y:{ticks:{color:'#aab2d5'}, grid:{color:'rgba(255,255,255,.08)'}}}
+      }
+    });
+
+    // Retail chart
+    const retailCtx = document.getElementById('retailChart');
+    const weeks = ['S1','S2','S3','S4','S5','S6','S7','S8'];
+    const pluie = [30,60,40,70,55,35,65,50];
+    const ventesMag = pluie.map(p=> Math.max(50, 100 - p*0.6));
+    const ventesWeb = pluie.map(p=> Math.min(120, 50 + p*0.5 + 12)); // +12% promo online
+    new Chart(retailCtx, {
+      type:'bar',
+      data:{labels:weeks, datasets:[
+        {label:'Magasin (index)', data:ventesMag},
+        {label:'En ligne (index)', data:ventesWeb}
+      ]},
+      options:{
+        responsive:true,
+        plugins:{legend:{labels:{color:'#cfe0ff'}}},
+        scales:{x:{ticks:{color:'#aab2d5'}}, y:{ticks:{color:'#aab2d5'}, grid:{color:'rgba(255,255,255,.08)'}}}
+      }
+    });
+
+    // Multiplier animation
+    const multEl = document.getElementById('multiplier');
+    let m=1; const t = setInterval(()=>{ m += 0.2; if(m>=3){m=3; clearInterval(t)} multEl.textContent = 'x'+m.toFixed(1); }, 300);
+
+    // Demo Live
+    const rngPromo = document.getElementById('rngPromo');
+    const rngService = document.getElementById('rngService');
+    const rngMeteo = document.getElementById('rngMeteo');
+    const rngLivraison = document.getElementById('rngLivraison');
+    const kpiMarge = document.getElementById('kpiMarge');
+    const kpiChurn = document.getElementById('kpiChurn');
+    const kpiImpact = document.getElementById('kpiImpact');
+    const btnScenario = document.getElementById('btnScenario');
+
+    const demoCtx = document.getElementById('demoChart');
+    const ds = new Chart(demoCtx, {
+      type:'radar',
+      data:{labels:['Ventes','Marge','Satisfaction','Churn↓','Trafic magasin','Trafic web'], datasets:[
+        {label:'Score', data:[60,55,58,62,45,70]}
+      ]},
+      options:{
+        responsive:true,
+        scales:{r:{angleLines:{color:'rgba(255,255,255,.1)'}, grid:{color:'rgba(255,255,255,.1)'}, pointLabels:{color:'#aab2d5'}, ticks:{display:false}}},
+        plugins:{legend:{labels:{color:'#cfe0ff'}}}
+      }
+    });
+
+    function recalc(){
+      const promo = +rngPromo.value;
+      const service = +rngService.value;
+      const meteo = +rngMeteo.value;
+      const livraison = +rngLivraison.value;
+      // modèles jouets (démo pédagogique, non contractuels)
+      const ventes = 50 + promo*1.2 + Math.max(0, 20 - meteo*0.2) + (livraison>0 ? (12 - livraison*0.4) : 10);
+      const marge = Math.max(6, 24 - promo*0.25 - Math.max(0, 10 - livraison)*0.5 + service*0.04);
+      const churn = Math.max(1.2, 7.5 - service*0.04 + Math.max(0, meteo-50)*0.02);
+      const traficMag = Math.max(20, 80 - meteo*0.5 + promo*0.1);
+      const traficWeb = Math.min(100, 40 + promo*1.5 + (livraison<=2?10:0) + meteo*0.25);
+      const impact = Math.round((ventes*0.35 + (100-churn*10)*0.25 + traficWeb*0.2 + (marge*5)*0.2)/1.2);
+
+      kpiMarge.textContent = marge.toFixed(1) + '%';
+      kpiChurn.textContent = churn.toFixed(1) + '%';
+      kpiImpact.textContent = impact;
+
+      ds.data.datasets[0].data = [ventes, marge*4, service*0.9, 100-(churn*10), traficMag, traficWeb];
+      ds.update();
+    }
+    ['input','change'].forEach(ev=>{
+      rngPromo.addEventListener(ev, recalc);
+      rngService.addEventListener(ev, recalc);
+      rngMeteo.addEventListener(ev, recalc);
+      rngLivraison.addEventListener(ev, recalc);
+    });
+    btnScenario.addEventListener('click', ()=>{
+      rngPromo.value = Math.floor(Math.random()*31);
+      rngService.value = Math.floor(40+Math.random()*61);
+      rngMeteo.value = Math.floor(Math.random()*101);
+      rngLivraison.value = Math.floor(Math.random()*16);
+      recalc();
+    });
+    recalc();
+  </script>
+</body>
+</html>
